@@ -182,3 +182,6 @@ $RECYCLE.BIN/\
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,java,eclipse\
 }
 >>>>>>> 77229ba8719f5f0d51f7f66a7a47c43c4395a1a1
+src/com/javalec/.DS_Store
+src/com/.DS_Store
+.DS_Store
