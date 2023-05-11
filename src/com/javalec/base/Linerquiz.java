@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.javalec.util.ShareVar;
+
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -70,7 +73,7 @@ public class Linerquiz extends JFrame {
 
 	private JLabel getLblLoginname() {
 		if (lblLoginname == null) {
-			lblLoginname = new JLabel("안재원님!");
+			lblLoginname = new JLabel(ShareVar.u_name+"님!");
 			lblLoginname.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblLoginname.setBounds(311, 89, 75, 38);
 		}

@@ -6,7 +6,7 @@ public class DtoMake_OKH {
 	int mid;
 	String m_tid;
 	String m_coid;
-	String genre;
+	String mgenre;
 	String mtitle;
 	String mcontents;
 	String manswer;
@@ -18,13 +18,13 @@ public class DtoMake_OKH {
 	}
 	
 
-	public DtoMake_OKH(int mid, String m_tid, String m_coid, String m_genre, String mtitle, String mcontents,
+	public DtoMake_OKH(int mid, String m_tid, String m_coid, String mgenre, String mtitle, String mcontents,
 			String manswer) {
 		super();
 		this.mid = mid;
 		this.m_tid = m_tid;
 		this.m_coid = m_coid;
-		this.genre = m_genre;
+		this.mgenre = mgenre;
 		this.mtitle = mtitle;
 		this.mcontents = mcontents;
 		this.manswer = manswer;
@@ -33,10 +33,20 @@ public class DtoMake_OKH {
 	
 	
 
-	public DtoMake_OKH(String m_genre, int cocount) {
+	public DtoMake_OKH(String mgenre, int cocount) {
 		super();
-		this.genre = m_genre;
+		this.mgenre = mgenre;
 		this.cocount = cocount;
+	}
+	
+
+
+	public DtoMake_OKH(String mcontents, String manswer,String mgenre, String mtitle) {
+		super();
+		this.mcontents = mcontents;
+		this.manswer = manswer;
+		this.mtitle = mtitle;
+		this.mgenre = mgenre;
 	}
 
 
@@ -66,12 +76,12 @@ public class DtoMake_OKH {
 		this.m_coid = m_coid;
 	}
 
-	public String getM_genre() {
-		return genre;
+	public String getMgenre() {
+		return mgenre;
 	}
 
-	public void setM_genre(String m_genre) {
-		this.genre = m_genre;
+	public void setM_genre(String mgenre) {
+		this.mgenre = mgenre;
 	}
 
 	public String getMtitle() {

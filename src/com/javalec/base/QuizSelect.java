@@ -14,6 +14,7 @@ import com.javalec.dao.DaoTutor_OKH;
 import com.javalec.dto.DtoCollection_OKH;
 import com.javalec.dto.DtoMake_OKH;
 import com.javalec.dto.DtoTutor_OKH;
+import com.javalec.util.ShareVar;
 
 import javax.swing.JLabel;
 import java.awt.event.MouseAdapter;
@@ -47,7 +48,8 @@ public class QuizSelect extends JFrame {
 	private JButton btnSelectionquiz;
 	private JScrollPane scrollPane;
 	private JTable tableCollection;
-	public static int selectedRow;
+
+	public static String selectedcoid;
 
 	// table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
@@ -109,7 +111,7 @@ public class QuizSelect extends JFrame {
 
 	private JLabel getLblLoginname() {
 		if (lblLoginname == null) {
-			lblLoginname = new JLabel("안재원님!");
+			lblLoginname = new JLabel(ShareVar.u_name + "님!");
 			lblLoginname.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblLoginname.setBounds(311, 89, 75, 38);
 		}
@@ -199,6 +201,9 @@ public class QuizSelect extends JFrame {
 			btnSelectionquiz.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					screenPartition();
+					Shortquiz shortquiz = new Shortquiz();
+					shortquiz.setVisible(true);
+					dispose();
 				}
 			});
 			btnSelectionquiz.setBackground(new Color(0, 0, 0, 0));
@@ -233,14 +238,14 @@ public class QuizSelect extends JFrame {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 //					outerTable.setRowCount(0);  // 검색기능이 구현 되었을때 가
-//					tableClick(); // Row 선택하는 것. 정보를 주어야한다.
+					tableClick(); // Row 선택하는 것. 정보를 주어야한다.
 					screenPartition(); // 버튼이 불가능하게 만들어야한다.
 				}
 			});
 			// Table의 목록은 다 원래 오브젝트, 그래서 Icon을 명시해줌.
 
 			tableCollection.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			tableCollection.setModel(outerTable); 
+			tableCollection.setModel(outerTable);
 			tableCollection.setRowHeight(150);
 
 		}
@@ -261,13 +266,14 @@ public class QuizSelect extends JFrame {
 			ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.getgenrecount();
 			DaoTutor_OKH daoTutor_OKH = new DaoTutor_OKH(dtoCollect.get(j).getCoid());
 			ArrayList<DtoTutor_OKH> dtotname = daoTutor_OKH.tutorname();
-			
+
 			ImageIcon coPic = new ImageIcon("./" + dtoCollect.get(j).getCopath());
 			String coName = dtoCollect.get(j).getConame();
-			String mGenre = dtogenre.get(0).getM_genre();
+			String mGenre = dtogenre.get(0).getMgenre();
 			String tname = dtotname.get(0).getTname();
 			int count = dtogenre.get(0).getCocount();
-			Object[] tempData = { coPic, coName, tname, mGenre, count };
+			String cocode = dtoCollect.get(j).getCoid();
+			Object[] tempData = { coPic, coName, tname, mGenre, count, cocode };
 			outerTable.addRow(tempData);
 		}
 
@@ -288,8 +294,9 @@ public class QuizSelect extends JFrame {
 		outerTable.addColumn("선생님");
 		outerTable.addColumn("장르");
 		outerTable.addColumn("퀴즈 갯수");
+		outerTable.addColumn("code");
 
-		outerTable.setColumnCount(5);
+		outerTable.setColumnCount(6);
 
 		int i = outerTable.getRowCount();
 
@@ -318,16 +325,24 @@ public class QuizSelect extends JFrame {
 		col = tableCollection.getColumnModel().getColumn(vColIndex);
 		width = 69;
 		col.setPreferredWidth(width);
-		
+
 		vColIndex = 4;
 		col = tableCollection.getColumnModel().getColumn(vColIndex);
 		width = 69;
 		col.setPreferredWidth(width);
 
+		vColIndex = 5;
+		col = tableCollection.getColumnModel().getColumn(vColIndex);
+		width = 1;
+		col.setPreferredWidth(width);
+
 	}
 
 	// table click
-//	private void tableClick() {
-//		selectedRow = tableCollection.getSelectedRow();
-//	}
+	private void tableClick() {
+		int i = tableCollection.getSelectedRow();
+		selectedcoid = (String) tableCollection.getValueAt(i, 5);
+	}
+
+	//
 }

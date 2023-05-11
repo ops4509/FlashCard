@@ -6,20 +6,21 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import com.javalec.dto.DtoCollection_OKH;
+import com.javalec.dto.DtoMake_OKH;
 import com.javalec.util.ShareVar;
 
 public class DaoCollection_OKH {
 	// Field
 
-	public final String url_mysql = ShareVar.DBName;
+	private final String url_mysql = ShareVar.DBName;
 	private final String id_mysql = ShareVar.DBUser;
 	private final String pw_mysql = ShareVar.DBPass;
-
-	String coid;
+	
 	String coname;
 	FileInputStream copic;
 	String copicpath;
@@ -33,19 +34,21 @@ public class DaoCollection_OKH {
 	
 	// selectCollection 
 	public ArrayList<DtoCollection_OKH> selectCo() {
+		PreparedStatement ps = null;
 		ArrayList<DtoCollection_OKH> dto = new ArrayList<DtoCollection_OKH>();
 
-		String whereDefault = "select coid, coname, copic, copicpath from collection";
-		// sql 문구. 띄어쓰기에 주의
-
+		String query = "select co.coid, co.coname, co.copic, co.copicpath "
+				+ " from collection co, user u , buy b "
+				+ " where u.u_id = b.b_uid and b.b_coid = co.coid"
+				+ " and u.u_id = ? ";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			Statement stmt_mysql = conn_mysql.createStatement();
-
-			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
+			ps = conn_mysql.prepareStatement(query);
+			ps.setString(1, ShareVar.u_id);
 			// sql에서 여기로 데이터가 넘어간다는 문구.
 
+			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				String coid = rs.getString(1);
 				String coname = rs.getString(2);
@@ -79,4 +82,33 @@ public class DaoCollection_OKH {
 		}
 		return dto;
 	}
+	
+	// coid 를 가져와야한다.
+//	public String selectCoid() {
+//		PreparedStatement ps = null;
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
+//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+//			String query = "select co.coid"
+//					+" from collection co"
+////					+" where "
+//			
+//			ps = conn_mysql.prepareStatement(query);
+//			ps.setString(1, coid);
+//
+//			ResultSet rs = ps.executeQuery();
+//			while (rs.next()) {
+//				mcontents = rs.getString(1);
+//				mgenre = rs.getString(2);
+//				}
+//			DtoMake_OKH beanList = new DtoMake_OKH(mcontents,mgenre);
+//			dto.add(beanList);
+//			
+//			conn_mysql.close();
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return dto;
+//	}
 }
