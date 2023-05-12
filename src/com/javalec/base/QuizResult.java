@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class QuizResult extends JFrame {
 
@@ -54,11 +56,17 @@ public class QuizResult extends JFrame {
 	 * Create the frame.
 	 */
 	public QuizResult() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+//				insertScore();
+			}
+		});
 		setTitle("퀴즈 결과");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 428, 926);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(0,0,0,0));
+		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -132,22 +140,27 @@ public class QuizResult extends JFrame {
 		}
 		return btnBack;
 	}
+
 	private JLabel getLblBackUpper() {
 		if (lblBackUpper == null) {
 			lblBackUpper = new JLabel("");
-			lblBackUpper.setIcon(new ImageIcon(QuizResult.class.getResource("/com/javalec/assets/shortquizquestion.png")));
+			lblBackUpper
+					.setIcon(new ImageIcon(QuizResult.class.getResource("/com/javalec/assets/shortquizquestion.png")));
 			lblBackUpper.setBounds(40, 160, 350, 140);
 		}
 		return lblBackUpper;
 	}
+
 	private JLabel getLblBackLower() {
 		if (lblBackLower == null) {
 			lblBackLower = new JLabel("");
-			lblBackLower.setIcon(new ImageIcon(QuizResult.class.getResource("/com/javalec/assets/shortquizquestion.png")));
+			lblBackLower
+					.setIcon(new ImageIcon(QuizResult.class.getResource("/com/javalec/assets/shortquizquestion.png")));
 			lblBackLower.setBounds(40, 340, 350, 140);
 		}
 		return lblBackLower;
 	}
+
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("정답 확인");
@@ -157,15 +170,17 @@ public class QuizResult extends JFrame {
 		}
 		return lblNewLabel;
 	}
+
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("정답갯수 / 총 갯수");
+			lblNewLabel_1 = new JLabel(Integer.toString(Shortquiz.score)  +" / "+Integer.toString(QuizSelect.cocount) );
 			lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_1.setBounds(40, 230, 350, 70);
 		}
 		return lblNewLabel_1;
 	}
+
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
 			lblNewLabel_2 = new JLabel("노력하세요");
@@ -175,6 +190,7 @@ public class QuizResult extends JFrame {
 		}
 		return lblNewLabel_2;
 	}
+
 	private JButton getBtnRetry() {
 		if (btnRetry == null) {
 			btnRetry = new JButton("");
@@ -194,14 +210,12 @@ public class QuizResult extends JFrame {
 		}
 		return btnRetry;
 	}
+
 	private JButton getBtnHome2() {
 		if (btnHome2 == null) {
 			btnHome2 = new JButton("");
 			btnHome2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					QuizSelect quizSelect = new QuizSelect();
-					quizSelect.setVisible(true);
-					dispose();
 
 				}
 			});
@@ -213,6 +227,7 @@ public class QuizResult extends JFrame {
 		}
 		return btnHome2;
 	}
+
 	private JLabel getLblNewLabel_3() {
 		if (lblNewLabel_3 == null) {
 			lblNewLabel_3 = new JLabel("다시 풀어보기");
@@ -223,6 +238,7 @@ public class QuizResult extends JFrame {
 		}
 		return lblNewLabel_3;
 	}
+
 	private JLabel getLblNewLabel_3_1() {
 		if (lblNewLabel_3_1 == null) {
 			lblNewLabel_3_1 = new JLabel("메인으로 돌아가기");
@@ -233,7 +249,13 @@ public class QuizResult extends JFrame {
 		}
 		return lblNewLabel_3_1;
 	}
-	
-	//	function
-	
+
+	// function
+
+	// score 불러오기
+//	private String insertScore() {
+		
+		
+//	}
+
 }

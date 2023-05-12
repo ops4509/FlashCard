@@ -20,7 +20,9 @@ public class CheckCorrect extends JDialog {
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JButton btnNewButton;
+	
 	Shortquiz shortquiz = new Shortquiz();
+
 	/**
 	 * Launch the application.
 	 */
@@ -41,8 +43,7 @@ public class CheckCorrect extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	
-	
+
 	public CheckCorrect() {
 		setBounds(0, 0, 310, 230);
 		getContentPane().setLayout(null);
@@ -52,47 +53,56 @@ public class CheckCorrect extends JDialog {
 		getContentPane().add(getBtnNewButton());
 
 	}
+
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("");
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel.setIcon(new ImageIcon(CheckCorrect.class.getResource("/com/javalec/assets/Green handphone.png")));
+			lblNewLabel
+					.setIcon(new ImageIcon(CheckCorrect.class.getResource("/com/javalec/assets/Green handphone.png")));
 			lblNewLabel.setBounds(140, 24, 30, 30);
 		}
 		return lblNewLabel;
 	}
+
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
 			lblNewLabel_1 = new JLabel("정답입니다!");
-			lblNewLabel_1.setForeground(new Color(30,179,87));
+			lblNewLabel_1.setForeground(new Color(30, 179, 87));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_1.setBounds(24, 70, 262, 32);
 		}
 		return lblNewLabel_1;
 	}
+
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("정답은  :"+Shortquiz.selectedAnswer+"입니다.");
+			lblNewLabel_2 = new JLabel("정답은  :" + Shortquiz.selectedAnswer + "입니다.");
 			lblNewLabel_2.setBounds(24, 115, 262, 20);
 		}
 		return lblNewLabel_2;
 	}
+
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("다음 문제 넘어가기");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					shortquiz.dispose();
-				
-					
 					insertScore();
-					if(Shortquiz.qseq<QuizSelect.cocount-1) {
+					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
 						Shortquiz.qseq += 1;
+						shortquiz.score +=1;
 						shortquiz.makequiz();
 						shortquiz.setVisible(true);
-				
-					}else{
+
+					} else {
 						Shortquiz.qseq = 0;
+						shortquiz.dispose();
+						shortquiz.setVisible(false);
+						QuizResult quizResult = new QuizResult();
+						quizResult.setVisible(true);
+
 					}
 					dispose();
 				}
@@ -102,16 +112,15 @@ public class CheckCorrect extends JDialog {
 		}
 		return btnNewButton;
 	}
-	
-	//	function
-	//	insert score
+
+	// function
+	// insert score
 	public void insertScore() {
 		String inputuid = ShareVar.u_id;
 		String inputcoid = QuizSelect.selectedcoid;
 		int inputmid = Shortquiz.selectedid;
-		DaoScore_OKH daoScore_OKH = new DaoScore_OKH(inputuid, inputcoid,inputmid);
-		daoScore_OKH.insertScoreCorrect();	
+		DaoScore_OKH daoScore_OKH = new DaoScore_OKH(inputuid, inputcoid, inputmid);
+		daoScore_OKH.insertScoreCorrect();
 	}
-	
-	
+
 }

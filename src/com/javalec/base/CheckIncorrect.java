@@ -22,6 +22,7 @@ public class CheckIncorrect extends JDialog {
 	private JButton btnNewButton;
 	Shortquiz shortquiz = new Shortquiz();
 
+
 	/**
 	 * Launch the application.
 	 */
@@ -95,6 +96,11 @@ public class CheckIncorrect extends JDialog {
 
 					} else {
 						Shortquiz.qseq = 0;
+						shortquiz.dispose();
+						shortquiz.setVisible(false);
+						QuizResult quizResult = new QuizResult();
+						quizResult.setVisible(true);
+
 					}
 					dispose();
 				}

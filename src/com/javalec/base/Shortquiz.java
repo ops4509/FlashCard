@@ -51,6 +51,7 @@ public class Shortquiz extends JFrame {
 	public static String selectedContent;
 	public static String selectedGenre;
 	public static String selectedTitle;
+	public static int score =0;
 	public static int selectedid;
 	public static int qseq = 0;
 	public static String firstoption;
@@ -202,7 +203,7 @@ public class Shortquiz extends JFrame {
 			lblContents = new JLabel();
 			lblContents.setHorizontalAlignment(SwingConstants.CENTER);
 			lblContents.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-			lblContents.setBounds(42, 234, 345, 16);
+			lblContents.setBounds(42, 234, 345, 64);
 		}
 		return lblContents;
 	}
