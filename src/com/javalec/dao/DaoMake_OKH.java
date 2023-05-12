@@ -44,40 +44,14 @@ public class DaoMake_OKH {
 		super();
 		this.coid = coid;
 	}
+	
+//	public DaoMake_OKH(String mcontents, String manswer) {
+//		super();
+//		this.mcontents = mcontents;
+//		this.manswer = manswer;
+//	}
 
 	// Mehtod
-
-	// SelectionMake
-
-//	public ArrayList<DtoMake_OKH> selectMake() {
-//		PreparedStatement ps = null;
-//		ArrayList<DtoMake_OKH> dto = new ArrayList<DtoMake_OKH>();
-//		try {
-//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
-//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-//			String query = "select mid, uid, mtitle, mgenre,mcontents, manswer from make";
-//
-//			ps = conn_mysql.prepareStatement(query);
-//
-//
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				int mid = rs.getString(1);
-//				String uid = rs.getString(2);
-//				String uid = rs.getString(3);
-//				String wpsize = rs.getString(4);
-//				String  = rs.getInt(5);
-//
-//				dto = new DtoMake_OKH(wpname, wpbrand, wpcolor, wpsize, wpprice);
-//			}
-//			conn_mysql.close();
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return dto;
-//
-//	}
 
 	// Collection에서 genre 값 가져오기
 	public ArrayList<DtoMake_OKH> getgenrecount() {
@@ -141,4 +115,35 @@ public class DaoMake_OKH {
 		return dto;
 
 	}
+	
+	//	정답 유무 체크하기
+//	public boolean checkAnswer() {
+//		PreparedStatement ps =null;
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
+//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+//			String query = "select mid"
+//					+" from make
+//					where mcontents = 'One' and manswer = '일, 하나';;
+//			ps = conn_mysql.prepareStatement(query);
+//			ps.setString(1, "tutor002_001"); // Co-id 넣기
+//
+//			ResultSet rs = ps.executeQuery();
+//			while (rs.next()) {
+//				mcontents = rs.getString(1);
+//				manswer = rs.getString(2);
+//				mgenre = rs.getString(3);
+//				mtitle = rs.getString(4);
+//				DtoMake_OKH beanList = new DtoMake_OKH(mcontents, manswer, mgenre, mtitle);
+//				dto.add(beanList);
+//			}
+//
+//			conn_mysql.close();
+//					
+//					
+//		}
+//		
+//		
+//		return true;
+//	}
 }
