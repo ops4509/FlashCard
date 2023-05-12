@@ -83,32 +83,5 @@ public class DaoCollection_OKH {
 		return dto;
 	}
 	
-	// coid 를 가져와야한다.
-//	public String selectCoid() {
-//		PreparedStatement ps = null;
-//		try {
-//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
-//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-//			String query = "select co.coid"
-//					+" from collection co"
-////					+" where "
-//			
-//			ps = conn_mysql.prepareStatement(query);
-//			ps.setString(1, coid);
-//
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				mcontents = rs.getString(1);
-//				mgenre = rs.getString(2);
-//				}
-//			DtoMake_OKH beanList = new DtoMake_OKH(mcontents,mgenre);
-//			dto.add(beanList);
-//			
-//			conn_mysql.close();
-//			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return dto;
-//	}
+	
 }

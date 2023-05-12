@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import com.javalec.dto.DtoCollection_OKH;
 import com.javalec.dto.DtoMake_OKH;
 import com.javalec.util.ShareVar;
+import com.mysql.cj.protocol.Resultset;
 
 public class DaoMake_OKH {
 	// Fields
@@ -20,8 +21,9 @@ public class DaoMake_OKH {
 	private final String id_mysql = ShareVar.DBUser;
 	private final String pw_mysql = ShareVar.DBPass;
 
-	int mid;
 	int cocount;
+	int mid;
+	int qseq;
 	String uid;
 	String coid;
 	String mtitle;
@@ -44,12 +46,6 @@ public class DaoMake_OKH {
 		super();
 		this.coid = coid;
 	}
-	
-//	public DaoMake_OKH(String mcontents, String manswer) {
-//		super();
-//		this.mcontents = mcontents;
-//		this.manswer = manswer;
-//	}
 
 	// Mehtod
 
@@ -91,7 +87,8 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "select m.manswer, m.mcontents, m.mgenre, m.mtitle" + " from make m, collection co"
+			String query = "select m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid,(SELECT @rn:=0) AS r" 
+					+ " from make m, collection co, (SELECT @rn:=0) AS r"
 					+ " where m.m_coid = co.coid" + " and co.coid = ?";
 
 			ps = conn_mysql.prepareStatement(query);
@@ -99,11 +96,13 @@ public class DaoMake_OKH {
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				mcontents = rs.getString(1);
-				manswer = rs.getString(2);
+				manswer = rs.getString(1);
+				mcontents = rs.getString(2);
 				mgenre = rs.getString(3);
 				mtitle = rs.getString(4);
-				DtoMake_OKH beanList = new DtoMake_OKH(mcontents, manswer, mgenre, mtitle);
+				mid = rs.getInt(5);
+				qseq = rs.getInt(5);
+				DtoMake_OKH beanList = new DtoMake_OKH(manswer, mcontents, mgenre, mtitle, mid, qseq);
 				dto.add(beanList);
 			}
 
@@ -115,35 +114,5 @@ public class DaoMake_OKH {
 		return dto;
 
 	}
-	
-	//	정답 유무 체크하기
-//	public boolean checkAnswer() {
-//		PreparedStatement ps =null;
-//		try {
-//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
-//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-//			String query = "select mid"
-//					+" from make
-//					where mcontents = 'One' and manswer = '일, 하나';;
-//			ps = conn_mysql.prepareStatement(query);
-//			ps.setString(1, "tutor002_001"); // Co-id 넣기
-//
-//			ResultSet rs = ps.executeQuery();
-//			while (rs.next()) {
-//				mcontents = rs.getString(1);
-//				manswer = rs.getString(2);
-//				mgenre = rs.getString(3);
-//				mtitle = rs.getString(4);
-//				DtoMake_OKH beanList = new DtoMake_OKH(mcontents, manswer, mgenre, mtitle);
-//				dto.add(beanList);
-//			}
-//
-//			conn_mysql.close();
-//					
-//					
-//		}
-//		
-//		
-//		return true;
-//	}
+
 }

@@ -11,6 +11,7 @@ public class DtoMake_OKH {
 	String mcontents;
 	String manswer;
 	int cocount;
+	int qseq;
 
 	// Constructor
 	public DtoMake_OKH() {
@@ -33,6 +34,12 @@ public class DtoMake_OKH {
 	
 	
 
+	public DtoMake_OKH(int mid) {
+		super();
+		this.mid = mid;
+	}
+
+
 	public DtoMake_OKH(String mgenre, int cocount) {
 		super();
 		this.mgenre = mgenre;
@@ -41,12 +48,13 @@ public class DtoMake_OKH {
 	
 
 
-	public DtoMake_OKH(String mcontents, String manswer,String mgenre, String mtitle) {
+	public DtoMake_OKH(String manswer, String mcontents,String mgenre, String mtitle, int mid, int qseq) {
 		super();
-		this.mcontents = mcontents;
 		this.manswer = manswer;
+		this.mcontents = mcontents;
 		this.mtitle = mtitle;
 		this.mgenre = mgenre;
+		this.mid = mid;
 	}
 
 
