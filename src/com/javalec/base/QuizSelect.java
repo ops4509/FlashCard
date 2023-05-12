@@ -50,6 +50,7 @@ public class QuizSelect extends JFrame {
 	private JTable tableCollection;
 
 	public static String selectedcoid;
+	public static int cocount;
 
 	// table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
@@ -271,9 +272,9 @@ public class QuizSelect extends JFrame {
 			String coName = dtoCollect.get(j).getConame();
 			String mGenre = dtogenre.get(0).getMgenre();
 			String tname = dtotname.get(0).getTname();
-			int count = dtogenre.get(0).getCocount();
+			cocount = dtogenre.get(0).getCocount();
 			String cocode = dtoCollect.get(j).getCoid();
-			Object[] tempData = { coPic, coName, tname, mGenre, count, cocode };
+			Object[] tempData = { coPic, coName, tname, mGenre, cocount, cocode };
 			outerTable.addRow(tempData);
 		}
 

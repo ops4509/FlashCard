@@ -20,6 +20,7 @@ public class CheckCorrect extends JDialog {
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JButton btnNewButton;
+	Shortquiz shortquiz = new Shortquiz();
 	/**
 	 * Launch the application.
 	 */
@@ -40,6 +41,7 @@ public class CheckCorrect extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
+	
 	
 	public CheckCorrect() {
 		setBounds(0, 0, 310, 230);
@@ -80,8 +82,19 @@ public class CheckCorrect extends JDialog {
 			btnNewButton = new JButton("다음 문제 넘어가기");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					dispose();
+					shortquiz.dispose();
+				
+					
 					insertScore();
+					if(Shortquiz.qseq<QuizSelect.cocount-1) {
+						Shortquiz.qseq += 1;
+						shortquiz.makequiz();
+						shortquiz.setVisible(true);
+				
+					}else{
+						Shortquiz.qseq = 0;
+					}
+					dispose();
 				}
 			});
 			btnNewButton.setBackground(Color.WHITE);
@@ -99,4 +112,6 @@ public class CheckCorrect extends JDialog {
 		DaoScore_OKH daoScore_OKH = new DaoScore_OKH(inputuid, inputcoid,inputmid);
 		daoScore_OKH.insertScoreCorrect();	
 	}
+	
+	
 }

@@ -52,13 +52,13 @@ public class Shortquiz extends JFrame {
 	public static String selectedGenre;
 	public static String selectedTitle;
 	public static int selectedid;
-	public static int qseq = 1;
+	public static int qseq = 0;
 	public static String firstoption;
 	public static String secondoption;
 	public static String thirdoption;
 	public static String fourthoption;
 	public static String[] options = new String[4];
-	private int randomContentIndex;
+
 
 	/**
 	 * Launch the application.
@@ -352,20 +352,20 @@ public class Shortquiz extends JFrame {
 
 		// 랜덤하게 content 선택
 
-		int randomContentIndex = (int) (Math.random() * dtoMake_OKH.size());
+//		int randomContentIndex = (int) (Math.random() * dtoMake_OKH.size());
 		// randomContentIndex 을 qseq으로 바꿔야한다.
 
-		selectedAnswer = dtoMake_OKH.get(randomContentIndex).getManswer();
-		selectedContent = dtoMake_OKH.get(randomContentIndex).getMcontents();
-		selectedGenre = dtoMake_OKH.get(randomContentIndex).getMgenre();
-		selectedTitle = dtoMake_OKH.get(randomContentIndex).getMtitle();
-		selectedid = dtoMake_OKH.get(randomContentIndex).getMid();
+		selectedAnswer = dtoMake_OKH.get(qseq).getManswer();
+		selectedContent = dtoMake_OKH.get(qseq).getMcontents();
+		selectedGenre = dtoMake_OKH.get(qseq).getMgenre();
+		selectedTitle = dtoMake_OKH.get(qseq).getMtitle();
+		selectedid = dtoMake_OKH.get(qseq).getMid();
 
 		// 랜덤하게 3개의 다른 hidden 선택
 		Set<Integer> selectedHiddenIndices = new HashSet<>();
 		while (selectedHiddenIndices.size() < 3) {
 			int randomHiddenIndex = (int) (Math.random() * dtoMake_OKH.size());
-			if (randomHiddenIndex != randomContentIndex) {
+			if (randomHiddenIndex != qseq) {
 				selectedHiddenIndices.add(randomHiddenIndex);
 			}
 		}
@@ -376,7 +376,7 @@ public class Shortquiz extends JFrame {
 		for (int hiddenIndex : selectedHiddenIndices) {
 			options[i++] = dtoMake_OKH.get(hiddenIndex).getManswer();
 		}
-		options[i] = dtoMake_OKH.get(randomContentIndex).getManswer();
+		options[i] = dtoMake_OKH.get(qseq).getManswer();
 
 		// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
 		// 랜덤으로 섞어줍니다.
@@ -393,6 +393,17 @@ public class Shortquiz extends JFrame {
 		lblOption3.setText(thirdoption);
 		lblOption4.setText(fourthoption);
 
+	}
+	
+	public void clear() {
+		
+		lblContents.setText("");
+		lblGenre.setText("");
+		lblTitle.setText("");
+		lblOption1.setText("");
+		lblOption2.setText("");
+		lblOption3.setText("");
+		lblOption4.setText("");
 	}
 
 }
