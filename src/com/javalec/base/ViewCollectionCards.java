@@ -1,15 +1,74 @@
 package com.javalec.base;
 
 import java.awt.EventQueue;
-
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JScrollBar;
+import javax.swing.JSlider;
+import javax.swing.JScrollPane;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.JSeparator;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.ListSelectionModel;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+
+import java.awt.FlowLayout;
+import javax.swing.border.TitledBorder;
+import javax.swing.text.StyledDocument;
+
+import com.javalec.dao.ViewCollectionCardsDao_KMJ;
+import com.javalec.dao.ViewCollectionMainDao_KMJ;
+import com.javalec.dto.ViewCollectionCardsDto_KMJ;
+import com.javalec.dto.ViewCollectionMainDto_KMJ;
+import com.javalec.function.CenterAlignedTextArea;
+
+import javax.swing.BoxLayout;
+import java.awt.GridBagLayout;
+import javax.swing.JSplitPane;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.DropMode;
+import javax.swing.JFormattedTextField;
 
 public class ViewCollectionCards extends JFrame {
 
 	private JPanel contentPane;
-
+	private JLabel lbMc;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JLabel lbCard;
+	private JLabel lbTxt;
+	private JLabel lbLeft;
+	private JLabel lblNewLabel_4_1;
+	private JLabel lbRight;
+	int index = 0;
+	int maxIndex = 0;
+	int token = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -29,13 +88,215 @@ public class ViewCollectionCards extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	public ViewCollectionCards() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				lbLeft.setVisible(false);
+				if(ViewCollectionMain.payStatus == 0) {
+					freeSearch();					
+				}else {
+					paySearch();
+				}
+			}
+		});
+		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setBackground(Color.WHITE);
+		contentPane.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		contentPane.add(getLbTxt());
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.DARK_GRAY);
+		panel.setBounds(0, 0, 428, 20);
+		contentPane.add(panel);
+		contentPane.add(getLbMc());
+		contentPane.add(getLblNewLabel());
+		contentPane.add(getLblNewLabel_1());
+		contentPane.add(getLbCard());
+		contentPane.add(getLbLeft());
+		contentPane.add(getLblNewLabel_4_1());
+		contentPane.add(getLbRight());
 	}
-
+	private JLabel getLbMc() {
+		if (lbMc == null) {
+			lbMc = new JLabel("");
+			lbMc.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/101 Logo.png")));
+			lbMc.setBounds(167, 27, 101, 48);
+		}
+		return lbMc;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("");
+			lblNewLabel.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					ViewCollectionMain main = new ViewCollectionMain();
+					main.setVisible(true);
+					dispose();
+					
+				}
+			});
+			lblNewLabel.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/Back.png")));
+			lblNewLabel.setBounds(48, 79, 48, 48);
+		}
+		return lblNewLabel;
+	}
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("안재원님!");
+			lblNewLabel_1.setFont(new Font("LG Smart UI Bold", Font.PLAIN, 16));
+			lblNewLabel_1.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/hello.png")));
+			lblNewLabel_1.setBounds(268, 79, 145, 48);
+		}
+		return lblNewLabel_1;
+	}
+	private JLabel getLbCard() {
+		if (lbCard == null) {
+			lbCard = new JLabel("");
+			lbCard.setIcon(new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
+			lbCard.setBackground(new Color(255, 255, 255));
+			lbCard.setBounds(40, 155, 348, 450);
+		}
+		return lbCard;
+	}
+	private JLabel getLbTxt() {
+		if (lbTxt == null) {
+			lbTxt = new JLabel("Loading...");
+			lbTxt.setFont(new Font("LG Smart UI Bold", Font.PLAIN, 60));
+			lbTxt.setHorizontalAlignment(SwingConstants.CENTER);
+			lbTxt.setBounds(48, 344, 333, 65);
+		}
+		return lbTxt;
+	}
+	private JLabel getLbLeft() {
+		if (lbLeft == null) {
+			lbLeft = new JLabel("");
+			lbLeft.setIcon(new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/skip_previous.png")));
+			lbLeft.setBounds(60, 711, 64, 64);
+		}
+		return lbLeft;
+	}
+	private JLabel getLblNewLabel_4_1() {
+		if (lblNewLabel_4_1 == null) {
+			lblNewLabel_4_1 = new JLabel("");
+			lblNewLabel_4_1.setBounds(80, 691, 64, 64);
+		}
+		return lblNewLabel_4_1;
+	}
+	private JLabel getLbRight() {
+		if (lbRight == null) {
+			lbRight = new JLabel("");
+			lbRight.setIcon(new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/skip_next.png")));
+			lbRight.setBounds(298, 711, 64, 64);
+		}
+		return lbRight;
+	}
+	//function
+	private void freeSearch() {
+		
+		ViewCollectionCardsDao_KMJ dao = new ViewCollectionCardsDao_KMJ();
+		
+		ArrayList<ViewCollectionCardsDto_KMJ> dto = dao.userCard();
+		
+		
+		maxIndex = dto.size();
+		
+		lbTxt.setText(dto.get(index).getCcontents());
+		lbRight.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if(index<maxIndex-1) {
+		    		lbLeft.setVisible(true);
+		    		index++;
+		    		lbTxt.setText(dto.get(index).getCcontents());			    		
+		    	}
+		    }
+		});
+		
+		lbLeft.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if(index>=0) {
+		    		index--;
+		    		lbTxt.setText(dto.get(index).getCcontents());			    		
+		    	}
+		    	if(index == 0) {
+		    		lbLeft.setVisible(false);
+		    	}
+		    }
+		});
+		
+		lbCard.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if(token == 1) {
+		    		token = 0;
+		    		lbTxt.setText(dto.get(index).getCcontents());
+		    	}else if(token == 0) {
+		    		token = 1;
+		    		lbTxt.setText(dto.get(index).getCanswer());
+		    	}
+		    }
+		});
+		
+	}
+	
+	private void paySearch() {
+		
+		ViewCollectionCardsDao_KMJ dao = new ViewCollectionCardsDao_KMJ();
+		
+		ArrayList<ViewCollectionCardsDto_KMJ> dto = dao.payCard();
+		
+		
+		maxIndex = dto.size();
+		
+		lbTxt.setText(dto.get(index).getCcontents());
+		lbRight.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if(index<maxIndex-1) {
+		    		lbLeft.setVisible(true);
+		    		index++;
+		    		lbTxt.setText(dto.get(index).getCcontents());			    		
+		    	}
+		    }
+		});
+		
+		lbLeft.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if(index>=0) {
+		    		index--;
+		    		lbTxt.setText(dto.get(index).getCcontents());			    		
+		    	}
+		    	if(index == 0) {
+		    		lbLeft.setVisible(false);
+		    	}
+		    }
+		});
+		
+		lbCard.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	if(token == 1) {
+		    		token = 0;
+		    		lbTxt.setText(dto.get(index).getCcontents());
+		    	}else if(token == 0) {
+		    		token = 1;
+		    		lbTxt.setText(dto.get(index).getCanswer());
+		    	}
+		    }
+		});
+	}
+	
+	
+	//end
 }

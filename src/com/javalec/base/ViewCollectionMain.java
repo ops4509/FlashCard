@@ -35,13 +35,14 @@ import javax.swing.border.Border;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
 
-import com.javalec.dao.ViewCollectionDao_KMJ;
-import com.javalec.dto.ViewCollectionDto_KMJ;
-import com.javalec.function.ViewCollectionRoundButton_KMJ;
+import com.javalec.dao.ViewCollectionMainDao_KMJ;
+import com.javalec.dto.ViewCollectionMainDto_KMJ;
 
 import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JSplitPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ViewCollectionMain extends JFrame {
 
@@ -52,7 +53,9 @@ public class ViewCollectionMain extends JFrame {
 	private JLabel lbMc;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
-	private JButton btnNewButton;
+	private JLabel lbMyCol;
+	public static String colName;
+	public static int payStatus = 0;
 
 	/**
 	 * Launch the application.
@@ -93,7 +96,7 @@ public class ViewCollectionMain extends JFrame {
 		contentPane.add(getLbMc());
 		contentPane.add(getLblNewLabel());
 		contentPane.add(getLblNewLabel_1());
-		contentPane.add(getBtnNewButton());
+		contentPane.add(getLbMyCol());
 	}
 	private JTextField getTextField() {
 		if (textField == null) {
@@ -127,14 +130,18 @@ public class ViewCollectionMain extends JFrame {
 			//JPanel panel_2 = new JPanel();
 			panel_1.setBounds(37, 175, 350, 428);
 			panel_1.setLayout(new GridLayout(0,3,0,0));
-			ViewCollectionDao_KMJ dao = new ViewCollectionDao_KMJ("ajw2002","tutor002_001");
 			
-			ArrayList<ViewCollectionDto_KMJ> dto = dao.selectAction();
+			//아래 문자열을 로그인해서 가져오는 값으로 둬야한다
+			ViewCollectionMainDao_KMJ dao = new ViewCollectionMainDao_KMJ("ajw2002");
+			
+			ArrayList<ViewCollectionMainDto_KMJ> dto = dao.searchAction();
 			ArrayList<String> menu = new ArrayList<String>();
 			
+			//데이터확인
+			/*
 			for(int i=0; i<dto.size();i++) {
 				System.out.println(dto.get(i).getConame());
-			}
+			}*/
 			
 			//DB값 넣기
 			
@@ -151,38 +158,65 @@ public class ViewCollectionMain extends JFrame {
 			}
 			
 			int m_Size = menu.size();
-			JPanel lb_Coll[] = new JPanel[m_Size];
-			JLabel lb_Name[] = new JLabel[m_Size];
-			JLabel lb_Coll2[] = new JLabel[m_Size];
+			JPanel lbColl[] = new JPanel[m_Size];
+			JLabel lbName[] = new JLabel[m_Size];
+			JLabel lbColl2[] = new JLabel[m_Size];
+			
 			for(int i=0;i<m_Size;i++) {
-				String a = Integer.toString(i);
 				if(i<dto.size()) {
+					lbColl[i] = new JPanel();
 					
-					lb_Coll[i] = new JPanel();
-					lb_Coll2[i] = new JLabel(a);
-					lb_Coll[i].add(lb_Coll2[i]);
-					lb_Name[i] = new JLabel(menu.get(i));
-					lb_Coll2[i].setHorizontalAlignment(JLabel.CENTER);
-					lb_Name[i].setHorizontalAlignment(JLabel.CENTER);
+					ImageIcon icon = new ImageIcon("./"+dto.get(i).getCoPicpath());
+					lbColl2[i] = new JLabel(icon);
+					lbColl[i].add(lbColl2[i]);
+					
+					lbName[i] = new JLabel(menu.get(i));
+					
+					lbColl2[i].setHorizontalAlignment(JLabel.CENTER);
+					lbName[i].setHorizontalAlignment(JLabel.CENTER);
+					
+					lbColl[i].addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							JPanel clickedPanel = (JPanel) e.getSource(); // 이벤트가 발생한 JPanel 가져오기
+					        int index = -1;
+					        payStatus = 1;
+					        for (int j = 0; j < m_Size; j++) {
+					            if (clickedPanel == lbColl[j]) { // 클릭된 JPanel의 인덱스 찾기
+					                index = j;
+					                break;
+					            }
+					        }
+					        if (index != -1) {
+					            colName = lbName[index].getText(); // 클릭된 JPanel의 인덱스로 lb_Name에서 값을 가져올 수 있습니다.
+					            System.out.println(colName);
+					        }
+					        ViewCollectionCards card = new ViewCollectionCards();
+							card.setVisible(true);
+							setVisible(false);
+						}
+					});
 				}else {
-					lb_Coll[i] = new JPanel();
-					lb_Coll2[i] = new JLabel(" ");
-					lb_Coll[i].add(lb_Coll2[i]);
-					lb_Name[i] = new JLabel(" ");
-					lb_Coll[i].add(lb_Coll2[i]);
-					lb_Coll2[i].setHorizontalAlignment(JLabel.CENTER);
-					lb_Name[i].setHorizontalAlignment(JLabel.CENTER);
+					lbColl[i] = new JPanel();
+					lbColl2[i] = new JLabel(" ");
+					
+					lbColl[i].add(lbColl2[i]);
+					lbName[i] = new JLabel(" ");
+					
+					lbColl[i].add(lbColl2[i]);
+					
+					lbColl2[i].setHorizontalAlignment(JLabel.CENTER);
+					lbName[i].setHorizontalAlignment(JLabel.CENTER);
 				}
-				
 			}
 			
 			for(int i=0;i<m_Size;i++) {
 				JPanel collPanel = new JPanel(new BorderLayout());
 				collPanel.setPreferredSize(new Dimension(100,150));
-				lb_Coll[i].setPreferredSize(new Dimension(100,150));
-				lb_Coll2[i].setPreferredSize(new Dimension(100,150));
-				collPanel.add(lb_Coll[i],BorderLayout.CENTER);
-				collPanel.add(lb_Name[i],BorderLayout.SOUTH);
+				lbColl[i].setPreferredSize(new Dimension(100,150));
+				lbColl2[i].setPreferredSize(new Dimension(100,150));
+				collPanel.add(lbColl[i],BorderLayout.CENTER);
+				collPanel.add(lbName[i],BorderLayout.SOUTH);
 				
 				panel_1.add(collPanel);
 			}
@@ -216,15 +250,22 @@ public class ViewCollectionMain extends JFrame {
 		}
 		return lblNewLabel_1;
 	}
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("");
-			btnNewButton.setForeground(new Color(255, 255, 255));
-			btnNewButton.setBackground(new Color(255, 255, 255));
-			btnNewButton.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/Group 33.png")));
-			btnNewButton.setBounds(41, 693, 346, 102);
+	private JLabel getLbMyCol() {
+		if (lbMyCol == null) {
+			lbMyCol = new JLabel("New label");
+			lbMyCol.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					payStatus = 0;
+					ViewCollectionCards card = new ViewCollectionCards();
+					card.setVisible(true);
+					setVisible(false);
+				}
+			});
+			lbMyCol.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/Group 33.png")));
+			lbMyCol.setBounds(41, 693, 346, 102);
 		}
-		return btnNewButton;
+		return lbMyCol;
 	}
 }
 
