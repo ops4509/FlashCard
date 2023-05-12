@@ -41,7 +41,6 @@ import com.javalec.dao.ViewCollectionCardsDao_KMJ;
 import com.javalec.dao.ViewCollectionMainDao_KMJ;
 import com.javalec.dto.ViewCollectionCardsDto_KMJ;
 import com.javalec.dto.ViewCollectionMainDto_KMJ;
-import com.javalec.function.CenterAlignedTextArea;
 
 import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
