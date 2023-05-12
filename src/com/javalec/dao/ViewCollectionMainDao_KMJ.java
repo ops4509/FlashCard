@@ -27,34 +27,7 @@ public class ViewCollectionMainDao_KMJ {
 		super();
 		this.uid = uid;
 	}
-	/*
-	public ArrayList<ViewCollectionDto_KMJ> searchAction(){
-		ArrayList<ViewCollectionDto_KMJ> dtoList = new ArrayList<ViewCollectionDto_KMJ>();
-		String whereDefault = "select c.coid, c.coname from collection c, buy b where c.coid = b.b_coid and b.b_uid = '"+ uid +"'";//이 uid는 static값의 uid
-		
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			Statement stmt_mysql = conn_mysql.createStatement();
-			
-			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
-			
-			while(rs.next()) {
-				String wkCoid = rs.getString(1);
-				String wkConame = rs.getString(2);
-				
-				ViewCollectionDto_KMJ dto = new ViewCollectionDto_KMJ(wkCoid,wkConame);
-				dtoList.add(dto);
-			}
-
-			conn_mysql.close();
-						
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		return dtoList;
-	}*/
+	
 	
 	public ArrayList<ViewCollectionMainDto_KMJ> searchAction(){
 		ArrayList<ViewCollectionMainDto_KMJ> dtoList = new ArrayList<ViewCollectionMainDto_KMJ>();

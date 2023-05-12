@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
+import java.util.Random;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -68,6 +68,8 @@ public class ViewCollectionCards extends JFrame {
 	int index = 0;
 	int maxIndex = 0;
 	int token = 0;
+	int rToken = 0;
+	private JLabel lbShuffle;
 	/**
 	 * Launch the application.
 	 */
@@ -122,6 +124,7 @@ public class ViewCollectionCards extends JFrame {
 		contentPane.add(getLbLeft());
 		contentPane.add(getLblNewLabel_4_1());
 		contentPane.add(getLbRight());
+		contentPane.add(getLbShuffle());
 	}
 	private JLabel getLbMc() {
 		if (lbMc == null) {
@@ -150,7 +153,7 @@ public class ViewCollectionCards extends JFrame {
 	}
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("안재원님!");
+			lblNewLabel_1 = new JLabel("님!");
 			lblNewLabel_1.setFont(new Font("LG Smart UI Bold", Font.PLAIN, 16));
 			lblNewLabel_1.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/hello.png")));
 			lblNewLabel_1.setBounds(268, 79, 145, 48);
@@ -205,6 +208,9 @@ public class ViewCollectionCards extends JFrame {
 		
 		ArrayList<ViewCollectionCardsDto_KMJ> dto = dao.userCard();
 		
+		int randNum[] = new int[dto.size()];
+    	Random rand = new Random();
+    	
 		
 		maxIndex = dto.size();
 		
@@ -212,37 +218,83 @@ public class ViewCollectionCards extends JFrame {
 		lbRight.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	if(index<maxIndex-1) {
-		    		lbLeft.setVisible(true);
-		    		index++;
-		    		lbTxt.setText(dto.get(index).getCcontents());			    		
-		    	}
+		    	if(rToken == 0) {
+		    		if(index<maxIndex-1) {
+			    		lbLeft.setVisible(true);
+			    		index++;
+			    		lbTxt.setText(dto.get(index).getCcontents());			    		
+			    	}
+		    	}else if(rToken == 1) {
+		    		if(index<maxIndex-1) {
+			    		lbLeft.setVisible(true);
+			    		index++;
+			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
+			    	}
+		    	}   	
 		    }
 		});
 		
 		lbLeft.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	if(index>=0) {
-		    		index--;
-		    		lbTxt.setText(dto.get(index).getCcontents());			    		
+		    	if(rToken == 0) {
+		    		if(index>=0) {
+			    		index--;
+			    		lbTxt.setText(dto.get(index).getCcontents());			    		
+			    	}
+			    	if(index == 0) {
+			    		lbLeft.setVisible(false);
+			    	}
+		    	}else if(rToken == 1) {
+		    		if(index>=0) {
+			    		index--;
+			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
+			    	}
+			    	if(index == 0) {
+			    		lbLeft.setVisible(false);
+			    	}
 		    	}
-		    	if(index == 0) {
-		    		lbLeft.setVisible(false);
-		    	}
+		    	
 		    }
 		});
 		
 		lbCard.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	if(token == 1) {
-		    		token = 0;
-		    		lbTxt.setText(dto.get(index).getCcontents());
-		    	}else if(token == 0) {
-		    		token = 1;
-		    		lbTxt.setText(dto.get(index).getCanswer());
+		    	if(rToken == 0) {
+		    		if(token == 1) {
+		    			token = 0;
+		    			lbTxt.setText(dto.get(index).getCcontents());
+		    		}else if(token == 0) {
+		    			token = 1;
+		    			lbTxt.setText(dto.get(index).getCanswer());
+		    		}    		
+		    	}else if(rToken == 1) {
+		    		if(token == 1) {
+		    			token = 0;
+		    			lbTxt.setText(dto.get(randNum[index]).getCcontents());
+		    		}else if(token == 0) {
+		    			token = 1;
+		    			lbTxt.setText(dto.get(randNum[index]).getCanswer());
+		    		}  
 		    	}
+		    }
+		});
+		lbShuffle.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	index = 0;
+		    	lbLeft.setVisible(false);
+		    	rToken = 1;
+		    	for(int i=0; i<randNum.length;i++) {
+		    		randNum[i] = rand.nextInt(dto.size());
+		    		for(int j = 0;j<i;j++) {
+		    			if(randNum[i]==randNum[j]) {
+		    				i--;
+		    			}
+		    		}
+		    	}
+		    	lbTxt.setText(dto.get(randNum[index]).getCcontents());
 		    }
 		});
 		
@@ -254,48 +306,101 @@ public class ViewCollectionCards extends JFrame {
 		
 		ArrayList<ViewCollectionCardsDto_KMJ> dto = dao.payCard();
 		
-		
+		int randNum[] = new int[dto.size()];
+    	Random rand = new Random();
+    	
 		maxIndex = dto.size();
 		
 		lbTxt.setText(dto.get(index).getCcontents());
 		lbRight.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	if(index<maxIndex-1) {
-		    		lbLeft.setVisible(true);
-		    		index++;
-		    		lbTxt.setText(dto.get(index).getCcontents());			    		
-		    	}
+		    	if(rToken == 0) {
+		    		if(index<maxIndex-1) {
+			    		lbLeft.setVisible(true);
+			    		index++;
+			    		lbTxt.setText(dto.get(index).getCcontents());			    		
+			    	}
+		    	}else if(rToken == 1) {
+		    		if(index<maxIndex-1) {
+			    		lbLeft.setVisible(true);
+			    		index++;
+			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
+			    	}
+		    	}   	
 		    }
 		});
 		
 		lbLeft.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	if(index>=0) {
-		    		index--;
-		    		lbTxt.setText(dto.get(index).getCcontents());			    		
+		    	if(rToken == 0) {
+		    		if(index>=0) {
+			    		index--;
+			    		lbTxt.setText(dto.get(index).getCcontents());			    		
+			    	}
+			    	if(index == 0) {
+			    		lbLeft.setVisible(false);
+			    	}
+		    	}else if(rToken == 1) {
+		    		if(index>=0) {
+			    		index--;
+			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
+			    	}
+			    	if(index == 0) {
+			    		lbLeft.setVisible(false);
+			    	}
 		    	}
-		    	if(index == 0) {
-		    		lbLeft.setVisible(false);
-		    	}
+		    	
 		    }
 		});
 		
 		lbCard.addMouseListener(new MouseAdapter() {
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
-		    	if(token == 1) {
-		    		token = 0;
-		    		lbTxt.setText(dto.get(index).getCcontents());
-		    	}else if(token == 0) {
-		    		token = 1;
-		    		lbTxt.setText(dto.get(index).getCanswer());
+		    	if(rToken == 0) {
+		    		if(token == 1) {
+		    			token = 0;
+		    			lbTxt.setText(dto.get(index).getCcontents());
+		    		}else if(token == 0) {
+		    			token = 1;
+		    			lbTxt.setText(dto.get(index).getCanswer());
+		    		}    		
+		    	}else if(rToken == 1) {
+		    		if(token == 1) {
+		    			token = 0;
+		    			lbTxt.setText(dto.get(randNum[index]).getCcontents());
+		    		}else if(token == 0) {
+		    			token = 1;
+		    			lbTxt.setText(dto.get(randNum[index]).getCanswer());
+		    		}  
 		    	}
 		    }
 		});
+		lbShuffle.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		    	index = 0;
+		    	lbLeft.setVisible(false);
+		    	rToken = 1;
+		    	for(int i=0; i<randNum.length;i++) {
+		    		randNum[i] = rand.nextInt(dto.size());
+		    		for(int j = 0;j<i;j++) {
+		    			if(randNum[i]==randNum[j]) {
+		    				i--;
+		    			}
+		    		}
+		    	}
+		    	lbTxt.setText(dto.get(randNum[index]).getCcontents());
+		    }
+		});
 	}
-	
-	
-	//end
+	private JLabel getLbShuffle() {
+		if (lbShuffle == null) {
+			lbShuffle = new JLabel("");
+			lbShuffle.setIcon(new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/shuffled.png")));
+			lbShuffle.setBounds(170, 706, 74, 74);
+		}
+		return lbShuffle;
+	}
 }

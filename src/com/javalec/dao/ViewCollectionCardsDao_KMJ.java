@@ -68,7 +68,6 @@ public class ViewCollectionCardsDao_KMJ {
 		//ViewCollectionMain.colName
 		String coid;
 		String where = "select coid from collection where coname = '"+ViewCollectionMain.colName+"'";
-		System.out.println(ViewCollectionMain.colName);
 		
 		
 		try {

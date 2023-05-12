@@ -117,10 +117,6 @@ public class ViewCollectionMain extends JFrame {
 			scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 			scrollPane.setBounds(37, 175, 350, 428);
 			scrollPane.setViewportView(getPanel_1());
-			
-			
-			
-			
 		}
 		return scrollPane;
 	}
@@ -146,8 +142,9 @@ public class ViewCollectionMain extends JFrame {
 			//DB값 넣기
 			
 			int num = dto.size();
-			if(dto.size()<20)
-			num = 20;
+			if(dto.size()<20) {
+				num = 9;				
+			}
 			
 			for(int i=0;i<num;i++) {
 				if(i<dto.size()) {
@@ -189,7 +186,6 @@ public class ViewCollectionMain extends JFrame {
 					        }
 					        if (index != -1) {
 					            colName = lbName[index].getText(); // 클릭된 JPanel의 인덱스로 lb_Name에서 값을 가져올 수 있습니다.
-					            System.out.println(colName);
 					        }
 					        ViewCollectionCards card = new ViewCollectionCards();
 							card.setVisible(true);
