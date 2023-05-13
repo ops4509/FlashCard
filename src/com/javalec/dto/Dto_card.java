@@ -7,7 +7,7 @@ public class Dto_card {
 	String ctitle;
 	String ccontents;
 	String canswer;
-	
+	String collection;
 
 	
 	
@@ -33,13 +33,20 @@ public class Dto_card {
 	}
 	
 
-	
+	public Dto_card(String ccontents, String canswer, String collection, String ctitle, String cgenre) {
+		super();
+		this.ccontents = ccontents;
+		this.canswer = canswer;
+		this.collection = collection;
+		this.ctitle = ctitle;
+		this.cgenre = cgenre;
+	}
 	
 	// getter & setter 목록
 	
 
 
-
+	//contents / answer / (collection) / title / genre / 
 
 
 
@@ -52,6 +59,29 @@ public class Dto_card {
 
 
 
+
+
+
+
+	
+	
+	
+	
+
+
+
+
+
+	public String getCollection() {
+		return collection;
+	}
+
+
+
+
+	public void setCollection(String collection) {
+		this.collection = collection;
+	}
 
 
 

@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class Mycard_01main extends JFrame {
 
@@ -70,6 +71,12 @@ public class Mycard_01main extends JFrame {
 	
 	ArrayList<String> user_Collection_list = new ArrayList<>();  //로그인한 유저의 구매한 collection coid 리스트를 임시저장해두
 	ArrayList<String> user_Card_list = new ArrayList<>(); // 로그인한 유저의 자작 카드 cid 리스트를 임시저장해두기.
+	
+	
+	
+	public static String select_ci = ""; //지정한 로우의 카드 아이디기억하는 변수.
+	public static String[] select_cil = null ; // 추가기능으로 여러개 카드 선택후 카드보기 할때 사용할 String
+
 	
 	/**
 	 * Launch the application.
@@ -213,9 +220,20 @@ public class Mycard_01main extends JFrame {
 			btn_insert.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 				
-				Mycard_03insert insertmain = new Mycard_03insert();
-				insertmain.setVisible(true);
+				Mycard_03insert insertMain = new Mycard_03insert();
+				
+				
+				insertMain.setVisible(true);
 				dispose();
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 				}
 			});
@@ -235,6 +253,25 @@ public class Mycard_01main extends JFrame {
 	private JButton getBtn_read() {
 		if (btn_read == null) {
 			btn_read = new JButton("내 카드 읽어보기");
+			btn_read.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				
+				//입력하기 버튼 누르면.
+				//선택된 로우의 카드 아이디 받아오기.String 형태로 select_ci에 저장.
+				//Mycard_02view 	
+				
+					
+				System.out.println("화면바뀌기전 카드 아이디 : " + select_ci);
+				
+				Mycard_02view viewMain = new Mycard_02view();				
+				viewMain.setVisible(true);
+				dispose();
+
+				
+				
+				
+				}
+			});
 			btn_read.setBounds(298, 780, 90, 50);
 			btn_read.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		}
@@ -271,10 +308,18 @@ public class Mycard_01main extends JFrame {
 	private JTable getMc_innertable() {
 		if (mc_innertable == null) {
 			mc_innertable = new JTable();
+			mc_innertable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+			mc_innertable.addMouseMotionListener(new MouseMotionAdapter() {
+				@Override
+				public void mouseDragged(MouseEvent e) {
+					screenPartition();
+					
+				}
+			});
 			mc_innertable.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					
+					select_ci = savecid();
 					screenPartition();
 				}
 
@@ -282,15 +327,15 @@ public class Mycard_01main extends JFrame {
 					 
 				 
 			});
-			final ListSelectionModel selectionModel = mc_innertable.getSelectionModel();
+			//final ListSelectionModel selectionModel = mc_innertable.getSelectionModel();
 
-			if (selectionModel.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION) {
-				 btn_read.setEnabled(true);
-			} else {
+			//if (selectionModel.getSelectionMode() == ListSelectionModel.SINGLE_SELECTION) {
+			//	 btn_read.setEnabled(true);
+			//} else {
 			    // A버튼 비활성화
-			    btn_read.setEnabled(false);
+			  //  btn_read.setEnabled(false);
 			    
-			}
+			//}
 
 			mc_innertable.setModel(outerTable);
 			
@@ -433,7 +478,7 @@ public class Mycard_01main extends JFrame {
 		col.setPreferredWidth(width);
 
 		// 1열과 2열 숨기기. 이후 조건부로 2열은 열어줄거임.
-		TableColumnModel columnModel = mc_innertable.getColumnModel();
+		/*TableColumnModel columnModel = mc_innertable.getColumnModel();
 		TableColumn column = columnModel.getColumn(0);
 		column.setMinWidth(0);
 		column.setMaxWidth(0);
@@ -444,7 +489,7 @@ public class Mycard_01main extends JFrame {
 		column.setMinWidth(0);
 		column.setMaxWidth(0);
 		column.setWidth(0);
-		column.setPreferredWidth(0);
+		column.setPreferredWidth(0);*/
 	}
 	
 	
@@ -457,9 +502,12 @@ public class Mycard_01main extends JFrame {
 	private void mc_searchaction(){
 		Dao_mycard dao_ca = new Dao_mycard(user_Card_list);
 		ArrayList<Dto_card> dtoList_ca = dao_ca.userCardList();   	//cid/ contents /answer/ title / genre  순서로 유저가 직접만든 단어 카드들이 저장되어있다.   
-		System.out.println("첫번재 카드의 카드 아이디 : " + dtoList_ca.get(1).getCid()); 
+		//System.out.println("첫번재 카드의 카드 아이디 : " + dtoList_ca.get(1).getCid()); 
 
 		
+		
+		
+		// 유저가 만든 카드들을 테이블에 입력.  // 카드 아이디는 앞에 UC붙 페이지 넘어갈때 콜렉션카드인지 유저카드인지 구분하기 위함.
 		int listCount = dtoList_ca.size();
 
 		for (int i = 0; i<listCount; i++) {
@@ -468,7 +516,7 @@ public class Mycard_01main extends JFrame {
 			
 			//System.out.println(dtoList_ca.get(i).getCid()); 
 			
-			String[] Ttxt= {Integer.toString(dtoList_ca.get(i).getCid()), temp2, temp, dtoList_ca.get(i).getCcontents(),dtoList_ca.get(i).getCanswer(),user_SampleID,dtoList_ca.get(i).getCtitle(),dtoList_ca.get(i).getCgenre()};		
+			String[] Ttxt= {"UC"+Integer.toString(dtoList_ca.get(i).getCid()), temp2, temp, dtoList_ca.get(i).getCcontents(),dtoList_ca.get(i).getCanswer(),user_SampleID,dtoList_ca.get(i).getCtitle(),dtoList_ca.get(i).getCgenre()};		
 			System.out.println(Ttxt + "뭐지?");
 			outerTable.addRow(Ttxt);
 		
@@ -478,7 +526,7 @@ public class Mycard_01main extends JFrame {
 		
 		
 		
-		
+		// 유저가 구매한 콜렉션의 카드들을 테이블에 입력.  카드아이디는 앞에 CC붙임. //페이지 넘어갈때 콜렉션인지, 유저카드인지 구분하려고.
 		Dao_mycard dao_mk = new Dao_mycard(user_Collection_list);
 		ArrayList<Dto_make> dtoList_mk = dao_mk.userColCardList();   	//mid/ contents /answer/ collection 이름 / title / genre  순서로 유저가 직접만든 단어 카드들이 저장되어있다.
 		int listCount_mk = dtoList_mk.size();
@@ -489,28 +537,18 @@ public class Mycard_01main extends JFrame {
 			
 			//System.out.println(dtoList_ca.get(i).getCid()); 
 			
-			String[] Ttxt= {Integer.toString(dtoList_mk.get(i).getMid()), temp2, temp, dtoList_mk.get(i).getMcontents(),dtoList_mk.get(i).getManswer(),user_SampleID,dtoList_mk.get(i).getMtitle(),dtoList_mk.get(i).getMgenre()};		
+			String[] Ttxt= {"CC"+Integer.toString(dtoList_mk.get(i).getMid()), temp2, temp, dtoList_mk.get(i).getMcontents(),dtoList_mk.get(i).getManswer(),user_SampleID,dtoList_mk.get(i).getMtitle(),dtoList_mk.get(i).getMgenre()};		
 			System.out.println(Ttxt + "뭐지?");
 			outerTable.addRow(Ttxt);
 		
 		
 		}
 		
-		
-		
-		
-		
-		/*
-		for (int i = 0; i < listCount; i++) {
-			String temp = Integer.toString(dtoList.get(i).getPcode());
-			String[] qTxt = { temp, dtoList.get(i).getPname(), dtoList.get(i).getPcolor(), dtoList.get(i).getPbrand(),
-					dtoList.get(i).getPsize() };
-			outerTable.addRow(qTxt);
-		}
-		
-			*/
+	
 	}//mc_S 닫
 	
+	
+	//------------------------테이블에서 선택 개수에 따라 버튼 활성화/비활성화--------------
 	
 	private void screenPartition() {
 		int selectedRowCount = mc_innertable.getSelectedRowCount(); // 테이블에서 선택된 로우 숫자.
@@ -522,9 +560,15 @@ public class Mycard_01main extends JFrame {
 		}
 		
 		if (selectedRowCount>1) {
-			btn_delete.setEnabled(true);
+			btn_delete.setEnabled(false);  // 추후 추가기능으로 여러개 동시삭제 할 수 있도록 할 예정.
 			btn_read.setEnabled(false);
 
+			
+		}
+		
+		if(selectedRowCount <1) {
+			btn_delete.setEnabled(false);
+			btn_read.setEnabled(false);
 			
 		}
 		
@@ -532,6 +576,19 @@ public class Mycard_01main extends JFrame {
 		
 	}
 
+	
+	
+	
+	//table 클릭시 cid 를 기억하는 메쏘드.
+	private String savecid() {
+		
+		int selectedRow = mc_innertable.getSelectedRow(); // 선택된 로우의 인덱스 가져오기
+		String value = (String) mc_innertable.getValueAt(selectedRow, 0); // 첫 번째 열의 값을 가져와서 int로 형변환하기
+
+	return value;	
+	} 
+	
+	
 	
 	
 

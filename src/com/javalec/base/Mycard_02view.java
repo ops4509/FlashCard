@@ -5,6 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.javalec.dao.Dao_mycard;
+import com.javalec.dto.Dto_card;
+
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -16,6 +20,9 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class Mycard_02view extends JFrame {
 
@@ -24,15 +31,19 @@ public class Mycard_02view extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JButton btnNewButton;
 	private JLabel lblNewLabel_2;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_1_1;
-	private JButton btnNewButton_1_2;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField txtContents;
-	private JTextField textField_3;
+	private JButton btn_update;
+	private JButton btn_delete;
+	private JButton btn_confirm;
+	private JTextField tf_Collection;
+	private JTextField tf_Title;
+	private JTextField tf_Genre;
+	private JTextField tf_Contents;
+	private JTextField tf_Answer;
 
+	
+
+	public static String viewCid ;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,6 +64,20 @@ public class Mycard_02view extends JFrame {
 	 * Create the frame.
 	 */
 	public Mycard_02view() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				Mycard_01main main01 = new Mycard_01main();
+				
+
+				viewCid = main01.select_ci;
+				
+				System.out.println("새로운창 넘어가고 카드 아이디 : " +viewCid);
+				printCard();
+			
+			
+			}
+		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 906);
 		contentPane = new JPanel();
@@ -64,14 +89,14 @@ public class Mycard_02view extends JFrame {
 		contentPane.add(getLblNewLabel_1());
 		contentPane.add(getBtnNewButton());
 		contentPane.add(getLblNewLabel_2());
-		contentPane.add(getBtnNewButton_1());
-		contentPane.add(getBtnNewButton_1_1());
-		contentPane.add(getBtnNewButton_1_2());
-		contentPane.add(getTextField());
-		contentPane.add(getTextField_1());
-		contentPane.add(getTextField_2());
-		contentPane.add(getTxtContents());
-		contentPane.add(getTextField_3());
+		contentPane.add(getBtn_update());
+		contentPane.add(getBtn_delete());
+		contentPane.add(getBtn_confirm());
+		contentPane.add(getTf_Collection());
+		contentPane.add(getTf_Title());
+		contentPane.add(getTf_Genre());
+		contentPane.add(getTf_Contents());
+		contentPane.add(getTf_Answer());
 	}
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
@@ -112,74 +137,105 @@ public class Mycard_02view extends JFrame {
 		}
 		return lblNewLabel_2;
 	}
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("New button");
-			btnNewButton_1.setBounds(40, 780, 90, 50);
+	private JButton getBtn_update() {
+		if (btn_update == null) {
+			btn_update = new JButton("수정하기");
+			btn_update.setBounds(40, 780, 90, 50);
 		}
-		return btnNewButton_1;
+		return btn_update;
 	}
-	private JButton getBtnNewButton_1_1() {
-		if (btnNewButton_1_1 == null) {
-			btnNewButton_1_1 = new JButton("New button");
-			btnNewButton_1_1.setBounds(169, 780, 90, 50);
+	private JButton getBtn_delete() {
+		if (btn_delete == null) {
+			btn_delete = new JButton("삭제하기");
+			btn_delete.setBounds(169, 780, 90, 50);
 		}
-		return btnNewButton_1_1;
+		return btn_delete;
 	}
-	private JButton getBtnNewButton_1_2() {
-		if (btnNewButton_1_2 == null) {
-			btnNewButton_1_2 = new JButton("New button");
-			btnNewButton_1_2.setBounds(298, 780, 90, 50);
+	private JButton getBtn_confirm() {
+		if (btn_confirm == null) {
+			btn_confirm = new JButton("확인");
+			btn_confirm.setBounds(298, 780, 90, 50);
 		}
-		return btnNewButton_1_2;
+		return btn_confirm;
 	}
-	private JTextField getTextField() {
-		if (textField == null) {
-			textField = new JTextField();
-			textField.setText("콜렉션명");
-			textField.setBounds(40, 124, 80, 30);
-			textField.setColumns(10);
+	private JTextField getTf_Collection() {
+		if (tf_Collection == null) {
+			tf_Collection = new JTextField();
+			tf_Collection.setText("콜렉션명");
+			tf_Collection.setBounds(40, 124, 110, 30);
+			tf_Collection.setColumns(10);
 		}
-		return textField;
+		return tf_Collection;
 	}
-	private JTextField getTextField_1() {
-		if (textField_1 == null) {
-			textField_1 = new JTextField();
-			textField_1.setText("타이틀명");
-			textField_1.setColumns(10);
-			textField_1.setBounds(140, 124, 80, 30);
+	private JTextField getTf_Title() {
+		if (tf_Title == null) {
+			tf_Title = new JTextField();
+			tf_Title.setText("타이틀명");
+			tf_Title.setColumns(10);
+			tf_Title.setBounds(174, 124, 110, 30);
 		}
-		return textField_1;
+		return tf_Title;
 	}
-	private JTextField getTextField_2() {
-		if (textField_2 == null) {
-			textField_2 = new JTextField();
-			textField_2.setText("과목(장르)");
-			textField_2.setColumns(10);
-			textField_2.setBounds(240, 124, 80, 30);
+	private JTextField getTf_Genre() {
+		if (tf_Genre == null) {
+			tf_Genre = new JTextField();
+			tf_Genre.setText("과목(장르)");
+			tf_Genre.setColumns(10);
+			tf_Genre.setBounds(308, 124, 80, 30);
 		}
-		return textField_2;
+		return tf_Genre;
 	}
-	private JTextField getTxtContents() {
-		if (txtContents == null) {
-			txtContents = new JTextField();
-			txtContents.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-			txtContents.setText("나를 죽이지 못하는 고통은");
-			txtContents.setHorizontalAlignment(SwingConstants.CENTER);
-			txtContents.setBounds(40, 180, 348, 343);
-			txtContents.setColumns(10);
+	private JTextField getTf_Contents() {
+		if (tf_Contents == null) {
+			tf_Contents = new JTextField();
+			tf_Contents.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+			tf_Contents.setText("나를 죽이지 못하는 고통은");
+			tf_Contents.setHorizontalAlignment(SwingConstants.CENTER);
+			tf_Contents.setBounds(40, 180, 348, 343);
+			tf_Contents.setColumns(10);
 		}
-		return txtContents;
+		return tf_Contents;
 	}
-	private JTextField getTextField_3() {
-		if (textField_3 == null) {
-			textField_3 = new JTextField();
-			textField_3.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-			textField_3.setText("나를 성장시킬 뿐이다.");
-			textField_3.setHorizontalAlignment(SwingConstants.CENTER);
-			textField_3.setBounds(40, 595, 348, 111);
-			textField_3.setColumns(10);
+	private JTextField getTf_Answer() {
+		if (tf_Answer == null) {
+			tf_Answer = new JTextField();
+			tf_Answer.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
+			tf_Answer.setText("나를 성장시킬 뿐이다.");
+			tf_Answer.setHorizontalAlignment(SwingConstants.CENTER);
+			tf_Answer.setBounds(40, 595, 348, 111);
+			tf_Answer.setColumns(10);
 		}
-		return textField_3;
+		return tf_Answer;
 	}
-}
+	
+	
+	
+	
+	
+	
+	// 받아오고 넘겨주는 데이터 순서는 contents / answer / (collection) / title / genre / cid 
+
+	
+	// -------------------------function --------------------------
+	private void printCard() {
+		String favor = viewCid.substring(0,2);
+
+			Dao_mycard dao = new Dao_mycard();
+			ArrayList<Dto_card> dtoList = dao.getUcView(viewCid);
+			//int listCount = dtoList.size();
+			System.out.println("넘어온 콘텐츠 내용"+dtoList.get(0).getCcontents());
+			System.out.println(dtoList.get(0).getCcontents());
+			
+			
+			tf_Contents.setText(dtoList.get(0).getCcontents());
+			tf_Answer.setText(dtoList.get(0).getCanswer());
+			tf_Collection.setText(dtoList.get(0).getCollection());
+			tf_Title.setText(dtoList.get(0).getCtitle());
+			tf_Genre.setText(dtoList.get(0).getCgenre());
+			
+
+		
+	}
+	
+
+}//02페이지의 엔드게임나

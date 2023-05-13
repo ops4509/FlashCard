@@ -5,9 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.javalec.dao.Dao_mycard;
-
 import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.SwingConstants;
@@ -19,30 +16,24 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import java.awt.Font;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-public class Mycard_03insert extends JFrame {
+public class Mycard_04update extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JButton btnNewButton;
 	private JLabel lblNewLabel_2;
-	private JButton btn_Insert;
+	private JButton btnNewButton_1_2;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField tf_Title;
-	private JTextField tf_Genre;
+	private JTextField textField_2;
+	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private JTextField tf_Contents;
-	private JTextField tf_Answer;
+	private JTextField textField_6;
+	private JTextField textField_7;
 
-	
-	public static String viewCid ;
-
-	
 	/**
 	 * Launch the application.
 	 */
@@ -50,7 +41,7 @@ public class Mycard_03insert extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Mycard_03insert frame = new Mycard_03insert();
+					Mycard_04update frame = new Mycard_04update();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,15 +53,7 @@ public class Mycard_03insert extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Mycard_03insert() {
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowOpened(WindowEvent e) {
-				Mycard_01main main01 = new Mycard_01main();
-				viewCid = main01.select_ci;
-			
-			}
-		});
+	public Mycard_04update() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 906);
 		contentPane = new JPanel();
@@ -82,15 +65,15 @@ public class Mycard_03insert extends JFrame {
 		contentPane.add(getLblNewLabel_1());
 		contentPane.add(getBtnNewButton());
 		contentPane.add(getLblNewLabel_2());
-		contentPane.add(getBtn_Insert());
+		contentPane.add(getBtnNewButton_1_2());
 		contentPane.add(getTextField());
 		contentPane.add(getTextField_1());
-		contentPane.add(getTf_Title());
-		contentPane.add(getTf_Genre());
+		contentPane.add(getTextField_2());
+		contentPane.add(getTextField_3());
 		contentPane.add(getTextField_4());
 		contentPane.add(getTextField_5());
-		contentPane.add(getTf_Contents());
-		contentPane.add(getTf_Answer());
+		contentPane.add(getTextField_6());
+		contentPane.add(getTextField_7());
 	}
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
@@ -131,22 +114,18 @@ public class Mycard_03insert extends JFrame {
 		}
 		return lblNewLabel_2;
 	}
-	private JButton getBtn_Insert() {
-		if (btn_Insert == null) {
-			btn_Insert = new JButton("확   인");
-			btn_Insert.setBackground(Color.LIGHT_GRAY);
-			btn_Insert.setFont(new Font("Lucida Grande", Font.PLAIN, 40));
-			btn_Insert.addActionListener(new ActionListener() {
+	private JButton getBtnNewButton_1_2() {
+		if (btnNewButton_1_2 == null) {
+			btnNewButton_1_2 = new JButton("확   인");
+			btnNewButton_1_2.setBackground(Color.LIGHT_GRAY);
+			btnNewButton_1_2.setFont(new Font("Lucida Grande", Font.PLAIN, 40));
+			btnNewButton_1_2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				
-				insertAction();
-				
-				
 				}
 			});
-			btn_Insert.setBounds(40, 768, 348, 62);
+			btnNewButton_1_2.setBounds(40, 768, 348, 62);
 		}
-		return btn_Insert;
+		return btnNewButton_1_2;
 	}
 	private JTextField getTextField() {
 		if (textField == null) {
@@ -168,21 +147,21 @@ public class Mycard_03insert extends JFrame {
 		}
 		return textField_1;
 	}
-	private JTextField getTf_Title() {
-		if (tf_Title == null) {
-			tf_Title = new JTextField();
-			tf_Title.setBounds(135, 126, 253, 40);
-			tf_Title.setColumns(10);
+	private JTextField getTextField_2() {
+		if (textField_2 == null) {
+			textField_2 = new JTextField();
+			textField_2.setBounds(135, 126, 253, 40);
+			textField_2.setColumns(10);
 		}
-		return tf_Title;
+		return textField_2;
 	}
-	private JTextField getTf_Genre() {
-		if (tf_Genre == null) {
-			tf_Genre = new JTextField();
-			tf_Genre.setColumns(10);
-			tf_Genre.setBounds(135, 176, 253, 40);
+	private JTextField getTextField_3() {
+		if (textField_3 == null) {
+			textField_3 = new JTextField();
+			textField_3.setColumns(10);
+			textField_3.setBounds(135, 176, 253, 40);
 		}
-		return tf_Genre;
+		return textField_3;
 	}
 	private JTextField getTextField_4() {
 		if (textField_4 == null) {
@@ -204,41 +183,25 @@ public class Mycard_03insert extends JFrame {
 		}
 		return textField_5;
 	}
-	private JTextField getTf_Contents() {
-		if (tf_Contents == null) {
-			tf_Contents = new JTextField();
-			tf_Contents.setBounds(40, 305, 348, 180);
-			tf_Contents.setColumns(10);
+	private JTextField getTextField_6() {
+		if (textField_6 == null) {
+			textField_6 = new JTextField();
+			textField_6.setBounds(40, 305, 348, 180);
+			textField_6.setColumns(10);
 		}
-		return tf_Contents;
+		return textField_6;
 	}
-	private JTextField getTf_Answer() {
-		if (tf_Answer == null) {
-			tf_Answer = new JTextField();
-			tf_Answer.setColumns(10);
-			tf_Answer.setBounds(40, 565, 348, 180);
+	private JTextField getTextField_7() {
+		if (textField_7 == null) {
+			textField_7 = new JTextField();
+			textField_7.setColumns(10);
+			textField_7.setBounds(40, 565, 348, 180);
 		}
-		return tf_Answer;
+		return textField_7;
 	}
 	
 	
 	
-	
-	private void insertAction() {
-		Dao_mycard dao = new Dao_mycard();
-		String title = tf_Title.getText();
-		String genre = tf_Genre.getText();
-		String contents = tf_Contents.getText();
-		String answer = tf_Answer.getText();
-		
-		
-		
-		
-		
-		dao.usercardInsert(title,genre,contents,answer);
-		
-		
-	}
 	
 	
 	
