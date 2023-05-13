@@ -30,7 +30,7 @@ public class QuizResult extends JFrame {
 	private JLabel lblBackLower;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
+	private JLabel lblReview;
 	private JButton btnRetry;
 	private JButton btnHome2;
 	private JLabel lblNewLabel_3;
@@ -59,7 +59,7 @@ public class QuizResult extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-//				insertScore();
+				scoreReview();
 			}
 		});
 		setTitle("퀴즈 결과");
@@ -77,7 +77,7 @@ public class QuizResult extends JFrame {
 		contentPane.add(getLblNewLabel());
 		contentPane.add(getLblNewLabel_1());
 		contentPane.add(getLblBackUpper());
-		contentPane.add(getLblNewLabel_2());
+		contentPane.add(getLblReview());
 		contentPane.add(getLblBackLower());
 		contentPane.add(getLblNewLabel_3());
 		contentPane.add(getLblNewLabel_3_1());
@@ -174,21 +174,21 @@ public class QuizResult extends JFrame {
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
 			lblNewLabel_1 = new JLabel(Integer.toString(Shortquiz.score)  +" / "+Integer.toString(QuizSelect.cocount) );
-			lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+			lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_1.setBounds(40, 230, 350, 70);
 		}
 		return lblNewLabel_1;
 	}
 
-	private JLabel getLblNewLabel_2() {
-		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("노력하세요");
-			lblNewLabel_2.setFont(new Font("Lucida Grande", Font.BOLD, 25));
-			lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel_2.setBounds(40, 377, 350, 70);
+	private JLabel getLblReview() {
+		if (lblReview == null) {
+			lblReview = new JLabel("노력하세요");
+			lblReview.setFont(new Font("Lucida Grande", Font.BOLD, 25));
+			lblReview.setHorizontalAlignment(SwingConstants.CENTER);
+			lblReview.setBounds(40, 377, 350, 70);
 		}
-		return lblNewLabel_2;
+		return lblReview;
 	}
 
 	private JButton getBtnRetry() {
@@ -252,10 +252,27 @@ public class QuizResult extends JFrame {
 
 	// function
 
-	// score 불러오기
-//	private String insertScore() {
+	//  score review 불러오기
+	private void scoreReview() {
+		int scorepercent = Shortquiz.score * 100 / QuizSelect.cocount;
+		switch(scorepercent / 10) {
+		    case 10:
+		    	lblReview.setText("만점입니다.");
+		    	break;
+		    case 9:
+		    	lblReview.setText("훌룡합니다.");
+		        break;
+		    case 8:
+		    	lblReview.setText("잘했습니다.");
+		        break;
+		    case 7:
+		    	lblReview.setText("아깝습니다.");
+		        break;
+		    default:
+		    	lblReview.setText("공부하세요.");
+		        break;
+		}
 		
-		
-//	}
+	}
 
 }

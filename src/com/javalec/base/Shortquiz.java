@@ -51,7 +51,7 @@ public class Shortquiz extends JFrame {
 	public static String selectedContent;
 	public static String selectedGenre;
 	public static String selectedTitle;
-	public static int score =0;
+	public static int score = 0;
 	public static int selectedid;
 	public static int qseq = 0;
 	public static String firstoption;
@@ -59,7 +59,6 @@ public class Shortquiz extends JFrame {
 	public static String thirdoption;
 	public static String fourthoption;
 	public static String[] options = new String[4];
-
 
 	/**
 	 * Launch the application.
@@ -349,55 +348,97 @@ public class Shortquiz extends JFrame {
 	// quiz에 쓰일 배열 만들어서 가져와서 재배열하기
 	public void makequiz() {
 		DaoMake_OKH daoMake_OKH = new DaoMake_OKH(QuizSelect.selectedcoid);
-		ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getQuestAns();
+		if (QuizSelect.selectmode == 0) {
+			ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getQuestAns();
+			selectedAnswer = dtoMake_OKH.get(qseq).getManswer();
+			selectedContent = dtoMake_OKH.get(qseq).getMcontents();
+			selectedGenre = dtoMake_OKH.get(qseq).getMgenre();
+			selectedTitle = dtoMake_OKH.get(qseq).getMtitle();
+			selectedid = dtoMake_OKH.get(qseq).getMid();
+
+			// 랜덤하게 3개의 다른 hidden 선택
+			Set<Integer> selectedHiddenIndices = new HashSet<>();
+			while (selectedHiddenIndices.size() < 3) {
+				int randomHiddenIndex = (int) (Math.random() * dtoMake_OKH.size());
+				if (randomHiddenIndex != qseq) {
+					selectedHiddenIndices.add(randomHiddenIndex);
+				}
+			}
+
+			// 선택된 3개의 hidden과 맞는 hidden으로 이루어진 배열 생성
+			String[] options = new String[4];
+			int i = 0;
+			for (int hiddenIndex : selectedHiddenIndices) {
+				options[i++] = dtoMake_OKH.get(hiddenIndex).getManswer();
+			}
+			options[i] = dtoMake_OKH.get(qseq).getManswer();
+			
+			firstoption = Arrays.asList(options).get(0);
+			secondoption = Arrays.asList(options).get(1);
+			thirdoption = Arrays.asList(options).get(2);
+			fourthoption = Arrays.asList(options).get(3);
+
+			lblContents.setText(selectedContent);
+			lblGenre.setText(selectedGenre);
+			lblTitle.setText(selectedTitle);
+			lblOption1.setText(firstoption);
+			lblOption2.setText(secondoption);
+			lblOption3.setText(thirdoption);
+			lblOption4.setText(fourthoption);
+
+			// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
+			// 랜덤으로 섞어줍니다.
+		} else {
+			ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getCorrectionnote();
+			selectedAnswer = dtoMake_OKH.get(qseq).getManswer();
+			selectedContent = dtoMake_OKH.get(qseq).getMcontents();
+			selectedGenre = dtoMake_OKH.get(qseq).getMgenre();
+			selectedTitle = dtoMake_OKH.get(qseq).getMtitle();
+			selectedid = dtoMake_OKH.get(qseq).getMid();
+
+			// 랜덤하게 3개의 다른 hidden 선택
+			Set<Integer> selectedHiddenIndices = new HashSet<>();
+			while (selectedHiddenIndices.size() < 3) {
+				int randomHiddenIndex = (int) (Math.random() * dtoMake_OKH.size());
+				if (randomHiddenIndex != qseq) {
+					selectedHiddenIndices.add(randomHiddenIndex);
+				}
+			}
+
+			// 선택된 3개의 hidden과 맞는 hidden으로 이루어진 배열 생성
+			String[] options = new String[4];
+			int i = 0;
+			for (int hiddenIndex : selectedHiddenIndices) {
+				options[i++] = dtoMake_OKH.get(hiddenIndex).getManswer();
+			}
+			options[i] = dtoMake_OKH.get(qseq).getManswer();
+			
+			firstoption = Arrays.asList(options).get(0);
+			secondoption = Arrays.asList(options).get(1);
+			thirdoption = Arrays.asList(options).get(2);
+			fourthoption = Arrays.asList(options).get(3);
+
+			lblContents.setText(selectedContent);
+			lblGenre.setText(selectedGenre);
+			lblTitle.setText(selectedTitle);
+			lblOption1.setText(firstoption);
+			lblOption2.setText(secondoption);
+			lblOption3.setText(thirdoption);
+			lblOption4.setText(fourthoption);
+
+			// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
+			// 랜덤으로 섞어줍니다.
+		}
 
 		// 랜덤하게 content 선택
 
 //		int randomContentIndex = (int) (Math.random() * dtoMake_OKH.size());
 		// randomContentIndex 을 qseq으로 바꿔야한다.
 
-		selectedAnswer = dtoMake_OKH.get(qseq).getManswer();
-		selectedContent = dtoMake_OKH.get(qseq).getMcontents();
-		selectedGenre = dtoMake_OKH.get(qseq).getMgenre();
-		selectedTitle = dtoMake_OKH.get(qseq).getMtitle();
-		selectedid = dtoMake_OKH.get(qseq).getMid();
-
-		// 랜덤하게 3개의 다른 hidden 선택
-		Set<Integer> selectedHiddenIndices = new HashSet<>();
-		while (selectedHiddenIndices.size() < 3) {
-			int randomHiddenIndex = (int) (Math.random() * dtoMake_OKH.size());
-			if (randomHiddenIndex != qseq) {
-				selectedHiddenIndices.add(randomHiddenIndex);
-			}
-		}
-
-		// 선택된 3개의 hidden과 맞는 hidden으로 이루어진 배열 생성
-		String[] options = new String[4];
-		int i = 0;
-		for (int hiddenIndex : selectedHiddenIndices) {
-			options[i++] = dtoMake_OKH.get(hiddenIndex).getManswer();
-		}
-		options[i] = dtoMake_OKH.get(qseq).getManswer();
-
-		// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
-		// 랜덤으로 섞어줍니다.
-		firstoption = Arrays.asList(options).get(0);
-		secondoption = Arrays.asList(options).get(1);
-		thirdoption = Arrays.asList(options).get(2);
-		fourthoption = Arrays.asList(options).get(3);
-
-		lblContents.setText(selectedContent);
-		lblGenre.setText(selectedGenre);
-		lblTitle.setText(selectedTitle);
-		lblOption1.setText(firstoption);
-		lblOption2.setText(secondoption);
-		lblOption3.setText(thirdoption);
-		lblOption4.setText(fourthoption);
-
 	}
-	
+
 	public void clear() {
-		
+
 		lblContents.setText("");
 		lblGenre.setText("");
 		lblTitle.setText("");

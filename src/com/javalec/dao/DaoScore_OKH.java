@@ -8,74 +8,88 @@ import java.sql.ResultSet;
 import com.javalec.util.ShareVar;
 
 public class DaoScore_OKH {
-	//	Fields
+	// Fields
 	private final String url_mysql = ShareVar.DBName;
 	private final String id_mysql = ShareVar.DBUser;
 	private final String pw_mysql = ShareVar.DBPass;
-	
+
 	String s_uid;
 	String s_coid;
 	int s_mid;
 
-	
-	//	Constructor
+	// Constructor
 	public DaoScore_OKH() {
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 	public DaoScore_OKH(String s_uid, String s_coid, int s_mid) {
 		super();
 		this.s_uid = s_uid;
 		this.s_coid = s_coid;
 		this.s_mid = s_mid;
 	}
-	
-	//	Method
-	
+
+	// Method
+
 	// insertScore
 	public void insertScoreCorrect() {
 		PreparedStatement ps = null;
-		
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) "
-					+"VALUES (?, ?, ?, now(), 0)";
+			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 0)";
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, s_uid);
 			ps.setString(2, s_coid);
 			ps.setInt(3, s_mid);
 
 			ps.executeUpdate();
-			
+
 			conn_mysql.close();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void insertScoreIncorrect() {
 		PreparedStatement ps = null;
-		
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) "
-					+"VALUES (?, ?, ?, now(), 1)";
+			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 1)";
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, s_uid);
 			ps.setString(2, s_coid);
 			ps.setInt(3, s_mid);
 
 			ps.executeUpdate();
-			
+
 			conn_mysql.close();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	//	
-}
 
+	// 오답노트 만들기
+//	public void insertCorrectionnote() {
+//		PreparedStatement ps = null;
+//
+//		try {
+//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
+//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+//			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 1)";
+//			ps = conn_mysql.prepareStatement(query);
+//			ps.setString(1, s_uid);
+//			ps.setString(2, s_coid);
+//			ps.setInt(3, s_mid);
+//
+//			ps.executeUpdate();
+//
+//			conn_mysql.close();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+}

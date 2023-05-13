@@ -51,6 +51,7 @@ public class QuizSelect extends JFrame {
 
 	public static String selectedcoid;
 	public static int cocount;
+	public static int selectmode = 0;
 
 	// table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
@@ -158,7 +159,11 @@ public class QuizSelect extends JFrame {
 			btnCorrectionNote = new JButton("");
 			btnCorrectionNote.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					QuizSelect.selectmode =1;
+					screenPartition();
+					Shortquiz shortquiz = new Shortquiz();
+					shortquiz.setVisible(true);
+					dispose();
 				}
 			});
 			btnCorrectionNote.setBackground(new Color(0, 0, 0, 0));
@@ -345,5 +350,5 @@ public class QuizSelect extends JFrame {
 		selectedcoid = (String) tableCollection.getValueAt(i, 5);
 	}
 
-	//
+	
 }
