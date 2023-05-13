@@ -30,6 +30,9 @@ public class DaoMake_OKH {
 	String mgenre;
 	String mcontents;
 	String manswer;
+	
+	String selection;
+	String conditionQueryColumn;
 
 	// Constructor
 	public DaoMake_OKH() {
@@ -45,6 +48,17 @@ public class DaoMake_OKH {
 	public DaoMake_OKH(String coid) {
 		super();
 		this.coid = coid;
+	}
+	
+	
+	
+	
+
+	public DaoMake_OKH(String coid, String selection, String conditionQueryColumn) {
+		super();
+		this.coid = coid;
+		this.selection = selection;
+		this.conditionQueryColumn = conditionQueryColumn;
 	}
 
 	// Mehtod
@@ -79,6 +93,38 @@ public class DaoMake_OKH {
 
 	}
 
+	// 조건 검색
+	public ArrayList<DtoMake_OKH> conditionfindaction() {
+		PreparedStatement ps = null;
+		ArrayList<DtoMake_OKH> dto = new ArrayList<DtoMake_OKH>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
+			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+			String query = "SELECT m.mgenre, COUNT(*)" + " FROM collection co, user u , buy b, tutor t, make m" + " WHERE m.m_coid = co.coid "
+					+ " AND co.coid = ?" + " and ? like ?" + " GROUP BY m.mgenre";
+
+			ps = conn_mysql.prepareStatement(query);
+			ps.setString(1, coid);
+			ps.setString(2, conditionQueryColumn);
+			ps.setString(3,"'%"+selection+"%'");
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				mgenre = rs.getString(1);
+				cocount = rs.getInt(2);
+			}
+			DtoMake_OKH beanList = new DtoMake_OKH(mgenre, cocount);
+			dto.add(beanList);
+
+			conn_mysql.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+
+	}
+
 	// 하나의 Collection을 선택해 모든 값의 문제와 히든을 가져오기.
 
 	public ArrayList<DtoMake_OKH> getQuestAns() {
@@ -88,8 +134,7 @@ public class DaoMake_OKH {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			String query = "select m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
-					+ " from make m, collection co" + " where m.m_coid = co.coid"
-					+ " and co.coid = ?";
+					+ " from make m, collection co" + " where m.m_coid = co.coid" + " and co.coid = ?";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, "tutor002_001"); // Co-id 넣기
