@@ -30,7 +30,7 @@ public class DaoMake_OKH {
 	String mgenre;
 	String mcontents;
 	String manswer;
-	
+
 	String selection;
 	String conditionQueryColumn;
 
@@ -49,16 +49,12 @@ public class DaoMake_OKH {
 		super();
 		this.coid = coid;
 	}
-	
-	
-	
-	
 
-	public DaoMake_OKH(String coid, String selection, String conditionQueryColumn) {
+	public DaoMake_OKH(String coid,  String conditionQueryColumn,String selection) {
 		super();
 		this.coid = coid;
-		this.selection = selection;
 		this.conditionQueryColumn = conditionQueryColumn;
+		this.selection = selection;
 	}
 
 	// Mehtod
@@ -100,13 +96,14 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "SELECT m.mgenre, COUNT(*)" + " FROM collection co, user u , buy b, tutor t, make m" + " WHERE m.m_coid = co.coid "
-					+ " AND co.coid = ?" + " and ? like ?" + " GROUP BY m.mgenre";
+			String query = "SELECT distinct m.mgenre, COUNT(distinct m.mid)" + " FROM collection co, user u , buy b, tutor t, make m"
+					+ " WHERE m.m_coid = co.coid " + " AND co.coid = ?" 
+					+ "  and " + conditionQueryColumn + " like '%"
+					+ selection + "%'" + " GROUP BY m.mgenre";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, coid);
-			ps.setString(2, conditionQueryColumn);
-			ps.setString(3,"'%"+selection+"%'");
+
 
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {

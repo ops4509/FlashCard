@@ -78,12 +78,11 @@ public class DaoTutor_OKH {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			String query = "select distinct t.tname" + " from collection co, user u , buy b, tutor t, make m"
-					+ " where t.tid = m.m_tid and m.m_coid = co.coid" + " and co.coid = ?" + " and ? like ";
+					+ " where t.tid = m.m_tid and m.m_coid = co.coid" + " and co.coid = ?" + " and "+conditionQueryColumn+" like '%"+selection+"%'";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, coid);
-			ps.setString(2, conditionQueryColumn);
-			ps.setString(3, "'%"+selection+"%'");
+
 			
 
 			ResultSet rs = ps.executeQuery();

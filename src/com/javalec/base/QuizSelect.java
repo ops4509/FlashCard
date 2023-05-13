@@ -433,8 +433,7 @@ public class QuizSelect extends JFrame {
 		tableListInit();
 		DaoCollection_OKH daoCollection_OKH = new DaoCollection_OKH(conditionQueryColumn, selection);
 		ArrayList<DtoCollection_OKH> dtoCollect = daoCollection_OKH.conditionfindaction();
-
-		System.out.println( dtoCollect.get(0).getConame()); 
+		
 		int listCount = dtoCollect.size();
 
 		for (int j = 0; j < listCount; j++) {

@@ -40,8 +40,10 @@ public class DaoCollection_OKH {
 		super();
 		this.conditionQueryColumn = conditionQueryColumn;
 		this.selection = selection;
-	}
 
+	}
+	
+	
 
 
 
@@ -107,14 +109,12 @@ public class DaoCollection_OKH {
 				+ " from collection co, user u , buy b, tutor t, make m"
 				+ " where u.u_id = b.b_uid and b.b_coid = co.coid"
 				+ " and u.u_id = ? "
-				+ " and ? like ?";
+				+ " and "+conditionQueryColumn+" like '%"+selection+"%'";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, ShareVar.u_id);
-			ps.setString(2, conditionQueryColumn);
-			ps.setString(3, "'%"+selection+"%'");
 			
 			// sql에서 여기로 데이터가 넘어간다는 문구.
 
