@@ -15,11 +15,12 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class CheckCorrect extends JDialog {
+public class Warningcorrection extends JDialog {
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JButton btnNewButton;
+	Shortquiz shortquiz = new Shortquiz();
 
 	/**
 	 * Launch the application.
@@ -28,7 +29,7 @@ public class CheckCorrect extends JDialog {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CheckCorrect dialog = new CheckCorrect();
+					Warningcorrection dialog = new Warningcorrection();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
@@ -41,8 +42,7 @@ public class CheckCorrect extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-
-	public CheckCorrect() {
+	public Warningcorrection() {
 		setBounds(0, 0, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
@@ -56,8 +56,7 @@ public class CheckCorrect extends JDialog {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("");
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel
-					.setIcon(new ImageIcon(CheckCorrect.class.getResource("/com/javalec/assets/Green handphone.png")));
+			lblNewLabel.setIcon(new ImageIcon(Warningcorrection.class.getResource("/com/javalec/assets/red phone.png")));
 			lblNewLabel.setBounds(140, 24, 30, 30);
 		}
 		return lblNewLabel;
@@ -65,8 +64,8 @@ public class CheckCorrect extends JDialog {
 
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("정답입니다!");
-			lblNewLabel_1.setForeground(new Color(30, 179, 87));
+			lblNewLabel_1 = new JLabel("오답노트에 문제가 없습니다.");
+			lblNewLabel_1.setForeground(new Color(179, 38, 30));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_1.setBounds(24, 70, 262, 32);
 		}
@@ -75,7 +74,7 @@ public class CheckCorrect extends JDialog {
 
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("정답은  :" + Shortquiz.selectedAnswer + "입니다.");
+			lblNewLabel_2 = new JLabel("단답형 퀴즈를 풀어보세요!");
 			lblNewLabel_2.setBounds(24, 115, 262, 20);
 		}
 		return lblNewLabel_2;
@@ -83,26 +82,9 @@ public class CheckCorrect extends JDialog {
 
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
-			btnNewButton = new JButton("다음 문제 넘어가기");
+			btnNewButton = new JButton("확인");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Shortquiz shortquiz = new Shortquiz();
-					shortquiz.setVisible(false);
-					insertScore();
-					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
-						Shortquiz.qseq++;
-						Shortquiz.score++;
-						System.out.println(Shortquiz.score);
-						shortquiz.makequiz();
-						shortquiz.setVisible(true);
-					} else {
-						Shortquiz.score++;
-						Shortquiz.qseq = 0;
-//						shortquiz.setVisible(false);
-						QuizResult quizResult = new QuizResult();
-						quizResult.setVisible(true);
-
-					}
 					dispose();
 				}
 			});
@@ -110,17 +92,6 @@ public class CheckCorrect extends JDialog {
 			btnNewButton.setBounds(140, 150, 142, 40);
 		}
 		return btnNewButton;
-	}
-
-	// function
-	// insert score
-	public void insertScore() {
-		String inputuid = ShareVar.u_id;
-		String inputcoid = QuizSelect.selectedcoid;
-		int inputmid = Shortquiz.selectedid;
-		DaoScore_OKH daoScore_OKH = new DaoScore_OKH(inputuid, inputcoid, inputmid);
-
-		daoScore_OKH.insertScoreCorrect();
 	}
 
 }

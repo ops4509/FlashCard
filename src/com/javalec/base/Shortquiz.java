@@ -389,7 +389,7 @@ public class Shortquiz extends JFrame {
 			// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
 			// 랜덤으로 섞어줍니다.
 		} else {
-			ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getCorrectionnote();
+			ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getCorrectionNote();
 			selectedAnswer = dtoMake_OKH.get(qseq).getManswer();
 			selectedContent = dtoMake_OKH.get(qseq).getMcontents();
 			selectedGenre = dtoMake_OKH.get(qseq).getMgenre();

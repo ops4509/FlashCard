@@ -22,7 +22,6 @@ public class CheckIncorrect extends JDialog {
 	private JButton btnNewButton;
 	Shortquiz shortquiz = new Shortquiz();
 
-
 	/**
 	 * Launch the application.
 	 */
@@ -86,21 +85,18 @@ public class CheckIncorrect extends JDialog {
 			btnNewButton = new JButton("다음 문제 넘어가기");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					shortquiz.dispose();
-
+					Shortquiz shortquiz = new Shortquiz();
+					shortquiz.setVisible(false);
 					insertScore();
 					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
-						Shortquiz.qseq += 1;
+						Shortquiz.qseq++;
+						System.out.println(Shortquiz.score);
 						shortquiz.makequiz();
 						shortquiz.setVisible(true);
-
 					} else {
 						Shortquiz.qseq = 0;
-						shortquiz.dispose();
-						shortquiz.setVisible(false);
 						QuizResult quizResult = new QuizResult();
 						quizResult.setVisible(true);
-
 					}
 					dispose();
 				}

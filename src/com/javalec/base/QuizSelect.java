@@ -10,6 +10,7 @@ import javax.swing.table.TableColumn;
 
 import com.javalec.dao.DaoCollection_OKH;
 import com.javalec.dao.DaoMake_OKH;
+import com.javalec.dao.DaoScore_OKH;
 import com.javalec.dao.DaoTutor_OKH;
 import com.javalec.dto.DtoCollection_OKH;
 import com.javalec.dto.DtoMake_OKH;
@@ -35,6 +36,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import javax.swing.SwingConstants;
 
 public class QuizSelect extends JFrame {
 
@@ -44,18 +46,19 @@ public class QuizSelect extends JFrame {
 	private JButton btnHome;
 	private JButton btnBack;
 	private JButton btnCorrectionNote;
-	private JButton btnLinerquiz;
 	private JButton btnSelectionquiz;
 	private JScrollPane scrollPane;
 	private JTable tableCollection;
 
 	public static String selectedcoid;
 	public static int cocount;
-	public static int selectmode = 0;
+	public static int selectmode =0;
 
 	// table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
 	ArrayList<DtoCollection_OKH> beanList = null;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
 
 	/**
 	 * Launch the application.
@@ -96,10 +99,11 @@ public class QuizSelect extends JFrame {
 		contentPane.add(getLblHello());
 		contentPane.add(getBtnHome());
 		contentPane.add(getBtnBack());
-		contentPane.add(getBtnCorrectionNote());
-		contentPane.add(getBtnLinerquiz());
-		contentPane.add(getBtnSelectionquiz());
 		contentPane.add(getScrollPane());
+		contentPane.add(getLblNewLabel());
+		contentPane.add(getBtnCorrectionNote());
+		contentPane.add(getLblNewLabel_1());
+		contentPane.add(getBtnSelectionquiz());
 	}
 
 	private JLabel getLblHello() {
@@ -159,11 +163,11 @@ public class QuizSelect extends JFrame {
 			btnCorrectionNote = new JButton("");
 			btnCorrectionNote.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					QuizSelect.selectmode =1;
-					screenPartition();
-					Shortquiz shortquiz = new Shortquiz();
-					shortquiz.setVisible(true);
-					dispose();
+					// selectmode 들어가기전에 확인을 해줘야한다.
+					// 오답 할게 있는지 없는지.
+					//오답노트는 selectmode =1;
+					corrcttioncount();
+					
 				}
 			});
 			btnCorrectionNote.setBackground(new Color(0, 0, 0, 0));
@@ -171,33 +175,10 @@ public class QuizSelect extends JFrame {
 			btnCorrectionNote.setFocusPainted(false);
 			btnCorrectionNote.setContentAreaFilled(false);
 			btnCorrectionNote
-					.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/corrctionnote.png")));
-			btnCorrectionNote.setBounds(41, 630, 346, 140);
+					.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/correctionquizbutton.png")));
+			btnCorrectionNote.setBounds(40, 630, 345, 110);
 		}
 		return btnCorrectionNote;
-	}
-
-	private JButton getBtnLinerquiz() {
-		if (btnLinerquiz == null) {
-			btnLinerquiz = new JButton("");
-			btnLinerquiz.setEnabled(false);
-			btnLinerquiz.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					screenPartition();
-					Linerquiz linerquiz = new Linerquiz();
-					linerquiz.setVisible(true);
-					dispose();
-				}
-			});
-			btnLinerquiz.setBackground(new Color(0, 0, 0, 0));
-			btnLinerquiz.setBorderPainted(false);
-			btnLinerquiz.setFocusPainted(false);
-			btnLinerquiz.setContentAreaFilled(false);
-			btnLinerquiz
-					.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/button_linerquiz.png")));
-			btnLinerquiz.setBounds(40, 810, 161, 56);
-		}
-		return btnLinerquiz;
 	}
 
 	private JButton getBtnSelectionquiz() {
@@ -206,10 +187,9 @@ public class QuizSelect extends JFrame {
 			btnSelectionquiz.setEnabled(false);
 			btnSelectionquiz.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					screenPartition();
 					Shortquiz shortquiz = new Shortquiz();
 					shortquiz.setVisible(true);
-					dispose();
+					setVisible(false);
 				}
 			});
 			btnSelectionquiz.setBackground(new Color(0, 0, 0, 0));
@@ -217,8 +197,8 @@ public class QuizSelect extends JFrame {
 			btnSelectionquiz.setFocusPainted(false);
 			btnSelectionquiz.setContentAreaFilled(false);
 			btnSelectionquiz.setIcon(
-					new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/button_selectionquiz.png")));
-			btnSelectionquiz.setBounds(226, 810, 161, 56);
+					new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/correctionquizbutton.png")));
+			btnSelectionquiz.setBounds(40, 756, 345, 110);
 		}
 		return btnSelectionquiz;
 	}
@@ -243,7 +223,6 @@ public class QuizSelect extends JFrame {
 			tableCollection.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-//					outerTable.setRowCount(0);  // 검색기능이 구현 되었을때 가
 					tableClick(); // Row 선택하는 것. 정보를 주어야한다.
 					screenPartition(); // 버튼이 불가능하게 만들어야한다.
 				}
@@ -258,6 +237,27 @@ public class QuizSelect extends JFrame {
 		return tableCollection;
 	}
 
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("오답 노트");
+			lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 56));
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNewLabel.setForeground(Color.RED);
+			lblNewLabel.setBounds(40, 630, 345, 110);
+		}
+		return lblNewLabel;
+	}
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("단답형 퀴즈");
+			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNewLabel_1.setForeground(Color.GREEN);
+			lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 56));
+			lblNewLabel_1.setBounds(40, 756, 345, 110);
+		}
+		return lblNewLabel_1;
+	}
+	
 	// function
 
 	// Search Action
@@ -288,7 +288,6 @@ public class QuizSelect extends JFrame {
 	// input 제한
 	private void screenPartition() {
 		if (tableCollection.getSelectedRow() >= 0) {
-			btnLinerquiz.setEnabled(true);
 			btnSelectionquiz.setEnabled(true);
 		}
 	}
@@ -349,6 +348,23 @@ public class QuizSelect extends JFrame {
 		int i = tableCollection.getSelectedRow();
 		selectedcoid = (String) tableCollection.getValueAt(i, 5);
 	}
+	
+	// 오답노트 count가져오기
+	private void corrcttioncount() {
+		DaoScore_OKH daoScore_OKH = new DaoScore_OKH();
+		int count = daoScore_OKH.getCorrectCount();
+		if(count != 0) {
+			cocount = count;
+			Shortquiz.score = 0;
+			selectmode =1;
+			Shortquiz shortquiz = new Shortquiz();
+			shortquiz.setVisible(true);
+			setVisible(false);
+		}else{
+			Warningcorrection warningcorrection = new Warningcorrection();
+			warningcorrection.setVisible(true);
+		}
 
+	}
 	
 }
