@@ -62,11 +62,8 @@ public class Mycard_01main extends JFrame {
 	
 	private final DefaultTableModel outerTable = new DefaultTableModel();
 
-	
 	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
 	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기  
-	
-	
 
 	
 	ArrayList<String> user_Collection_list = new ArrayList<>();  //로그인한 유저의 구매한 collection coid 리스트를 임시저장해두
@@ -77,6 +74,14 @@ public class Mycard_01main extends JFrame {
 	public static String select_ci = ""; //지정한 로우의 카드 아이디기억하는 변수.
 	public static String[] select_cil = null ; // 추가기능으로 여러개 카드 선택후 카드보기 할때 사용할 String
 
+    //private static Mycard_01main main01 ;
+
+    public static Mycard_01main main01 = new Mycard_01main();
+	public static Mycard_02view viewMain = new Mycard_02view();				
+	public static Mycard_03insert insertMain = new Mycard_03insert();
+	public static Mycard_04update updateMain = new Mycard_04update();
+			
+	
 	
 	/**
 	 * Launch the application.
@@ -93,12 +98,6 @@ public class Mycard_01main extends JFrame {
 			}
 		});
 	}
-	
-	
-	
-	
-	
-	
 
 	
 	
@@ -111,19 +110,31 @@ public class Mycard_01main extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
+	
 				
 				
 				
-				makeTempTable(); // 로그인한 유저의 기본적인 정보들은 기억해두자.
+				makeTempTable(); 		// 로그인한 유저의 기본적인 정보들은 기억해두자.
 				//screenPartition();
 				
-				mc_tableinit();		//테이블안에 목록 넣기. (틀만들기) 
+				mc_tableinit();			//테이블안에 목록 넣기. (틀만들기) 
 				//mc_searchaction();	//테이블안에 내용 넣기. (내용채워넣)
 				mc_searchaction();
+				screenPartition();
+
+			}
+			@Override
+			public void windowActivated(WindowEvent e) {
 			
-			
-			
-			
+				outerTable.setRowCount(0); // 뒤로 돌아왔을때, Jtable의 모든 내용 지우기. 아래서 다시 입력 하도록. 
+
+				//makeTempTable(); 		// 로그인한 유저의 기본적인 정보들은 기억해두자.
+				//screenPartition();
+				
+				//mc_tableinit();			//테이블안에 목록 넣기. (틀만들기) 
+				//mc_searchaction();	//테이블안에 내용 넣기. (내용채워넣)
+				mc_searchaction();
+				screenPartition();
 			
 			}
 		});
@@ -148,6 +159,14 @@ public class Mycard_01main extends JFrame {
 		contentPane.add(getBtn_search());
 		contentPane.add(getScrollPane());
 	}
+	/*         이걸  이용하면 왔다갔다 할 수있다.
+    public static Mycard_01main getInstance() {
+        if (main01 == null) {
+            main01 = new Mycard_01main();
+        }
+        return main01;
+    }
+    */
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("<html>비워둘 창로고 들어가야함<br>글씨는 하단에 붙였음.</html>\n");
@@ -220,9 +239,7 @@ public class Mycard_01main extends JFrame {
 			btn_insert.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 				
-				Mycard_03insert insertMain = new Mycard_03insert();
-				
-				
+
 				insertMain.setVisible(true);
 				dispose();
 				
@@ -263,7 +280,6 @@ public class Mycard_01main extends JFrame {
 					
 				System.out.println("화면바뀌기전 카드 아이디 : " + select_ci);
 				
-				Mycard_02view viewMain = new Mycard_02view();				
 				viewMain.setVisible(true);
 				dispose();
 
@@ -401,19 +417,7 @@ public class Mycard_01main extends JFrame {
 	
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	//테이블안에 콜룸명 넣기. (틀만들기 
@@ -478,7 +482,7 @@ public class Mycard_01main extends JFrame {
 		col.setPreferredWidth(width);
 
 		// 1열과 2열 숨기기. 이후 조건부로 2열은 열어줄거임.
-		/*TableColumnModel columnModel = mc_innertable.getColumnModel();
+		TableColumnModel columnModel = mc_innertable.getColumnModel();
 		TableColumn column = columnModel.getColumn(0);
 		column.setMinWidth(0);
 		column.setMaxWidth(0);
@@ -489,7 +493,7 @@ public class Mycard_01main extends JFrame {
 		column.setMinWidth(0);
 		column.setMaxWidth(0);
 		column.setWidth(0);
-		column.setPreferredWidth(0);*/
+		column.setPreferredWidth(0);
 	}
 	
 	
@@ -500,13 +504,11 @@ public class Mycard_01main extends JFrame {
 	//user_collection_list 에 있는 콜렉션 아이디를 이용해서 콜렉션 테이블 -make 테이블에 들어가 내용 받아오기.
 	
 	private void mc_searchaction(){
+		
 		Dao_mycard dao_ca = new Dao_mycard(user_Card_list);
 		ArrayList<Dto_card> dtoList_ca = dao_ca.userCardList();   	//cid/ contents /answer/ title / genre  순서로 유저가 직접만든 단어 카드들이 저장되어있다.   
 		//System.out.println("첫번재 카드의 카드 아이디 : " + dtoList_ca.get(1).getCid()); 
 
-		
-		
-		
 		// 유저가 만든 카드들을 테이블에 입력.  // 카드 아이디는 앞에 UC붙 페이지 넘어갈때 콜렉션카드인지 유저카드인지 구분하기 위함.
 		int listCount = dtoList_ca.size();
 

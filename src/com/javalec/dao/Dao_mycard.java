@@ -460,7 +460,58 @@ public void usercardInsert(String title,String genre,String contents,String answ
 	
 	
 	
-}//usercardInser 종 
+}//usercardInser 종료
+
+
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ Mycard_04update	에서 수정할때 쓰는 함수. 유저가 유저 카드를 수정할때만 사용되게 되어있음.   ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+
+public boolean usercardUpdate(String cardID, String title, String genre, String contents, String answer){
+	PreparedStatement ps = null;
+
+	int tempcid = Integer.parseInt(cardID.substring(2)) ;
+
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+		Statement stmt_mcol_sql = conn_mysql.createStatement();
+		String sql_01 ="update card set ctitle = ? , cgenre = ? , ccontents = ? , canswer = ? where cid = "+tempcid;
+		//String sql_01_02 = "LAST_INSERT_ID();";
+		
+		
+		ps = conn_mysql.prepareStatement(sql_01);
+		ps.setString(1, title.trim());
+		ps.setString(2, genre.trim());
+		ps.setString(3, contents.trim());
+		ps.setString(4, answer.trim());
+		
+		ps.executeUpdate();	
+		
+		System.out.println("카드 아이디 : " +tempcid);
+		
+		conn_mysql.close();
+
+		return true;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}//try 문 .
+	
+	
+	
+
+	
+	
+	
+			
+}
+
+
 
 
 

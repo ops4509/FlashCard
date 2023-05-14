@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.javalec.dao.Dao_mycard;
 import com.javalec.dto.Dto_card;
+import com.javalec.util.ShareVar;
 
 import javax.swing.JLabel;
 import java.awt.Color;
@@ -41,8 +42,18 @@ public class Mycard_02view extends JFrame {
 	private JTextField tf_Answer;
 
 	
+	public static String viewCid ;  //Mycard_01Main에서 가져온 카드 아이디 기억할 변
+	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
+	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기 
+	
+	
+	public static String view_title ;
+	public static String view_genre;
+	public static String view_contents;
+	public static String view_answer;
+	
 
-	public static String viewCid ;
+
 	
 	/**
 	 * Launch the application.
@@ -67,15 +78,19 @@ public class Mycard_02view extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				Mycard_01main main01 = new Mycard_01main();
-				
-
-				viewCid = main01.select_ci;
-				
+				// viewCid = main01.select_ci;    // --- 위 필드쪽에서 재정의 함.
+				viewCid = Mycard_01main.select_ci;
+				screenpartition();
 				System.out.println("새로운창 넘어가고 카드 아이디 : " +viewCid);
 				printCard();
 			
 			
+			}
+			@Override
+			public void windowActivated(WindowEvent e) {
+				screenpartition();
+				printCard();
+				
 			}
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -111,7 +126,7 @@ public class Mycard_02view extends JFrame {
 	}
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("_______ 님");
+			lblNewLabel_1 = new JLabel(user_SampleName + "  님");
 			lblNewLabel_1.setBounds(308, 82, 80, 20);
 		}
 		return lblNewLabel_1;
@@ -123,6 +138,10 @@ public class Mycard_02view extends JFrame {
 			btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
+					Mycard_01main.main01.setVisible(true);
+					dispose();
+				
 				}
 			});
 		}
@@ -140,6 +159,13 @@ public class Mycard_02view extends JFrame {
 	private JButton getBtn_update() {
 		if (btn_update == null) {
 			btn_update = new JButton("수정하기");
+			btn_update.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Mycard_01main.updateMain.setVisible(true);
+					dispose();
+				
+				}
+			});
 			btn_update.setBounds(40, 780, 90, 50);
 		}
 		return btn_update;
@@ -154,6 +180,14 @@ public class Mycard_02view extends JFrame {
 	private JButton getBtn_confirm() {
 		if (btn_confirm == null) {
 			btn_confirm = new JButton("확인");
+			btn_confirm.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				
+					Mycard_01main.main01.setVisible(true);
+					dispose();
+				
+				}
+			});
 			btn_confirm.setBounds(298, 780, 90, 50);
 		}
 		return btn_confirm;
@@ -233,7 +267,26 @@ public class Mycard_02view extends JFrame {
 			tf_Title.setText(dtoList.get(0).getCtitle());
 			tf_Genre.setText(dtoList.get(0).getCgenre());
 			
-
+			view_title = dtoList.get(0).getCtitle();
+			view_genre = dtoList.get(0).getCgenre();
+			view_contents = dtoList.get(0).getCcontents();
+			view_answer = dtoList.get(0).getCanswer();
+		
+	}
+	
+	
+	private void screenpartition () {
+		
+		if(viewCid.substring(0,2).equals("CC")) {
+			btn_update.setEnabled(false);
+			btn_delete.setEnabled(false);
+			
+			
+		}else if (viewCid.substring(0,2).equals("UC")) {
+			btn_update.setEnabled(true);
+			btn_delete.setEnabled(true);
+			
+		}
 		
 	}
 	

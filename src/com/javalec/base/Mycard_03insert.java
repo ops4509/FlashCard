@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.javalec.dao.Dao_mycard;
+import com.javalec.util.ShareVar;
 
 import javax.swing.JLabel;
 import java.awt.Color;
@@ -39,9 +40,12 @@ public class Mycard_03insert extends JFrame {
 	private JTextField tf_Contents;
 	private JTextField tf_Answer;
 
-	
-	public static String viewCid ;
 
+	public static String selectedcardid_insert ;
+	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
+	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기 
+	
+	
 	
 	/**
 	 * Launch the application.
@@ -66,8 +70,7 @@ public class Mycard_03insert extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				Mycard_01main main01 = new Mycard_01main();
-				viewCid = main01.select_ci;
+				selectedcardid_insert = Mycard_01main.main01.select_ci;
 			
 			}
 		});
@@ -105,7 +108,7 @@ public class Mycard_03insert extends JFrame {
 	}
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("_______ 님");
+			lblNewLabel_1 = new JLabel(user_SampleName +"  님");
 			lblNewLabel_1.setBounds(308, 82, 80, 20);
 		}
 		return lblNewLabel_1;

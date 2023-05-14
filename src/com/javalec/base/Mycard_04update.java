@@ -5,7 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.javalec.dao.Dao_mycard;
+import com.javalec.util.ShareVar;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -16,6 +22,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Mycard_04update extends JFrame {
 
@@ -24,16 +32,27 @@ public class Mycard_04update extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JButton btnNewButton;
 	private JLabel lblNewLabel_2;
-	private JButton btnNewButton_1_2;
+	private JButton btn_Insert;
 	private JTextField textField;
 	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField tf_Title;
+	private JTextField tf_Genre;
 	private JTextField textField_4;
 	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-
+	private JTextField tf_Contents;
+	private JTextField tf_Answer;
+	
+	public static String selectedcardid_update;
+	public static String slectedcardid_update_num ;
+	
+	public static String update_title ;
+	public static String update_genre;
+	public static String update_contents;
+	public static String update_answer;
+	
+	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
+	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -54,6 +73,21 @@ public class Mycard_04update extends JFrame {
 	 * Create the frame.
 	 */
 	public Mycard_04update() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				update_title = Mycard_02view.view_title;
+				update_genre= Mycard_02view.view_genre;
+				update_contents= Mycard_02view.view_contents;
+				update_answer= Mycard_02view.view_answer;
+				selectedcardid_update=Mycard_02view.viewCid ;
+				slectedcardid_update_num = selectedcardid_update.substring(2);
+				tf_Answer.setText(update_answer);
+				tf_Contents.setText(update_contents);
+				tf_Genre.setText(update_genre);
+				tf_Title.setText(update_title);
+			}
+		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 906);
 		contentPane = new JPanel();
@@ -65,15 +99,15 @@ public class Mycard_04update extends JFrame {
 		contentPane.add(getLblNewLabel_1());
 		contentPane.add(getBtnNewButton());
 		contentPane.add(getLblNewLabel_2());
-		contentPane.add(getBtnNewButton_1_2());
+		contentPane.add(getBtn_Insert());
 		contentPane.add(getTextField());
 		contentPane.add(getTextField_1());
-		contentPane.add(getTextField_2());
-		contentPane.add(getTextField_3());
+		contentPane.add(getTf_Title());
+		contentPane.add(getTf_Genre());
 		contentPane.add(getTextField_4());
 		contentPane.add(getTextField_5());
-		contentPane.add(getTextField_6());
-		contentPane.add(getTextField_7());
+		contentPane.add(getTf_Contents());
+		contentPane.add(getTf_Answer());
 	}
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
@@ -88,7 +122,7 @@ public class Mycard_04update extends JFrame {
 	}
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("_______ 님");
+			lblNewLabel_1 = new JLabel(user_SampleName + "  님");
 			lblNewLabel_1.setBounds(308, 82, 80, 20);
 		}
 		return lblNewLabel_1;
@@ -100,6 +134,9 @@ public class Mycard_04update extends JFrame {
 			btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+				Mycard_01main.viewMain.setVisible(true);
+				dispose();
+				
 				}
 			});
 		}
@@ -114,18 +151,22 @@ public class Mycard_04update extends JFrame {
 		}
 		return lblNewLabel_2;
 	}
-	private JButton getBtnNewButton_1_2() {
-		if (btnNewButton_1_2 == null) {
-			btnNewButton_1_2 = new JButton("확   인");
-			btnNewButton_1_2.setBackground(Color.LIGHT_GRAY);
-			btnNewButton_1_2.setFont(new Font("Lucida Grande", Font.PLAIN, 40));
-			btnNewButton_1_2.addActionListener(new ActionListener() {
+	private JButton getBtn_Insert() {
+		if (btn_Insert == null) {
+			btn_Insert = new JButton("확   인");
+			btn_Insert.setBackground(Color.LIGHT_GRAY);
+			btn_Insert.setFont(new Font("Lucida Grande", Font.PLAIN, 40));
+			btn_Insert.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+				
+				updateAction();
+				
+				
 				}
 			});
-			btnNewButton_1_2.setBounds(40, 768, 348, 62);
+			btn_Insert.setBounds(40, 768, 348, 62);
 		}
-		return btnNewButton_1_2;
+		return btn_Insert;
 	}
 	private JTextField getTextField() {
 		if (textField == null) {
@@ -147,21 +188,23 @@ public class Mycard_04update extends JFrame {
 		}
 		return textField_1;
 	}
-	private JTextField getTextField_2() {
-		if (textField_2 == null) {
-			textField_2 = new JTextField();
-			textField_2.setBounds(135, 126, 253, 40);
-			textField_2.setColumns(10);
+	private JTextField getTf_Title() {
+		if (tf_Title == null) {
+			tf_Title = new JTextField();
+			tf_Title.setBackground(Color.GRAY);
+			tf_Title.setBounds(135, 126, 253, 40);
+			tf_Title.setColumns(10);
 		}
-		return textField_2;
+		return tf_Title;
 	}
-	private JTextField getTextField_3() {
-		if (textField_3 == null) {
-			textField_3 = new JTextField();
-			textField_3.setColumns(10);
-			textField_3.setBounds(135, 176, 253, 40);
+	private JTextField getTf_Genre() {
+		if (tf_Genre == null) {
+			tf_Genre = new JTextField();
+			tf_Genre.setBackground(Color.GRAY);
+			tf_Genre.setColumns(10);
+			tf_Genre.setBounds(135, 176, 253, 40);
 		}
-		return textField_3;
+		return tf_Genre;
 	}
 	private JTextField getTextField_4() {
 		if (textField_4 == null) {
@@ -183,25 +226,52 @@ public class Mycard_04update extends JFrame {
 		}
 		return textField_5;
 	}
-	private JTextField getTextField_6() {
-		if (textField_6 == null) {
-			textField_6 = new JTextField();
-			textField_6.setBounds(40, 305, 348, 180);
-			textField_6.setColumns(10);
+	private JTextField getTf_Contents() {
+		if (tf_Contents == null) {
+			tf_Contents = new JTextField();
+			tf_Contents.setBackground(Color.GRAY);
+			tf_Contents.setBounds(40, 305, 348, 180);
+			tf_Contents.setColumns(10);
 		}
-		return textField_6;
+		return tf_Contents;
 	}
-	private JTextField getTextField_7() {
-		if (textField_7 == null) {
-			textField_7 = new JTextField();
-			textField_7.setColumns(10);
-			textField_7.setBounds(40, 565, 348, 180);
+	private JTextField getTf_Answer() {
+		if (tf_Answer == null) {
+			tf_Answer = new JTextField();
+			tf_Answer.setBackground(Color.GRAY);
+			tf_Answer.setColumns(10);
+			tf_Answer.setBounds(40, 565, 348, 180);
 		}
-		return textField_7;
+		return tf_Answer;
 	}
 	
 	
 	
+	
+	private void updateAction() {
+		Dao_mycard dao = new Dao_mycard();
+		String title = tf_Title.getText();
+		String genre = tf_Genre.getText();
+		String contents = tf_Contents.getText();
+		String answer = tf_Answer.getText();
+		
+		
+		
+		
+		
+		boolean update_rs = dao.usercardUpdate(selectedcardid_update,title,genre,contents,answer);
+		
+		if(update_rs) {
+			JOptionPane.showMessageDialog(this,"수정이 완료되었습니다.","수정 완료",JOptionPane.INFORMATION_MESSAGE);
+			
+		}else {
+			JOptionPane.showMessageDialog(this,"카드 수정이 실패하였습니다. 내용을 확인해 주세요.","수정 실패",JOptionPane.INFORMATION_MESSAGE);
+		}
+		
+		Mycard_01main.viewMain.setVisible(true);
+		dispose();
+		
+	}
 	
 	
 	
