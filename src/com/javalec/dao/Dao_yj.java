@@ -64,14 +64,23 @@ public class Dao_yj {
 
 	public boolean loginAction() {
 
-		String whereDefault = "select u_id, u_pw from user";
+		String whereDefault = "select u_id, u_pw, u_name from user where u_id = ?";
 		PreparedStatement ps = null;
+		PreparedStatement ps1 = null;
 		int token=0;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			Statement stmt_mysql = conn_mysql.createStatement();
-			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
+			Connection conn_mysql1 = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+			
+			ps = conn_mysql.prepareStatement(whereDefault);
+			
+			ps.setString(1, u_id);
+			ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
+			
+			
 			
 	        Date date = new Date();
 	        Timestamp timestamp = new Timestamp(date.getTime());
@@ -83,15 +92,17 @@ public class Dao_yj {
 	        */
 	        
 	        String query = "UPDATE ulogin SET ullogindate = ? WHERE ul_uid = ?";
-	        ps = conn_mysql.prepareStatement(query);
-	        ps.setTimestamp(1, timestamp);
-	        ps.setString(2, u_id); 
+	        ps1 = conn_mysql1.prepareStatement(query);
+	        ps1.setTimestamp(1, timestamp);
+	        ps1.setString(2, u_id); 
 	        
 	        
 			
 			while (rs.next()) {
 					if (rs.getString(1).equals(u_id) && rs.getString(2).equals(u_pw)) {
 					token = 1;
+					ShareVar.u_id = rs.getString(1);
+					ShareVar.u_name = rs.getString(3);
 					break;
 				}
 			}
@@ -99,7 +110,7 @@ public class Dao_yj {
 			// 시간 가져오기
 			
 	
-			ps.executeUpdate();
+			ps1.executeUpdate();
 			
 			conn_mysql.close();
 			
@@ -114,9 +125,6 @@ public class Dao_yj {
 			e.printStackTrace();
 			return false;
 		}
-		
-		
-		
 	}
 	
 	// 회원 가입

@@ -18,9 +18,15 @@ public class Dto_yj {
 	public Dto_yj() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+	public Dto_yj(String u_id, String u_name) {
+		super();
+		this.u_id = u_id;
+		this.u_name = u_name;
+	}
 
-	
-	
+
 	public Dto_yj(String ullogindate) {
 		super();
 		this.ullogindate = ullogindate;
