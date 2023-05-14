@@ -105,11 +105,14 @@ public class ViewCollectionCards extends JFrame {
 				lbLeft.setVisible(false);
 				if (ViewCollectionMain.payStatus == 0) {
 					freeSearch();
+					setTitle("내 컬렉션 보기");
 				} else {
 					paySearch();
+					setTitle("구매한 컬렉션 보기");
 				}
 			}
 		});
+		
 		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 926);

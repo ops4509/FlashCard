@@ -2,9 +2,7 @@ package com.javalec.base;
 
 import java.awt.EventQueue;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,36 +10,20 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.JScrollBar;
-import javax.swing.JSlider;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
-import javax.swing.JTable;
-import javax.swing.JSeparator;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.ListSelectionModel;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
-
-import java.awt.FlowLayout;
-import javax.swing.border.TitledBorder;
 
 import com.javalec.dao.ViewCollectionMainDao_KMJ;
 import com.javalec.dto.ViewCollectionMainDto_KMJ;
 import com.javalec.util.ShareVar;
 
-import javax.swing.BoxLayout;
-import java.awt.GridBagLayout;
-import javax.swing.JSplitPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -87,6 +69,7 @@ public class ViewCollectionMain extends JFrame {
 				lbName.setText(ShareVar.u_name+"님!");
 			}
 		});
+		setTitle("내가 가진 컬렉션 보기");
 		setBackground(new Color(255, 255, 255));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 926);
