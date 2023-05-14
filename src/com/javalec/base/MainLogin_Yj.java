@@ -226,7 +226,7 @@ public class MainLogin_Yj extends JFrame {
 		if(result) {
 			
 			
-			JOptionPane.showMessageDialog(this, tfId2.getText() + "님 환영합니", "로그인 성공", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(this, tfId2.getText() + "님 환영합니다.", "로그인 성공", JOptionPane.INFORMATION_MESSAGE);
 			
 			MainView view = new MainView();
 			

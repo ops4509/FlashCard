@@ -2,6 +2,7 @@ package com.javalec.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -24,25 +25,39 @@ public class ViewCollectionCardsDao_KMJ {
 	
 	
 	
+	public ViewCollectionCardsDao_KMJ(String uid) {
+		super();
+		this.uid = uid;
+	}
+
+
+
 	//method
 	public ArrayList<ViewCollectionCardsDto_KMJ> userCard(){
 		ArrayList<ViewCollectionCardsDto_KMJ> dtoList = new ArrayList<ViewCollectionCardsDto_KMJ>();
 		String cid;
 		//아이디를 가져와야 한다.
-		String where = "select c.cid from card c, handle h where h.h_uid = 'ajw2002' and h.h_cid = c.cid";
+		String where = "select c.cid from card c, handle h where h.h_uid = ? and h.h_cid = c.cid";
 		
-		
+		PreparedStatement ps = null;
+		PreparedStatement ps1 = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			Statement stmt_mysql = conn_mysql.createStatement();
-			Statement stmt_mysql1 = conn_mysql.createStatement();
-			ResultSet rs = stmt_mysql.executeQuery(where);
+			Connection conn_mysql1 = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+			
+			ps = conn_mysql.prepareStatement(where);
+			ps.setString(1, ShareVar.u_id);
+			ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				cid = rs.getString(1);
-				String where1 = "select ccontents, canswer from card where cid = '"+cid+"'";
-				ResultSet rs1 = stmt_mysql1.executeQuery(where1);
+				String where1 = "select ccontents, canswer from card where cid = ? ";
+				ps1 = conn_mysql1.prepareStatement(where1);
+				ps1.setString(1, cid);
+				ps1.executeQuery();
+				ResultSet rs1 = ps1.executeQuery();
 				while(rs1.next()) {
 					String ccontents = rs1.getString(1);
 					String canswer = rs1.getString(2);
@@ -67,21 +82,34 @@ public class ViewCollectionCardsDao_KMJ {
 		ArrayList<ViewCollectionCardsDto_KMJ> dtoList = new ArrayList<ViewCollectionCardsDto_KMJ>();
 		//ViewCollectionMain.colName
 		String coid;
-		String where = "select coid from collection where coname = '"+ViewCollectionMain.colName+"'";
+		String colName = ViewCollectionMain.colName;
+		PreparedStatement ps = null;
+		PreparedStatement ps1 = null;
+		String where = "select coid from collection where coname = ? ";
 		
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+			Connection conn_mysql1 = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			Statement stmt_mysql = conn_mysql.createStatement();
 			Statement stmt_mysql1 = conn_mysql.createStatement();
 			
-			ResultSet rs = stmt_mysql.executeQuery(where);
+			ps = conn_mysql.prepareStatement(where);
+			ps.setString(1, colName);
+			
+			ps.executeQuery();
+			
+			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				coid = rs.getString(1);
-				String where1 = "select mcontents, manswer from make where m_coid = '" +coid+"'";
-				ResultSet rs1 = stmt_mysql1.executeQuery(where1);
+				String where1 = "select mcontents, manswer from make where m_coid = ?";
+				
+				ps1 = conn_mysql1.prepareStatement(where1);
+				ps1.setString(1, coid);
+				ps1.executeQuery();
+				ResultSet rs1 = ps1.executeQuery();
 				while(rs1.next()) {
 					String ccontents = rs1.getString(1);
 					String canswer = rs1.getString(2);

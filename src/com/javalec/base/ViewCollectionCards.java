@@ -18,6 +18,9 @@ import java.awt.Dimension;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
 import java.awt.Font;
 import javax.swing.JScrollBar;
 import javax.swing.JSlider;
@@ -47,6 +50,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JSplitPane;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTextArea;
@@ -70,6 +75,9 @@ public class ViewCollectionCards extends JFrame {
 	int token = 0;
 	int rToken = 0;
 	private JLabel lbShuffle;
+	int randIndex = 0;
+
+	// private ImageIcon icon;
 	/**
 	 * Launch the application.
 	 */
@@ -89,15 +97,15 @@ public class ViewCollectionCards extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	
+
 	public ViewCollectionCards() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				lbLeft.setVisible(false);
-				if(ViewCollectionMain.payStatus == 0) {
-					freeSearch();					
-				}else {
+				if (ViewCollectionMain.payStatus == 0) {
+					freeSearch();
+				} else {
 					paySearch();
 				}
 			}
@@ -112,7 +120,7 @@ public class ViewCollectionCards extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		contentPane.add(getLbTxt());
-		
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.DARK_GRAY);
 		panel.setBounds(0, 0, 428, 20);
@@ -126,6 +134,7 @@ public class ViewCollectionCards extends JFrame {
 		contentPane.add(getLbRight());
 		contentPane.add(getLbShuffle());
 	}
+
 	private JLabel getLbMc() {
 		if (lbMc == null) {
 			lbMc = new JLabel("");
@@ -134,6 +143,7 @@ public class ViewCollectionCards extends JFrame {
 		}
 		return lbMc;
 	}
+
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("");
@@ -143,7 +153,7 @@ public class ViewCollectionCards extends JFrame {
 					ViewCollectionMain main = new ViewCollectionMain();
 					main.setVisible(true);
 					dispose();
-					
+
 				}
 			});
 			lblNewLabel.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/Back.png")));
@@ -151,6 +161,7 @@ public class ViewCollectionCards extends JFrame {
 		}
 		return lblNewLabel;
 	}
+
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
 			lblNewLabel_1 = new JLabel("님!");
@@ -160,15 +171,18 @@ public class ViewCollectionCards extends JFrame {
 		}
 		return lblNewLabel_1;
 	}
+
 	private JLabel getLbCard() {
 		if (lbCard == null) {
 			lbCard = new JLabel("");
-			lbCard.setIcon(new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
+			lbCard.setIcon(
+					new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
 			lbCard.setBackground(new Color(255, 255, 255));
 			lbCard.setBounds(40, 155, 348, 450);
 		}
 		return lbCard;
 	}
+
 	private JLabel getLbTxt() {
 		if (lbTxt == null) {
 			lbTxt = new JLabel("Loading...");
@@ -178,14 +192,17 @@ public class ViewCollectionCards extends JFrame {
 		}
 		return lbTxt;
 	}
+
 	private JLabel getLbLeft() {
 		if (lbLeft == null) {
 			lbLeft = new JLabel("");
-			lbLeft.setIcon(new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/skip_previous.png")));
+			lbLeft.setIcon(
+					new ImageIcon(ViewCollectionCards.class.getResource("/com/javalec/assets/skip_previous.png")));
 			lbLeft.setBounds(60, 711, 64, 64);
 		}
 		return lbLeft;
 	}
+
 	private JLabel getLblNewLabel_4_1() {
 		if (lblNewLabel_4_1 == null) {
 			lblNewLabel_4_1 = new JLabel("");
@@ -193,6 +210,7 @@ public class ViewCollectionCards extends JFrame {
 		}
 		return lblNewLabel_4_1;
 	}
+
 	private JLabel getLbRight() {
 		if (lbRight == null) {
 			lbRight = new JLabel("");
@@ -201,200 +219,301 @@ public class ViewCollectionCards extends JFrame {
 		}
 		return lbRight;
 	}
-	//function
+
+	// function
 	private void freeSearch() {
-		
+
 		ViewCollectionCardsDao_KMJ dao = new ViewCollectionCardsDao_KMJ();
-		
+
 		ArrayList<ViewCollectionCardsDto_KMJ> dto = dao.userCard();
-		
+
 		int randNum[] = new int[dto.size()];
-    	Random rand = new Random();
-    	
-		
+		Random rand = new Random();
+
 		maxIndex = dto.size();
-		
+		// 초기값 설정
 		lbTxt.setText(dto.get(index).getCcontents());
+
+		// 오른쪽 버튼 클릭시 index증가, 카드가 맨마지막일 경우 버튼 비활성화, 첫번째 카드에서 클릭시 왼쪽버튼 활성화
 		lbRight.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if(rToken == 0) {
-		    		if(index<maxIndex-1) {
-			    		lbLeft.setVisible(true);
-			    		index++;
-			    		lbTxt.setText(dto.get(index).getCcontents());			    		
-			    	}
-		    	}else if(rToken == 1) {
-		    		if(index<maxIndex-1) {
-			    		lbLeft.setVisible(true);
-			    		index++;
-			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
-			    	}
-		    	}   	
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rToken == 0) {
+					if (index < maxIndex - 1) {
+						lbLeft.setVisible(true);
+						index++;
+						lbTxt.setText(dto.get(index).getCcontents());
+					}
+					if (index == maxIndex - 1) {
+						lbRight.setVisible(false);
+					}
+				} else if (rToken == 1) {
+					if (randIndex < maxIndex - 1) {
+						lbLeft.setVisible(true);
+						randIndex++;
+						lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+					}
+					if (randIndex == maxIndex - 1) {
+						lbRight.setVisible(false);
+					}
+				}
+			}
 		});
-		
+
+		// 왼쪽 클릭시 index줄이기, 카드가 맨처음일 경우 버튼 비활성화, 마지막 카드에서 클릭시 오른쪽버튼 활성화
 		lbLeft.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if(rToken == 0) {
-		    		if(index>=0) {
-			    		index--;
-			    		lbTxt.setText(dto.get(index).getCcontents());			    		
-			    	}
-			    	if(index == 0) {
-			    		lbLeft.setVisible(false);
-			    	}
-		    	}else if(rToken == 1) {
-		    		if(index>=0) {
-			    		index--;
-			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
-			    	}
-			    	if(index == 0) {
-			    		lbLeft.setVisible(false);
-			    	}
-		    	}
-		    	
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rToken == 0) {
+					if (index >= 0) {
+						lbRight.setVisible(true);
+						index--;
+						lbTxt.setText(dto.get(index).getCcontents());
+					}
+					if (index == 0) {
+						lbLeft.setVisible(false);
+					}
+				} else if (rToken == 1) {
+					if (randIndex >= 0) {
+						lbRight.setVisible(true);
+						randIndex--;
+						lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+					}
+					if (randIndex == 0) {
+						lbLeft.setVisible(false);
+					}
+				}
+
+			}
 		});
-		
+
+		// 카드 뒤집기 구현
 		lbCard.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if(rToken == 0) {
-		    		if(token == 1) {
-		    			token = 0;
-		    			lbTxt.setText(dto.get(index).getCcontents());
-		    		}else if(token == 0) {
-		    			token = 1;
-		    			lbTxt.setText(dto.get(index).getCanswer());
-		    		}    		
-		    	}else if(rToken == 1) {
-		    		if(token == 1) {
-		    			token = 0;
-		    			lbTxt.setText(dto.get(randNum[index]).getCcontents());
-		    		}else if(token == 0) {
-		    			token = 1;
-		    			lbTxt.setText(dto.get(randNum[index]).getCanswer());
-		    		}  
-		    	}
-		    }
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rToken == 0) {
+					if (token == 1) {
+						token = 0;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
+						lbTxt.setText(dto.get(index).getCcontents());
+					} else if (token == 0) {
+						token = 1;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 21.png")));
+						lbTxt.setText(dto.get(index).getCanswer());
+					}
+				} else if (rToken == 1) {
+					if (token == 1) {
+						token = 0;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
+						lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+					} else if (token == 0) {
+						token = 1;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 21.png")));
+						lbTxt.setText(dto.get(randNum[randIndex]).getCanswer());
+					}
+				}
+			}
 		});
+
+		// 카드섞기 버튼
 		lbShuffle.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	index = 0;
-		    	lbLeft.setVisible(false);
-		    	rToken = 1;
-		    	for(int i=0; i<randNum.length;i++) {
-		    		randNum[i] = rand.nextInt(dto.size());
-		    		for(int j = 0;j<i;j++) {
-		    			if(randNum[i]==randNum[j]) {
-		    				i--;
-		    			}
-		    		}
-		    	}
-		    	lbTxt.setText(dto.get(randNum[index]).getCcontents());
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				index = 0;
+				randIndex = 0;
+				lbLeft.setVisible(false);
+				lbRight.setVisible(true);
+				rToken = 1;
+
+				for (int i = 0; i < randNum.length; i++) {
+					randNum[i] = rand.nextInt(dto.size());
+					for (int j = 0; j < i; j++) {
+						if (randNum[i] == randNum[j]) {
+							i--;
+						}
+					}
+				}
+				// 카드섞기 애니메이션 구현
+				ActionListener taskPerformer = new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent evt) {
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								// 카드 섞는동안 카드 뒤집기 비활성화
+								lbCard.setOpaque(false);
+
+								lbTxt.setText(dto.get(randIndex++).getCcontents());
+								if (randIndex == dto.size() - 1) {
+									randIndex = 0;
+									lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+									((Timer) evt.getSource()).stop();
+								}
+							}
+						});
+					}
+				};
+				new Timer(50, taskPerformer).start();
+
+				// 다시 활성화
+				lbCard.setOpaque(true);
+
+			}
 		});
-		
+
 	}
-	
+
+	//
 	private void paySearch() {
-		
+
 		ViewCollectionCardsDao_KMJ dao = new ViewCollectionCardsDao_KMJ();
-		
+
 		ArrayList<ViewCollectionCardsDto_KMJ> dto = dao.payCard();
-		
+
 		int randNum[] = new int[dto.size()];
-    	Random rand = new Random();
-    	
+		Random rand = new Random();
+
 		maxIndex = dto.size();
-		
+
+		// 초기값 설정
 		lbTxt.setText(dto.get(index).getCcontents());
+
+		// 오른쪽 버튼 클릭시 index증가, 카드가 맨마지막일 경우 버튼 비활성화, 첫번째 카드에서 클릭시 왼쪽버튼 활성화
 		lbRight.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if(rToken == 0) {
-		    		if(index<maxIndex-1) {
-			    		lbLeft.setVisible(true);
-			    		index++;
-			    		lbTxt.setText(dto.get(index).getCcontents());			    		
-			    	}
-		    	}else if(rToken == 1) {
-		    		if(index<maxIndex-1) {
-			    		lbLeft.setVisible(true);
-			    		index++;
-			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
-			    	}
-		    	}   	
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rToken == 0) {
+					if (index < maxIndex - 1) {
+						lbLeft.setVisible(true);
+						index++;
+						lbTxt.setText(dto.get(index).getCcontents());
+					}
+					if (index == maxIndex - 1) {
+						lbRight.setVisible(false);
+					}
+				} else if (rToken == 1) {
+					if (randIndex < maxIndex - 1) {
+						lbLeft.setVisible(true);
+						randIndex++;
+						lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+					}
+					if (randIndex == maxIndex - 1) {
+						lbRight.setVisible(false);
+					}
+				}
+			}
 		});
-		
+
+		// 왼쪽 클릭시 index줄이기, 카드가 맨처음일 경우 버튼 비활성화, 마지막 카드에서 클릭시 오른쪽버튼 활성화
 		lbLeft.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if(rToken == 0) {
-		    		if(index>=0) {
-			    		index--;
-			    		lbTxt.setText(dto.get(index).getCcontents());			    		
-			    	}
-			    	if(index == 0) {
-			    		lbLeft.setVisible(false);
-			    	}
-		    	}else if(rToken == 1) {
-		    		if(index>=0) {
-			    		index--;
-			    		lbTxt.setText(dto.get(randNum[index]).getCcontents());			    		
-			    	}
-			    	if(index == 0) {
-			    		lbLeft.setVisible(false);
-			    	}
-		    	}
-		    	
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rToken == 0) {
+					if (index >= 0) {
+						lbRight.setVisible(true);
+						index--;
+						lbTxt.setText(dto.get(index).getCcontents());
+					}
+					if (index == 0) {
+						lbLeft.setVisible(false);
+					}
+				} else if (rToken == 1) {
+					if (randIndex >= 0) {
+						lbRight.setVisible(true);
+						randIndex--;
+						lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+					}
+					if (randIndex == 0) {
+						lbLeft.setVisible(false);
+					}
+				}
+
+			}
 		});
-		
+
+		// 카드 뒤집기 구현
 		lbCard.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	if(rToken == 0) {
-		    		if(token == 1) {
-		    			token = 0;
-		    			lbTxt.setText(dto.get(index).getCcontents());
-		    		}else if(token == 0) {
-		    			token = 1;
-		    			lbTxt.setText(dto.get(index).getCanswer());
-		    		}    		
-		    	}else if(rToken == 1) {
-		    		if(token == 1) {
-		    			token = 0;
-		    			lbTxt.setText(dto.get(randNum[index]).getCcontents());
-		    		}else if(token == 0) {
-		    			token = 1;
-		    			lbTxt.setText(dto.get(randNum[index]).getCanswer());
-		    		}  
-		    	}
-		    }
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (rToken == 0) {
+					if (token == 1) {
+						token = 0;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
+						lbTxt.setText(dto.get(index).getCcontents());
+					} else if (token == 0) {
+						token = 1;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 21.png")));
+						lbTxt.setText(dto.get(index).getCanswer());
+					}
+				} else if (rToken == 1) {
+					if (token == 1) {
+						token = 0;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 22.png")));
+						lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+					} else if (token == 0) {
+						token = 1;
+						lbCard.setIcon(new ImageIcon(
+								ViewCollectionCards.class.getResource("/com/javalec/assets/Rectangle 21.png")));
+						lbTxt.setText(dto.get(randNum[randIndex]).getCanswer());
+					}
+				}
+			}
 		});
+
+		// 카드섞기 버튼
 		lbShuffle.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		    	index = 0;
-		    	lbLeft.setVisible(false);
-		    	rToken = 1;
-		    	for(int i=0; i<randNum.length;i++) {
-		    		randNum[i] = rand.nextInt(dto.size());
-		    		for(int j = 0;j<i;j++) {
-		    			if(randNum[i]==randNum[j]) {
-		    				i--;
-		    			}
-		    		}
-		    	}
-		    	lbTxt.setText(dto.get(randNum[index]).getCcontents());
-		    }
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				index = 0;
+				randIndex = 0;
+				lbLeft.setVisible(false);
+				lbRight.setVisible(true);
+				rToken = 1;
+
+				for (int i = 0; i < randNum.length; i++) {
+					randNum[i] = rand.nextInt(dto.size());
+					for (int j = 0; j < i; j++) {
+						if (randNum[i] == randNum[j]) {
+							i--;
+						}
+					}
+				}
+				// 카드섞기 애니메이션 구현
+				ActionListener taskPerformer = new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent evt) {
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								// 카드 섞는동안 카드 뒤집기 비활성화
+								lbCard.setOpaque(false);
+
+								lbTxt.setText(dto.get(randIndex++).getCcontents());
+								if (randIndex == dto.size() - 1) {
+									randIndex = 0;
+									lbTxt.setText(dto.get(randNum[randIndex]).getCcontents());
+									((Timer) evt.getSource()).stop();
+								}
+							}
+						});
+					}
+				};
+				new Timer(50, taskPerformer).start();
+
+				// 다시 활성화
+				lbCard.setOpaque(true);
+
+			}
 		});
 	}
+
 	private JLabel getLbShuffle() {
 		if (lbShuffle == null) {
 			lbShuffle = new JLabel("");

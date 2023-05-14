@@ -128,7 +128,7 @@ public class ViewCollectionMain extends JFrame {
 			panel_1.setLayout(new GridLayout(0,3,0,0));
 			
 			//아래 문자열을 로그인해서 가져오는 값으로 둬야한다
-			ViewCollectionMainDao_KMJ dao = new ViewCollectionMainDao_KMJ("ajw2002");
+			ViewCollectionMainDao_KMJ dao = new ViewCollectionMainDao_KMJ();
 			
 			ArrayList<ViewCollectionMainDto_KMJ> dto = dao.searchAction();
 			ArrayList<String> menu = new ArrayList<String>();
