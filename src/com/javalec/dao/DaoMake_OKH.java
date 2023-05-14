@@ -96,10 +96,12 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "SELECT distinct m.mgenre, COUNT(distinct m.mid)" + " FROM collection co, user u , buy b, tutor t, make m"
-					+ " WHERE m.m_coid = co.coid " + " AND co.coid = ?" 
-					+ "  and " + conditionQueryColumn + " like '%"
-					+ selection + "%'" + " GROUP BY m.mgenre";
+			String query = "SELECT distinct m.mgenre, COUNT(distinct m.mid)" 
+					+ " FROM collection co, user u , buy b, tutor t, make m"
+					+ " WHERE m.m_coid = co.coid " 
+					+ " AND co.coid = ?" 
+					+ " AND " + conditionQueryColumn + " LIKE '%" + selection + "%'" 
+					+ " GROUP BY m.mgenre";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, coid);
@@ -130,8 +132,10 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "select m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
-					+ " from make m, collection co" + " where m.m_coid = co.coid" + " and co.coid = ?";
+			String query = "SELECT m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
+					+ " FROM make m, collection co" 
+					+ " WHERE m.m_coid = co.coid" 
+					+ " AND co.coid = ?";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, "tutor002_001"); // Co-id 넣기
@@ -164,9 +168,10 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "select DISTINCT m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
-					+ " from make m, collection co, score s"
-					+ " where m.m_coid = co.coid and s.s_coid = co.coid and scorrect = 1" + " and co.coid = ?";
+			String query = "SELECT DISTINCT m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
+					+ " FROM make m, collection co, score s"
+					+ " WHERE m.m_coid = co.coid AND s.s_coid = co.coid AND scorrect = 1" 
+					+ " AND co.coid = ?";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, "tutor002_001"); // Co-id 넣기

@@ -54,10 +54,10 @@ public class DaoCollection_OKH {
 		PreparedStatement ps = null;
 		ArrayList<DtoCollection_OKH> dto = new ArrayList<DtoCollection_OKH>();
 
-		String query = "select co.coid, co.coname, co.copic, co.copicpath "
-				+ " from collection co, user u , buy b "
-				+ " where u.u_id = b.b_uid and b.b_coid = co.coid"
-				+ " and u.u_id = ? ";
+		String query = "SELECT co.coid, co.coname, co.copic, co.copicpath "
+				+ " FROM collection co, user u , buy b "
+				+ " WHERE u.u_id = b.b_uid AND b.b_coid = co.coid"
+				+ " AND u.u_id = ? ";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
@@ -105,11 +105,11 @@ public class DaoCollection_OKH {
 		PreparedStatement ps = null;
 		ArrayList<DtoCollection_OKH> dto = new ArrayList<DtoCollection_OKH>();
 
-		String query = "select distinct co.coid, co.coname, co.copic, co.copicpath "
-				+ " from collection co, user u , buy b, tutor t, make m"
-				+ " where u.u_id = b.b_uid and b.b_coid = co.coid"
-				+ " and u.u_id = ? "
-				+ " and "+conditionQueryColumn+" like '%"+selection+"%'";
+		String query = "SELECT distinct co.coid, co.coname, co.copic, co.copicpath "
+				+ " FROM collection co, user u , buy b, tutor t, make m"
+				+ " WHERE u.u_id = b.b_uid AND b.b_coid = co.coid"
+				+ " AND u.u_id = ? "
+				+ " AND "+conditionQueryColumn+" LIKE '%"+selection+"%'";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);

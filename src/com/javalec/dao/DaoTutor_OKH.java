@@ -50,8 +50,10 @@ public class DaoTutor_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "select t.tname" + " from tutor t, collection co, make m"
-					+ " where t.tid = m.m_tid and m.m_coid = co.coid" + " and co.coid = ?";
+			String query = "SELECT t.tname" 
+					+ " FROM tutor t, collection co, make m"
+					+ " WHERE t.tid = m.m_tid AND m.m_coid = co.coid" 
+					+ " AND co.coid = ?";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, coid);
@@ -77,8 +79,11 @@ public class DaoTutor_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "select distinct t.tname" + " from collection co, user u , buy b, tutor t, make m"
-					+ " where t.tid = m.m_tid and m.m_coid = co.coid" + " and co.coid = ?" + " and "+conditionQueryColumn+" like '%"+selection+"%'";
+			String query = "SELECT distinct t.tname" 
+					+ " FROM collection co, user u , buy b, tutor t, make m"
+					+ " WHERE t.tid = m.m_tid AND m.m_coid = co.coid" 
+					+ " AND co.coid = ?" 
+					+ " AND " + conditionQueryColumn + " LIKE '%" + selection + "%'";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, coid);

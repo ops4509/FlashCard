@@ -146,6 +146,10 @@ public class Shortquiz extends JFrame {
 			btnHome.setBounds(167, 27, 101, 48);
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//	합치면 넣어야할것.
+//					MainView main = new MainView();
+//					main.setVisible(true);
+//					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));

@@ -38,7 +38,8 @@ public class DaoScore_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 0) "
+			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " 
+					+ "VALUES (?, ?, ?, now(), 0) "
 					+ "ON DUPLICATE KEY UPDATE sdate=now(), scorrect=0";
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, s_uid);
@@ -59,7 +60,8 @@ public class DaoScore_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 1) "
+			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " 
+					+ "VALUES (?, ?, ?, now(), 1) "
 					+ "ON DUPLICATE KEY UPDATE sdate=now(), scorrect=1";
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, s_uid);

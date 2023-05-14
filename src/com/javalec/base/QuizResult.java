@@ -108,6 +108,10 @@ public class QuizResult extends JFrame {
 			btnHome = new JButton("");
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//	합치면 넣어야할것.
+//					MainView main = new MainView();
+//					main.setVisible(true);
+//					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));
