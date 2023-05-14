@@ -43,7 +43,8 @@ public class CheckCorrect extends JDialog {
 	 */
 
 	public CheckCorrect() {
-		setBounds(0, 0, 310, 230);
+		setTitle("정답!");
+		setBounds(59, 348, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());
@@ -55,10 +56,10 @@ public class CheckCorrect extends JDialog {
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("");
+			lblNewLabel.setBounds(140, 24, 30, 30);
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel
 					.setIcon(new ImageIcon(CheckCorrect.class.getResource("/com/javalec/assets/Green handphone.png")));
-			lblNewLabel.setBounds(140, 24, 30, 30);
 		}
 		return lblNewLabel;
 	}
@@ -66,16 +67,16 @@ public class CheckCorrect extends JDialog {
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
 			lblNewLabel_1 = new JLabel("정답입니다!");
+			lblNewLabel_1.setBounds(24, 70, 262, 32);
 			lblNewLabel_1.setForeground(new Color(30, 179, 87));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel_1.setBounds(24, 70, 262, 32);
 		}
 		return lblNewLabel_1;
 	}
 
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("정답은  :" + Shortquiz.selectedAnswer + "입니다.");
+			lblNewLabel_2 = new JLabel("정답은  :\t" + Shortquiz.selectedAnswer + "\t입니다.");
 			lblNewLabel_2.setBounds(24, 115, 262, 20);
 		}
 		return lblNewLabel_2;
@@ -84,6 +85,7 @@ public class CheckCorrect extends JDialog {
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("다음 문제 넘어가기");
+			btnNewButton.setBounds(140, 150, 142, 40);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Shortquiz shortquiz = new Shortquiz();
@@ -92,7 +94,7 @@ public class CheckCorrect extends JDialog {
 					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
 						Shortquiz.qseq++;
 						Shortquiz.score++;
-						System.out.println(Shortquiz.score);
+						shortquiz.setqseq();
 						shortquiz.makequiz();
 						shortquiz.setVisible(true);
 					} else {
@@ -107,7 +109,6 @@ public class CheckCorrect extends JDialog {
 				}
 			});
 			btnNewButton.setBackground(Color.WHITE);
-			btnNewButton.setBounds(140, 150, 142, 40);
 		}
 		return btnNewButton;
 	}

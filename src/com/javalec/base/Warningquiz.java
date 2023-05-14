@@ -15,12 +15,13 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class Warningcorrection extends JDialog {
+public class Warningquiz extends JDialog {
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
-	private JButton btnNewButton;
+	private JButton btnReset;
 	Shortquiz shortquiz = new Shortquiz();
+	private JButton btnOK;
 
 	/**
 	 * Launch the application.
@@ -29,7 +30,7 @@ public class Warningcorrection extends JDialog {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Warningcorrection dialog = new Warningcorrection();
+					Warningquiz dialog = new Warningquiz();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				} catch (Exception e) {
@@ -42,14 +43,15 @@ public class Warningcorrection extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Warningcorrection() {
-		setTitle("오답노트에 문제가 없습니다.");
+	public Warningquiz() {
+		setTitle("계속 풀어보시겠습니까?");
 		setBounds(59, 348, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());
 		getContentPane().add(getLblNewLabel_2());
-		getContentPane().add(getBtnNewButton());
+		getContentPane().add(getBtnOK());
+		getContentPane().add(getBtnReset());
 
 	}
 
@@ -57,7 +59,7 @@ public class Warningcorrection extends JDialog {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("");
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel.setIcon(new ImageIcon(Warningcorrection.class.getResource("/com/javalec/assets/red phone.png")));
+			lblNewLabel.setIcon(new ImageIcon(Warningquiz.class.getResource("/com/javalec/assets/red phone.png")));
 			lblNewLabel.setBounds(140, 24, 30, 30);
 		}
 		return lblNewLabel;
@@ -65,7 +67,7 @@ public class Warningcorrection extends JDialog {
 
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("오답노트에 문제가 없습니다.");
+			lblNewLabel_1 = new JLabel("이전에 풀던 문제가 있습니다.");
 			lblNewLabel_1.setForeground(new Color(179, 38, 30));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_1.setBounds(24, 70, 262, 32);
@@ -75,25 +77,48 @@ public class Warningcorrection extends JDialog {
 
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("단답형 퀴즈를 풀어보세요!");
+			lblNewLabel_2 = new JLabel("계속 풀어보시겠습니까?");
 			lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel_2.setBounds(24, 115, 262, 20);
+			lblNewLabel_2.setBounds(25, 115, 262, 20);
 		}
 		return lblNewLabel_2;
 	}
 
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("확인");
-			btnNewButton.addActionListener(new ActionListener() {
+	private JButton getBtnReset() {
+		if (btnReset == null) {
+			btnReset = new JButton("초기화");
+			btnReset.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					Shortquiz.qseq = 0;
+					Shortquiz.score =0;
+					Shortquiz shortquiz = new Shortquiz();
+					shortquiz.setVisible(true);
+					QuizSelect quizSelect = new QuizSelect();
+					quizSelect.setVisible(false);
 					dispose();
 				}
 			});
-			btnNewButton.setBackground(Color.WHITE);
-			btnNewButton.setBounds(140, 150, 142, 40);
+			btnReset.setBackground(Color.WHITE);
+			btnReset.setBounds(165, 150, 120, 40);
 		}
-		return btnNewButton;
+		return btnReset;
 	}
 
+	private JButton getBtnOK() {
+		if (btnOK == null) {
+			btnOK = new JButton("네");
+			btnOK.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Shortquiz shortquiz = new Shortquiz();
+					shortquiz.setVisible(true);
+					QuizSelect quizSelect = new QuizSelect();
+					quizSelect.setVisible(false);
+					dispose();
+				}
+			});
+			btnOK.setBackground(Color.WHITE);
+			btnOK.setBounds(25, 150, 120, 40);
+		}
+		return btnOK;
+	}
 }

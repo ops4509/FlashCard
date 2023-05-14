@@ -43,7 +43,8 @@ public class CheckIncorrect extends JDialog {
 	 * Create the dialog.
 	 */
 	public CheckIncorrect() {
-		setBounds(0, 0, 310, 230);
+		setTitle("오답!");
+		setBounds(59, 348, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());
@@ -74,7 +75,7 @@ public class CheckIncorrect extends JDialog {
 
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("정답은  :" + Shortquiz.selectedAnswer + "입니다.");
+			lblNewLabel_2 = new JLabel("정답은  :\t" + Shortquiz.selectedAnswer + "\t입니다.");
 			lblNewLabel_2.setBounds(24, 115, 262, 20);
 		}
 		return lblNewLabel_2;
@@ -90,7 +91,7 @@ public class CheckIncorrect extends JDialog {
 					insertScore();
 					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
 						Shortquiz.qseq++;
-						System.out.println(Shortquiz.score);
+						shortquiz.setqseq();
 						shortquiz.makequiz();
 						shortquiz.setVisible(true);
 					} else {

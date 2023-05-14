@@ -196,9 +196,14 @@ public class QuizSelect extends JFrame {
 			btnSelectionquiz.setEnabled(false);
 			btnSelectionquiz.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Shortquiz shortquiz = new Shortquiz();
-					shortquiz.setVisible(true);
-					setVisible(false);
+					if (Shortquiz.qseq != 0) {
+						Warningquiz warningquiz = new Warningquiz();
+						warningquiz.setVisible(true);
+					} else {
+						Shortquiz shortquiz = new Shortquiz();
+						shortquiz.setVisible(true);
+						setVisible(false);
+					}
 				}
 			});
 			btnSelectionquiz.setBackground(new Color(0, 0, 0, 0));
@@ -370,12 +375,12 @@ public class QuizSelect extends JFrame {
 
 		vColIndex = 3;
 		col = tableCollection.getColumnModel().getColumn(vColIndex);
-		width = 69;
+		width = 59;
 		col.setPreferredWidth(width);
 
 		vColIndex = 4;
 		col = tableCollection.getColumnModel().getColumn(vColIndex);
-		width = 69;
+		width = 79;
 		col.setPreferredWidth(width);
 
 		vColIndex = 5;
@@ -415,7 +420,7 @@ public class QuizSelect extends JFrame {
 		int i = cbSelection.getSelectedIndex();
 		System.out.println(i);
 		String conditionQueryColumn = "";
-		
+
 		switch (i) {
 		case 0:
 			conditionQueryColumn = "co.coname";
@@ -433,7 +438,7 @@ public class QuizSelect extends JFrame {
 		tableListInit();
 		DaoCollection_OKH daoCollection_OKH = new DaoCollection_OKH(conditionQueryColumn, selection);
 		ArrayList<DtoCollection_OKH> dtoCollect = daoCollection_OKH.conditionfindaction();
-		
+
 		int listCount = dtoCollect.size();
 
 		for (int j = 0; j < listCount; j++) {
