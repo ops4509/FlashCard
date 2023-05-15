@@ -163,7 +163,7 @@ public class Dao_yj {
 	       
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	        String currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
-	        
+	        System.out.println(currentTimestampToString);
 	        String query = "UPDATE tlogin SET tllogindate = ? WHERE tl_tid = ?";
 	        
 	        ps = conn_mysql.prepareStatement(query);

@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
 import javax.swing.ImageIcon;
+import javax.swing.JPasswordField;
 
 public class MainTutorMypage_Yj extends JFrame {
 
@@ -32,11 +33,11 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JLabel lblNewLabel_2_1;
 	private JLabel lblNewLabel_2_1_1_1;
 	private JTextField tfId;
-	private JTextField tfPw;
 	private JTextField tfName;
 	private JButton bttLogout;
 	private JButton bttHome;
 	private JLabel lblTutor;
+	private JPasswordField tfPw;
 
 	/**
 	 * Launch the application.
@@ -64,7 +65,7 @@ public class MainTutorMypage_Yj extends JFrame {
 				getTetorInfo();
 			}
 		});
-		setTitle("My Cald Tutor 마이 페이지");
+		setTitle("My Card Tutor 마이 페이지");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
@@ -73,12 +74,12 @@ public class MainTutorMypage_Yj extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.add(getTfPw());
 		contentPane.add(getLblNewLabel());
 		contentPane.add(getLblNewLabel_2());
 		contentPane.add(getLblNewLabel_2_1());
 		contentPane.add(getLblNewLabel_2_1_1_1());
 		contentPane.add(getTfId());
-		contentPane.add(getTfPw());
 		contentPane.add(getTfName());
 		contentPane.add(getBttLogout());
 		contentPane.add(getBttHome());
@@ -87,7 +88,7 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("");
-			lblNewLabel.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/스크린샷 2023-05-10 오후 3.46 2.png")));
+			lblNewLabel.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/myCard.png")));
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel.setBounds(60, 60, 135, 70);
 		}
@@ -129,25 +130,13 @@ public class MainTutorMypage_Yj extends JFrame {
 		}
 		return tfId;
 	}
-	private JTextField getTfPw() {
-		if (tfPw == null) {
-			tfPw = new JTextField();
-			tfPw.setEditable(false);
-			tfPw.setHorizontalAlignment(SwingConstants.CENTER);
-			tfPw.setColumns(10);
-			tfPw.setBounds(135, 280, 240, 50);
-			
-			tfPw.setBorder(new LineBorder(Color.BLACK));
-		}
-		return tfPw;
-	}
 	private JTextField getTfName() {
 		if (tfName == null) {
 			tfName = new JTextField();
 			tfName.setEditable(false);
 			tfName.setHorizontalAlignment(SwingConstants.CENTER);
 			tfName.setColumns(10);
-			tfName.setBounds(135, 210, 240, 50);
+			tfName.setBounds(135, 280, 240, 50);
 			
 			tfName.setBorder(new LineBorder(Color.BLACK));
 		}
@@ -156,7 +145,7 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JButton getBttLogout() {
 		if (bttLogout == null) {
 			bttLogout = new JButton("");
-			bttLogout.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/가입취소 버튼.png")));
+			bttLogout.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/logoutButton.png")));
 			bttLogout.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					 tutorLogoutAction();
@@ -169,7 +158,7 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JButton getBttHome() {
 		if (bttHome == null) {
 			bttHome = new JButton("");
-			bttHome.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/홈.png")));
+			bttHome.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/home.png")));
 			bttHome.setBounds(217, 805, 160, 56);
 		}
 		return bttHome;
@@ -188,13 +177,13 @@ public class MainTutorMypage_Yj extends JFrame {
 	private void getTetorInfo() {
 		Dao_yj dao = new Dao_yj(MainLogin_Yj.u_id);
 		ArrayList<Dto_yj> dtoList = dao.getTetorInfo();
-	
 		        tfId.setText(dtoList.get(0).getU_id());
+		        tfPw.setEchoChar('*');
 		        tfPw.setText(dtoList.get(0).getU_pw());
 		        tfName.setText(dtoList.get(0).getU_name());
 		        
 		        lblTutor.setText(dtoList.get(0).getU_pw() + "선생님의 My page");
-		} 
+		}
 	
 	// tutor 로그아웃
 	
@@ -214,5 +203,11 @@ public class MainTutorMypage_Yj extends JFrame {
 	        dispose();
 	    }
 	}
-
+	private JPasswordField getTfPw() {
+		if (tfPw == null) {
+			tfPw = new JPasswordField();
+			tfPw.setBounds(135, 210, 240, 50);
+		}
+		return tfPw;
+	}
 }
