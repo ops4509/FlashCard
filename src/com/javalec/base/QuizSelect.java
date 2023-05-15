@@ -10,6 +10,7 @@ import javax.swing.table.TableColumn;
 
 import com.javalec.dao.DaoCollection_OKH;
 import com.javalec.dao.DaoMake_OKH;
+import com.javalec.dao.DaoScore_OKH;
 import com.javalec.dao.DaoTutor_OKH;
 import com.javalec.dto.DtoCollection_OKH;
 import com.javalec.dto.DtoMake_OKH;
@@ -35,6 +36,10 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import javax.swing.SwingConstants;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
 
 public class QuizSelect extends JFrame {
 
@@ -44,7 +49,6 @@ public class QuizSelect extends JFrame {
 	private JButton btnHome;
 	private JButton btnBack;
 	private JButton btnCorrectionNote;
-	private JButton btnLinerquiz;
 	private JButton btnSelectionquiz;
 	private JScrollPane scrollPane;
 	private JTable tableCollection;
@@ -56,6 +60,11 @@ public class QuizSelect extends JFrame {
 	// table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
 	ArrayList<DtoCollection_OKH> beanList = null;
+	private JLabel lblNewLabel;
+	private JLabel lblNewLabel_1;
+	private JComboBox cbSelection;
+	private JTextField tfInsert;
+	private JButton btnSearch;
 
 	/**
 	 * Launch the application.
@@ -96,10 +105,14 @@ public class QuizSelect extends JFrame {
 		contentPane.add(getLblHello());
 		contentPane.add(getBtnHome());
 		contentPane.add(getBtnBack());
-		contentPane.add(getBtnCorrectionNote());
-		contentPane.add(getBtnLinerquiz());
-		contentPane.add(getBtnSelectionquiz());
 		contentPane.add(getScrollPane());
+		contentPane.add(getLblNewLabel());
+		contentPane.add(getBtnCorrectionNote());
+		contentPane.add(getLblNewLabel_1());
+		contentPane.add(getBtnSelectionquiz());
+		contentPane.add(getCbSelection());
+		contentPane.add(getTfInsert());
+		contentPane.add(getBtnSearch());
 	}
 
 	private JLabel getLblHello() {
@@ -125,6 +138,11 @@ public class QuizSelect extends JFrame {
 			btnHome = new JButton("");
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
+					//	합치면 넣어야할것.
+//					MainView main = new MainView();
+//					main.setVisible(true);
+//					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));
@@ -142,9 +160,10 @@ public class QuizSelect extends JFrame {
 			btnBack = new JButton("");
 			btnBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					MainView main = new MainView();
-					main.setVisible(true);
-					dispose();
+					//	합치면 넣어야할것.
+//					MainView main = new MainView();
+//					main.setVisible(true);
+//					dispose();
 				}
 			});
 			btnBack.setBackground(new Color(0, 0, 0, 0));
@@ -162,45 +181,22 @@ public class QuizSelect extends JFrame {
 			btnCorrectionNote = new JButton("");
 			btnCorrectionNote.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					QuizSelect.selectmode =1;
-					screenPartition();
-					Shortquiz shortquiz = new Shortquiz();
-					shortquiz.setVisible(true);
-					dispose();
+					// selectmode 들어가기전에 확인을 해줘야한다.
+					// 오답 할게 있는지 없는지.
+					// 오답노트는 selectmode =1;
+					corrcttioncount();
+
 				}
 			});
 			btnCorrectionNote.setBackground(new Color(0, 0, 0, 0));
 			btnCorrectionNote.setBorderPainted(false);
 			btnCorrectionNote.setFocusPainted(false);
 			btnCorrectionNote.setContentAreaFilled(false);
-			btnCorrectionNote
-					.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/corrctionnote.png")));
-			btnCorrectionNote.setBounds(41, 630, 346, 140);
+			btnCorrectionNote.setIcon(
+					new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/correctionquizbutton.png")));
+			btnCorrectionNote.setBounds(40, 630, 345, 110);
 		}
 		return btnCorrectionNote;
-	}
-
-	private JButton getBtnLinerquiz() {
-		if (btnLinerquiz == null) {
-			btnLinerquiz = new JButton("");
-			btnLinerquiz.setEnabled(false);
-			btnLinerquiz.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					screenPartition();
-					Linerquiz linerquiz = new Linerquiz();
-					linerquiz.setVisible(true);
-					dispose();
-				}
-			});
-			btnLinerquiz.setBackground(new Color(0, 0, 0, 0));
-			btnLinerquiz.setBorderPainted(false);
-			btnLinerquiz.setFocusPainted(false);
-			btnLinerquiz.setContentAreaFilled(false);
-			btnLinerquiz
-					.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/button_linerquiz.png")));
-			btnLinerquiz.setBounds(40, 810, 161, 56);
-		}
-		return btnLinerquiz;
 	}
 
 	private JButton getBtnSelectionquiz() {
@@ -209,10 +205,14 @@ public class QuizSelect extends JFrame {
 			btnSelectionquiz.setEnabled(false);
 			btnSelectionquiz.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					screenPartition();
-					Shortquiz shortquiz = new Shortquiz();
-					shortquiz.setVisible(true);
-					dispose();
+					if (Shortquiz.qseq != 0) {
+						Warningquiz warningquiz = new Warningquiz();
+						warningquiz.setVisible(true);
+					} else {
+						Shortquiz shortquiz = new Shortquiz();
+						shortquiz.setVisible(true);
+						setVisible(false);
+					}
 				}
 			});
 			btnSelectionquiz.setBackground(new Color(0, 0, 0, 0));
@@ -220,8 +220,8 @@ public class QuizSelect extends JFrame {
 			btnSelectionquiz.setFocusPainted(false);
 			btnSelectionquiz.setContentAreaFilled(false);
 			btnSelectionquiz.setIcon(
-					new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/button_selectionquiz.png")));
-			btnSelectionquiz.setBounds(226, 810, 161, 56);
+					new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/correctionquizbutton.png")));
+			btnSelectionquiz.setBounds(40, 756, 345, 110);
 		}
 		return btnSelectionquiz;
 	}
@@ -246,7 +246,6 @@ public class QuizSelect extends JFrame {
 			tableCollection.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-//					outerTable.setRowCount(0);  // 검색기능이 구현 되었을때 가
 					tableClick(); // Row 선택하는 것. 정보를 주어야한다.
 					screenPartition(); // 버튼이 불가능하게 만들어야한다.
 				}
@@ -259,6 +258,60 @@ public class QuizSelect extends JFrame {
 
 		}
 		return tableCollection;
+	}
+
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("오답 노트");
+			lblNewLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 56));
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNewLabel.setForeground(Color.RED);
+			lblNewLabel.setBounds(40, 630, 345, 110);
+		}
+		return lblNewLabel;
+	}
+
+	private JLabel getLblNewLabel_1() {
+		if (lblNewLabel_1 == null) {
+			lblNewLabel_1 = new JLabel("단답형 퀴즈");
+			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNewLabel_1.setForeground(Color.GREEN);
+			lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 56));
+			lblNewLabel_1.setBounds(40, 756, 345, 110);
+		}
+		return lblNewLabel_1;
+	}
+
+	private JComboBox getCbSelection() {
+		if (cbSelection == null) {
+			cbSelection = new JComboBox();
+			cbSelection.setModel(new DefaultComboBoxModel(new String[] { "이름", "선생님", "장르" }));
+			cbSelection.setBounds(115, 175, 101, 18);
+		}
+		return cbSelection;
+	}
+
+	private JTextField getTfInsert() {
+		if (tfInsert == null) {
+			tfInsert = new JTextField();
+			tfInsert.setBounds(228, 175, 130, 18);
+			tfInsert.setColumns(10);
+		}
+		return tfInsert;
+	}
+
+	private JButton getBtnSearch() {
+		if (btnSearch == null) {
+			btnSearch = new JButton("");
+			btnSearch.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					findAction();
+				}
+			});
+			btnSearch.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/search.png")));
+			btnSearch.setBounds(370, 175, 18, 18);
+		}
+		return btnSearch;
 	}
 
 	// function
@@ -291,7 +344,6 @@ public class QuizSelect extends JFrame {
 	// input 제한
 	private void screenPartition() {
 		if (tableCollection.getSelectedRow() >= 0) {
-			btnLinerquiz.setEnabled(true);
 			btnSelectionquiz.setEnabled(true);
 		}
 	}
@@ -332,12 +384,12 @@ public class QuizSelect extends JFrame {
 
 		vColIndex = 3;
 		col = tableCollection.getColumnModel().getColumn(vColIndex);
-		width = 69;
+		width = 59;
 		col.setPreferredWidth(width);
 
 		vColIndex = 4;
 		col = tableCollection.getColumnModel().getColumn(vColIndex);
-		width = 69;
+		width = 79;
 		col.setPreferredWidth(width);
 
 		vColIndex = 5;
@@ -353,5 +405,68 @@ public class QuizSelect extends JFrame {
 		selectedcoid = (String) tableCollection.getValueAt(i, 5);
 	}
 
-	
+	// 오답노트 count가져오기
+	private void corrcttioncount() {
+		DaoScore_OKH daoScore_OKH = new DaoScore_OKH();
+		int count = daoScore_OKH.getCorrectCount();
+		if (count != 0) {
+			cocount = count;
+			Shortquiz.score = 0;
+			selectmode = 1;
+			Shortquiz shortquiz = new Shortquiz();
+			shortquiz.setVisible(true);
+			setVisible(false);
+		} else {
+			Warningcorrection warningcorrection = new Warningcorrection();
+			warningcorrection.setVisible(true);
+		}
+
+	}
+
+	// 검색기능
+	private void findAction() {
+		String selection = tfInsert.getText();
+		int i = cbSelection.getSelectedIndex();
+		System.out.println(i);
+		String conditionQueryColumn = "";
+
+		switch (i) {
+		case 0:
+			conditionQueryColumn = "co.coname";
+			break;
+		case 1:
+			conditionQueryColumn = "t.tname";
+			break;
+		case 2:
+			conditionQueryColumn = "m.mgenre";
+			break;
+		default:
+			break;
+		}
+
+		tableListInit();
+		DaoCollection_OKH daoCollection_OKH = new DaoCollection_OKH(conditionQueryColumn, selection);
+		ArrayList<DtoCollection_OKH> dtoCollect = daoCollection_OKH.conditionfindaction();
+
+		int listCount = dtoCollect.size();
+
+		for (int j = 0; j < listCount; j++) {
+			DaoMake_OKH daoMake_OKH = new DaoMake_OKH(dtoCollect.get(j).getCoid(), conditionQueryColumn, selection);
+			ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.conditionfindaction();
+			DaoTutor_OKH daoTutor_OKH = new DaoTutor_OKH(dtoCollect.get(j).getCoid(), conditionQueryColumn, selection);
+			ArrayList<DtoTutor_OKH> dtotname = daoTutor_OKH.conditionfindaction();
+
+			ImageIcon coPic = new ImageIcon("./" + dtoCollect.get(j).getCopath());
+			String coName = dtoCollect.get(j).getConame();
+			System.out.println(coName);
+			String mGenre = dtogenre.get(0).getMgenre();
+			String tname = dtotname.get(0).getTname();
+			cocount = dtogenre.get(0).getCocount();
+			String cocode = dtoCollect.get(j).getCoid();
+			Object[] tempData = { coPic, coName, tname, mGenre, cocount, cocode };
+			outerTable.addRow(tempData);
+		}
+
+	}
+
 }

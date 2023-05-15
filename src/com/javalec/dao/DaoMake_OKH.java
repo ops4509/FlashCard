@@ -31,6 +31,9 @@ public class DaoMake_OKH {
 	String mcontents;
 	String manswer;
 
+	String selection;
+	String conditionQueryColumn;
+
 	// Constructor
 	public DaoMake_OKH() {
 		// TODO Auto-generated constructor stub
@@ -45,6 +48,13 @@ public class DaoMake_OKH {
 	public DaoMake_OKH(String coid) {
 		super();
 		this.coid = coid;
+	}
+
+	public DaoMake_OKH(String coid,  String conditionQueryColumn,String selection) {
+		super();
+		this.coid = coid;
+		this.conditionQueryColumn = conditionQueryColumn;
+		this.selection = selection;
 	}
 
 	// Mehtod
@@ -79,6 +89,41 @@ public class DaoMake_OKH {
 
 	}
 
+	// 조건 검색
+	public ArrayList<DtoMake_OKH> conditionfindaction() {
+		PreparedStatement ps = null;
+		ArrayList<DtoMake_OKH> dto = new ArrayList<DtoMake_OKH>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
+			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+			String query = "SELECT distinct m.mgenre, COUNT(distinct m.mid)" 
+					+ " FROM collection co, user u , buy b, tutor t, make m"
+					+ " WHERE m.m_coid = co.coid " 
+					+ " AND co.coid = ?" 
+					+ " AND " + conditionQueryColumn + " LIKE '%" + selection + "%'" 
+					+ " GROUP BY m.mgenre";
+
+			ps = conn_mysql.prepareStatement(query);
+			ps.setString(1, coid);
+
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				mgenre = rs.getString(1);
+				cocount = rs.getInt(2);
+			}
+			DtoMake_OKH beanList = new DtoMake_OKH(mgenre, cocount);
+			dto.add(beanList);
+
+			conn_mysql.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+
+	}
+
 	// 하나의 Collection을 선택해 모든 값의 문제와 히든을 가져오기.
 
 	public ArrayList<DtoMake_OKH> getQuestAns() {
@@ -87,9 +132,10 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "select m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid" 
-					+ " from make m, collection co"
-					+ " where m.m_coid = co.coid" + " and co.coid = ?";
+			String query = "SELECT m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
+					+ " FROM make m, collection co" 
+					+ " WHERE m.m_coid = co.coid" 
+					+ " AND co.coid = ?";
 
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, "tutor002_001"); // Co-id 넣기
@@ -114,44 +160,41 @@ public class DaoMake_OKH {
 		return dto;
 
 	}
-	
-	// 하나의 Collection을 선택해 모든 값의 문제와 히든을 가져오기.
 
-		public ArrayList<DtoMake_OKH> getCorrectionnote() {
-			PreparedStatement ps = null;
-			ArrayList<DtoMake_OKH> dto = new ArrayList<DtoMake_OKH>();
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
-				Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-				String query = "select m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid" 
-						+ " from make m, collection co, score s"
-						+ " where m.m_coid = co.coid" 
-						+ " and co.coid = s.s_coid"
-						+ " and co.coid = ?"
-						+ " and s.scorrect =1";
+	// 오답노트 모든 값의 문제와 히든을 가져오기.
+	public ArrayList<DtoMake_OKH> getCorrectionNote() {
+		PreparedStatement ps = null;
+		ArrayList<DtoMake_OKH> dto = new ArrayList<DtoMake_OKH>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
+			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+			String query = "SELECT DISTINCT m.manswer, m.mcontents, m.mgenre, m.mtitle, m.mid, m.m_coid"
+					+ " FROM make m, collection co, score s"
+					+ " WHERE m.m_coid = co.coid AND s.s_coid = co.coid AND scorrect = 1" 
+					+ " AND co.coid = ?";
 
-				ps = conn_mysql.prepareStatement(query);
-				ps.setString(1, "tutor002_001"); // Co-id 넣기
+			ps = conn_mysql.prepareStatement(query);
+			ps.setString(1, "tutor002_001"); // Co-id 넣기
 
-				ResultSet rs = ps.executeQuery();
-				while (rs.next()) {
-					manswer = rs.getString(1);
-					mcontents = rs.getString(2);
-					mgenre = rs.getString(3);
-					mtitle = rs.getString(4);
-					mid = rs.getInt(5);
-					qseq = rs.getInt(5);
-					DtoMake_OKH beanList = new DtoMake_OKH(manswer, mcontents, mgenre, mtitle, mid, qseq);
-					dto.add(beanList);
-				}
-
-				conn_mysql.close();
-
-			} catch (Exception e) {
-				e.printStackTrace();
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				manswer = rs.getString(1);
+				mcontents = rs.getString(2);
+				mgenre = rs.getString(3);
+				mtitle = rs.getString(4);
+				mid = rs.getInt(5);
+				qseq = rs.getInt(5);
+				DtoMake_OKH beanList = new DtoMake_OKH(manswer, mcontents, mgenre, mtitle, mid, qseq);
+				dto.add(beanList);
 			}
-			return dto;
 
+			conn_mysql.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return dto;
+
+	}
 
 }

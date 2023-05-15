@@ -38,7 +38,9 @@ public class DaoScore_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 0)";
+			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " 
+					+ "VALUES (?, ?, ?, now(), 0) "
+					+ "ON DUPLICATE KEY UPDATE sdate=now(), scorrect=0";
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, s_uid);
 			ps.setString(2, s_coid);
@@ -58,7 +60,9 @@ public class DaoScore_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 1)";
+			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " 
+					+ "VALUES (?, ?, ?, now(), 1) "
+					+ "ON DUPLICATE KEY UPDATE sdate=now(), scorrect=1";
 			ps = conn_mysql.prepareStatement(query);
 			ps.setString(1, s_uid);
 			ps.setString(2, s_coid);
@@ -72,24 +76,26 @@ public class DaoScore_OKH {
 		}
 	}
 
-	// 오답노트 만들기
-//	public void insertCorrectionnote() {
-//		PreparedStatement ps = null;
-//
-//		try {
-//			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
-//			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-//			String query = "INSERT INTO score (s_uid, s_coid, s_mid, sdate, scorrect) " + "VALUES (?, ?, ?, now(), 1)";
-//			ps = conn_mysql.prepareStatement(query);
-//			ps.setString(1, s_uid);
-//			ps.setString(2, s_coid);
-//			ps.setInt(3, s_mid);
-//
-//			ps.executeUpdate();
-//
-//			conn_mysql.close();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	//	오답노트 문제 수량 가져오기
+	
+	public int getCorrectCount() {
+	    PreparedStatement ps = null;
+	    int count = 0;
+	    try {
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+	        String query = "SELECT COUNT(*) FROM score WHERE scorrect = 1";
+	        ps = conn_mysql.prepareStatement(query);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            count = rs.getInt(1);
+	        }
+	        conn_mysql.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return count;
+	}
+
+
 }

@@ -11,7 +11,16 @@ public class DtoTutor_OKH {
 	public DtoTutor_OKH() {
 		// TODO Auto-generated constructor stub
 	}
+
 	
+	
+	public DtoTutor_OKH(String tname) {
+		super();
+		this.tname = tname;
+	}
+	
+
+
 	public DtoTutor_OKH(String tid, String tpw, String tname, String tspeciality) {
 		super();
 		this.tid = tid;
@@ -20,10 +29,7 @@ public class DtoTutor_OKH {
 		this.tspeciality = tspeciality;
 	}
 
-	public DtoTutor_OKH(String tname) {
-		super();
-		this.tname = tname;
-	}
+
 
 	//	Method G/S
 	public String getTid() {

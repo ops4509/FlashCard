@@ -59,6 +59,10 @@ public class Shortquiz extends JFrame {
 	public static String thirdoption;
 	public static String fourthoption;
 	public static String[] options = new String[4];
+	private JLabel lblNewLabel;
+	private JLabel lblScore;
+	private JLabel lblCount;
+	private JLabel lblScore_1;
 
 	/**
 	 * Launch the application.
@@ -112,13 +116,17 @@ public class Shortquiz extends JFrame {
 		contentPane.add(getBtnOption3());
 		contentPane.add(getLblOption4());
 		contentPane.add(getBtnOption4());
+		contentPane.add(getLblScore());
+		contentPane.add(getLblCount());
+		contentPane.add(getLblScore_1());
+		contentPane.add(getLblNewLabel());
 	}
 
 	private JLabel getLblHello() {
 		if (lblHello == null) {
 			lblHello = new JLabel("");
-			lblHello.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/hello.png")));
 			lblHello.setBounds(241, 82, 65, 34);
+			lblHello.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/hello.png")));
 		}
 		return lblHello;
 	}
@@ -126,8 +134,8 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblLoginname() {
 		if (lblLoginname == null) {
 			lblLoginname = new JLabel(ShareVar.u_name + "님!");
-			lblLoginname.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblLoginname.setBounds(311, 89, 75, 38);
+			lblLoginname.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 		}
 		return lblLoginname;
 	}
@@ -135,8 +143,13 @@ public class Shortquiz extends JFrame {
 	private JButton getBtnHome() {
 		if (btnHome == null) {
 			btnHome = new JButton("");
+			btnHome.setBounds(167, 27, 101, 48);
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					//	합치면 넣어야할것.
+//					MainView main = new MainView();
+//					main.setVisible(true);
+//					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));
@@ -144,7 +157,6 @@ public class Shortquiz extends JFrame {
 			btnHome.setFocusPainted(false);
 			btnHome.setContentAreaFilled(false);
 			btnHome.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/101 Logo.png")));
-			btnHome.setBounds(167, 27, 101, 48);
 		}
 		return btnHome;
 	}
@@ -152,6 +164,7 @@ public class Shortquiz extends JFrame {
 	private JButton getBtnBack() {
 		if (btnBack == null) {
 			btnBack = new JButton("");
+			btnBack.setBounds(48, 79, 48, 48);
 			btnBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					QuizSelect quizSelect = new QuizSelect();
@@ -165,7 +178,6 @@ public class Shortquiz extends JFrame {
 			btnBack.setFocusPainted(false);
 			btnBack.setContentAreaFilled(false);
 			btnBack.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/Back.png")));
-			btnBack.setBounds(48, 79, 48, 48);
 		}
 		return btnBack;
 	}
@@ -173,10 +185,10 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblshortquizquestion() {
 		if (lblshortquizquestion == null) {
 			lblshortquizquestion = new JLabel("");
+			lblshortquizquestion.setBounds(40, 200, 345, 146);
 			lblshortquizquestion.setBackground(UIManager.getColor("Button.background"));
 			lblshortquizquestion
 					.setIcon(new ImageIcon(Shortquiz.class.getResource("/com/javalec/assets/shortquizquestion.png")));
-			lblshortquizquestion.setBounds(40, 160, 345, 146);
 		}
 		return lblshortquizquestion;
 	}
@@ -184,7 +196,9 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblGenre() {
 		if (lblGenre == null) {
 			lblGenre = new JLabel();
-			lblGenre.setBounds(74, 200, 61, 16);
+			lblGenre.setBounds(40, 200, 135, 60);
+			lblGenre.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
+			lblGenre.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblGenre;
 	}
@@ -192,7 +206,8 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblTitle() {
 		if (lblTitle == null) {
 			lblTitle = new JLabel();
-			lblTitle.setBounds(186, 200, 61, 16);
+			lblTitle.setBounds(170, 200, 200, 60);
+			lblTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 15));
 		}
 		return lblTitle;
 	}
@@ -200,9 +215,9 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblContents() {
 		if (lblContents == null) {
 			lblContents = new JLabel();
+			lblContents.setBounds(42, 260, 345, 85);
 			lblContents.setHorizontalAlignment(SwingConstants.CENTER);
-			lblContents.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
-			lblContents.setBounds(42, 234, 345, 64);
+			lblContents.setFont(new Font("Lucida Grande", Font.BOLD, 25));
 		}
 		return lblContents;
 	}
@@ -210,6 +225,7 @@ public class Shortquiz extends JFrame {
 	private JButton getBtnOption1() {
 		if (btnOption1 == null) {
 			btnOption1 = new JButton();
+			btnOption1.setBounds(40, 397, 345, 85);
 			btnOption1.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Daomake2_OKH daoMake_OKH = new Daomake2_OKH(lblContents.getText(), lblOption1.getText());
@@ -227,7 +243,6 @@ public class Shortquiz extends JFrame {
 			btnOption1.setFocusPainted(false);
 			btnOption1.setContentAreaFilled(false);
 			btnOption1.setIcon(new ImageIcon(Shortquiz.class.getResource("/com/javalec/assets/Basic dialog.png")));
-			btnOption1.setBounds(40, 397, 345, 85);
 		}
 		return btnOption1;
 	}
@@ -235,6 +250,7 @@ public class Shortquiz extends JFrame {
 	private JButton getBtnOption2() {
 		if (btnOption2 == null) {
 			btnOption2 = new JButton();
+			btnOption2.setBounds(40, 515, 345, 85);
 			btnOption2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Daomake2_OKH daoMake_OKH = new Daomake2_OKH(lblContents.getText(), lblOption2.getText());
@@ -252,7 +268,6 @@ public class Shortquiz extends JFrame {
 			btnOption2.setFocusPainted(false);
 			btnOption2.setContentAreaFilled(false);
 			btnOption2.setIcon(new ImageIcon(Shortquiz.class.getResource("/com/javalec/assets/Basic dialog.png")));
-			btnOption2.setBounds(40, 515, 345, 85);
 		}
 		return btnOption2;
 	}
@@ -260,6 +275,7 @@ public class Shortquiz extends JFrame {
 	private JButton getBtnOption3() {
 		if (btnOption3 == null) {
 			btnOption3 = new JButton();
+			btnOption3.setBounds(40, 633, 345, 85);
 			btnOption3.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Daomake2_OKH daoMake_OKH = new Daomake2_OKH(lblContents.getText(), lblOption3.getText());
@@ -277,7 +293,6 @@ public class Shortquiz extends JFrame {
 			btnOption3.setFocusPainted(false);
 			btnOption3.setContentAreaFilled(false);
 			btnOption3.setIcon(new ImageIcon(Shortquiz.class.getResource("/com/javalec/assets/Basic dialog.png")));
-			btnOption3.setBounds(40, 633, 345, 85);
 		}
 		return btnOption3;
 	}
@@ -285,6 +300,7 @@ public class Shortquiz extends JFrame {
 	private JButton getBtnOption4() {
 		if (btnOption4 == null) {
 			btnOption4 = new JButton();
+			btnOption4.setBounds(40, 751, 345, 85);
 			btnOption4.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					Daomake2_OKH daoMake_OKH = new Daomake2_OKH(lblContents.getText(), lblOption4.getText());
@@ -302,7 +318,6 @@ public class Shortquiz extends JFrame {
 			btnOption4.setFocusPainted(false);
 			btnOption4.setContentAreaFilled(false);
 			btnOption4.setIcon(new ImageIcon(Shortquiz.class.getResource("/com/javalec/assets/Basic dialog.png")));
-			btnOption4.setBounds(40, 751, 345, 85);
 		}
 		return btnOption4;
 	}
@@ -310,8 +325,9 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblOption1() {
 		if (lblOption1 == null) {
 			lblOption1 = new JLabel();
-			lblOption1.setHorizontalAlignment(SwingConstants.CENTER);
+			lblOption1.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblOption1.setBounds(40, 397, 345, 85);
+			lblOption1.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblOption1;
 	}
@@ -319,8 +335,9 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblOption2() {
 		if (lblOption2 == null) {
 			lblOption2 = new JLabel();
-			lblOption2.setHorizontalAlignment(SwingConstants.CENTER);
+			lblOption2.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblOption2.setBounds(40, 515, 345, 85);
+			lblOption2.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblOption2;
 	}
@@ -328,8 +345,9 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblOption3() {
 		if (lblOption3 == null) {
 			lblOption3 = new JLabel();
-			lblOption3.setHorizontalAlignment(SwingConstants.CENTER);
+			lblOption3.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblOption3.setBounds(40, 633, 345, 85);
+			lblOption3.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblOption3;
 	}
@@ -337,10 +355,45 @@ public class Shortquiz extends JFrame {
 	private JLabel getLblOption4() {
 		if (lblOption4 == null) {
 			lblOption4 = new JLabel();
-			lblOption4.setHorizontalAlignment(SwingConstants.CENTER);
+			lblOption4.setFont(new Font("Lucida Grande", Font.PLAIN, 18));
 			lblOption4.setBounds(41, 751, 345, 85);
+			lblOption4.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lblOption4;
+	}
+	
+	
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("");
+			lblNewLabel.setBounds(235, 150, 150, 30);
+			lblNewLabel.setIcon(new ImageIcon(Shortquiz.class.getResource("/com/javalec/assets/scoreBox.png")));
+		}
+		return lblNewLabel;
+	}
+	private JLabel getLblScore() {
+		if (lblScore == null) {
+			lblScore = new JLabel(Integer.toString(qseq+1));
+			lblScore.setHorizontalAlignment(SwingConstants.CENTER);
+			lblScore.setBounds(235, 150, 70, 30);
+		}
+		return lblScore;
+	}
+	private JLabel getLblCount() {
+		if (lblCount == null) {
+			lblCount = new JLabel(Integer.toString(QuizSelect.cocount));
+			lblCount.setHorizontalAlignment(SwingConstants.CENTER);
+			lblCount.setBounds(315, 150, 70, 30);
+		}
+		return lblCount;
+	}
+	private JLabel getLblScore_1() {
+		if (lblScore_1 == null) {
+			lblScore_1 = new JLabel("/");
+			lblScore_1.setHorizontalAlignment(SwingConstants.CENTER);
+			lblScore_1.setBounds(280, 150, 70, 30);
+		}
+		return lblScore_1;
 	}
 
 	// function
@@ -389,7 +442,7 @@ public class Shortquiz extends JFrame {
 			// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
 			// 랜덤으로 섞어줍니다.
 		} else {
-			ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getCorrectionnote();
+			ArrayList<DtoMake_OKH> dtoMake_OKH = daoMake_OKH.getCorrectionNote();
 			selectedAnswer = dtoMake_OKH.get(qseq).getManswer();
 			selectedContent = dtoMake_OKH.get(qseq).getMcontents();
 			selectedGenre = dtoMake_OKH.get(qseq).getMgenre();
@@ -446,6 +499,10 @@ public class Shortquiz extends JFrame {
 		lblOption2.setText("");
 		lblOption3.setText("");
 		lblOption4.setText("");
+	}
+
+	public void setqseq() {
+		lblScore.setText(Integer.toString(qseq+1)); 
 	}
 
 }
