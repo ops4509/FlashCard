@@ -88,6 +88,7 @@ public class Mycard_02view extends JFrame {
 			}
 			@Override
 			public void windowActivated(WindowEvent e) {
+				viewCid = Mycard_01main.select_ci;
 				screenpartition();
 				printCard();
 				
@@ -139,7 +140,7 @@ public class Mycard_02view extends JFrame {
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
-					Mycard_01main.main01.setVisible(true);
+					Mycard_01main.getInstance().setVisible(true);
 					dispose();
 				
 				}
@@ -183,7 +184,7 @@ public class Mycard_02view extends JFrame {
 			btn_confirm.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 				
-					Mycard_01main.main01.setVisible(true);
+					Mycard_01main.getInstance().setVisible(true);
 					dispose();
 				
 				}
@@ -257,7 +258,7 @@ public class Mycard_02view extends JFrame {
 			Dao_mycard dao = new Dao_mycard();
 			ArrayList<Dto_card> dtoList = dao.getUcView(viewCid);
 			//int listCount = dtoList.size();
-			System.out.println("넘어온 콘텐츠 내용"+dtoList.get(0).getCcontents());
+			System.out.println("넘어온 콘텐츠 내용 카드아이디 :  "+viewCid+ "   컨텐츠 : " +dtoList.get(0).getCcontents());
 			System.out.println(dtoList.get(0).getCcontents());
 			
 			

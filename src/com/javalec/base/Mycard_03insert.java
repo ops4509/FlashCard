@@ -70,7 +70,7 @@ public class Mycard_03insert extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-				selectedcardid_insert = Mycard_01main.main01.select_ci;
+				selectedcardid_insert = Mycard_01main.getInstance().select_ci;
 			
 			}
 		});

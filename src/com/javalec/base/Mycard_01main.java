@@ -20,6 +20,8 @@ import com.javalec.util.ShareVar;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -42,6 +44,9 @@ import java.awt.event.MouseMotionAdapter;
 
 public class Mycard_01main extends JFrame {
 
+    
+
+	
 	private JPanel contentPane;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
@@ -74,9 +79,10 @@ public class Mycard_01main extends JFrame {
 	public static String select_ci = ""; //지정한 로우의 카드 아이디기억하는 변수.
 	public static String[] select_cil = null ; // 추가기능으로 여러개 카드 선택후 카드보기 할때 사용할 String
 
-    //private static Mycard_01main main01 ;
 
-    public static Mycard_01main main01 = new Mycard_01main();
+   
+	private static Mycard_01main main01 ;
+   // public static Mycard_01main main01 = new Mycard_01main();
 	public static Mycard_02view viewMain = new Mycard_02view();				
 	public static Mycard_03insert insertMain = new Mycard_03insert();
 	public static Mycard_04update updateMain = new Mycard_04update();
@@ -86,6 +92,8 @@ public class Mycard_01main extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -100,19 +108,20 @@ public class Mycard_01main extends JFrame {
 	}
 
 	
+
+	
 	
 	
 
 	/**
 	 * Create the frame.
 	 */
-	public Mycard_01main() {
+	
+	private Mycard_01main() {
+	//public Mycard_01main() {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
-	
-				
-				
 				
 				makeTempTable(); 		// 로그인한 유저의 기본적인 정보들은 기억해두자.
 				//screenPartition();
@@ -159,14 +168,7 @@ public class Mycard_01main extends JFrame {
 		contentPane.add(getBtn_search());
 		contentPane.add(getScrollPane());
 	}
-	/*         이걸  이용하면 왔다갔다 할 수있다.
-    public static Mycard_01main getInstance() {
-        if (main01 == null) {
-            main01 = new Mycard_01main();
-        }
-        return main01;
-    }
-    */
+
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
 			lblNewLabel = new JLabel("<html>비워둘 창로고 들어가야함<br>글씨는 하단에 붙였음.</html>\n");
@@ -244,14 +246,6 @@ public class Mycard_01main extends JFrame {
 				dispose();
 				
 				
-				
-				
-				
-				
-				
-				
-				
-				
 				}
 			});
 			btn_insert.setBounds(40, 780, 90, 50);
@@ -262,6 +256,14 @@ public class Mycard_01main extends JFrame {
 	private JButton getBtn_delete() {
 		if (btn_delete == null) {
 			btn_delete = new JButton("내 카드 삭제하기");
+			btn_delete.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+				
+					delete_Action();
+				
+				
+				}
+			});
 			btn_delete.setBounds(169, 780, 90, 50);
 			btn_delete.setFont(new Font("Lucida Grande", Font.PLAIN, 10));
 		}
@@ -335,8 +337,11 @@ public class Mycard_01main extends JFrame {
 			mc_innertable.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
+					
+					System.out.println("테이블 클릭전 저장된 카드 아이디. : " + select_ci);
 					select_ci = savecid();
 					screenPartition();
+					System.out.println("테이블 클릭 저장된 카드 아이디. : " + select_ci);
 				}
 
 				
@@ -361,6 +366,17 @@ public class Mycard_01main extends JFrame {
 	}
 	
 	
+
+	
+	//이걸  이용하면 왔다갔다 할 수있다.
+	        
+    public static Mycard_01main getInstance() {
+        if (main01 == null) {
+            main01 = new Mycard_01main();
+        }
+        return main01;
+    }
+   
 
 	
 	
@@ -521,6 +537,20 @@ public class Mycard_01main extends JFrame {
 			String[] Ttxt= {"UC"+Integer.toString(dtoList_ca.get(i).getCid()), temp2, temp, dtoList_ca.get(i).getCcontents(),dtoList_ca.get(i).getCanswer(),user_SampleID,dtoList_ca.get(i).getCtitle(),dtoList_ca.get(i).getCgenre()};		
 			System.out.println(Ttxt + "뭐지?");
 			outerTable.addRow(Ttxt);
+		}
+		
+			ArrayList<Dto_make> dtoList_ca2 = dao_ca.userColCardList();
+			
+			int listCount2 = dtoList_ca2.size();
+			for (int j = 0; j<listCount2; j++) {
+				String temp = Integer.toString(j+1);
+				String temp2 = "Box자리";
+				
+				//System.out.println(dtoList_ca.get(i).getCid()); 
+				//
+				String[] Ttxt= {"UC"+Integer.toString(dtoList_ca2.get(j).getMid()), temp2, temp, dtoList_ca2.get(j).getMcontents(),dtoList_ca2.get(j).getManswer(),dtoList_ca2.get(j).getM_coid(),dtoList_ca2.get(j).getMtitle(),dtoList_ca2.get(j).getMgenre()};		
+				System.out.println(Ttxt + "뭐지?");
+				outerTable.addRow(Ttxt);
 		
 		
 		}
@@ -581,14 +611,47 @@ public class Mycard_01main extends JFrame {
 	
 	
 	
+	
+	//
+	private void delete_Action() {
+		int tempCardid =Integer.parseInt(select_ci.substring(2));  
+		String tempUserid = user_SampleID;
+		Dao_mycard dao = new Dao_mycard();
+		
+		
+		
+		boolean deleteCard_rs = dao.deleteCard(tempCardid,tempUserid);
+		
+		if(deleteCard_rs) {
+			
+			JOptionPane.showMessageDialog(this, tempUserid + " 님 삭제가 완료되었습니다.", "삭제완료 메시지",JOptionPane.INFORMATION_MESSAGE);
+
+		}else if(deleteCard_rs) {
+			
+			JOptionPane.showMessageDialog(this, tempUserid+ " 삭제에 실패하였습니다..", "삭제실패 메시지",JOptionPane.ERROR_MESSAGE);
+
+		}
+
+		
+		
+		
+		
+		
+	}
+	
+	
+	
 	//table 클릭시 cid 를 기억하는 메쏘드.
 	private String savecid() {
-		
+		select_ci = "";
 		int selectedRow = mc_innertable.getSelectedRow(); // 선택된 로우의 인덱스 가져오기
 		String value = (String) mc_innertable.getValueAt(selectedRow, 0); // 첫 번째 열의 값을 가져와서 int로 형변환하기
 
 	return value;	
 	} 
+	
+	
+	
 	
 	
 	
