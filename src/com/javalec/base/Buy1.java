@@ -24,8 +24,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import com.javalec.daoBuy.DaoBuy;
-import com.javalec.dtoBuy.DtoBuy;
+import com.javalec.dao.DaoBuy;
+import com.javalec.dto.DtoBuy;
+import com.javalec.util.ShareVar;
+
+import java.awt.Color;
 
 public class Buy1 extends JFrame {
 
@@ -35,7 +38,7 @@ public class Buy1 extends JFrame {
 	private JLabel lblback;
 	private JLabel lblhello;
 	private JLabel lblmainLogo;
-	private JLabel lblNewLabel_2;
+	private JLabel lblName;
 	private JComboBox comboBox;
 	private JTextField textField;
 	private JButton btnNewButton;
@@ -43,6 +46,7 @@ public class Buy1 extends JFrame {
 	private JLabel lbltext;
 	private JScrollPane scrollPane;
 	private JTable innerTable;
+	private JLabel lbllong;
 
 	/**
 	 * Launch the application.
@@ -64,30 +68,34 @@ public class Buy1 extends JFrame {
 	 * Create the frame.
 	 */
 	public Buy1() {
+		setBackground(new Color(238, 238, 238));
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				tableInit();
 				searchAction();
+				lblName.setText(ShareVar.u_name+"님!");
 
 			}
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(254, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		contentPane.add(getLblback());
-		contentPane.add(getLblhello());
 		contentPane.add(getLblmainLogo());
-		contentPane.add(getLblNewLabel_2());
+		contentPane.add(getLblName());
+		contentPane.add(getLblhello());
 		contentPane.add(getLbltext());
 		contentPane.add(getComboBox());
 		contentPane.add(getTextField());
 		contentPane.add(getBtnsearch());
 		contentPane.add(getScrollPane());
+		contentPane.add(getLbllong());
 	}
 
 	// 화살표 이미지 넣어야 하는 곳 ( 뒤로가기 버튼 )
@@ -104,7 +112,7 @@ public class Buy1 extends JFrame {
 		if (lblhello == null) {
 			ImageIcon icon = new ImageIcon("src/com/javalec/images/hello.png");
 			lblhello = new JLabel("");
-			lblhello.setBounds(213, 58, 102, 48);
+			lblhello.setBounds(268, 79, 64, 33);
 			lblhello.setIcon(icon);
 		}
 		return lblhello;
@@ -113,35 +121,34 @@ public class Buy1 extends JFrame {
 	// 메인로고누르면 홈으로 돌아가는 이미지 넣는
 	private JLabel getLblmainLogo() {
 		if (lblmainLogo == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/images/MyCardMainLogo.png");
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/LOGO.png");
 			lblmainLogo = new JLabel("");
 			lblmainLogo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					MainView main = new MainView();
-					main.setVisible(true);
-					dispose();
+					changepage3();
+
 				}
 			});
-			lblmainLogo.setBounds(155, 16, 111, 48);
+			lblmainLogo.setBounds(46, 121, 342, 158);
 			lblmainLogo.setIcon(icon);
 		}
 		return lblmainLogo;
 	}
 
-	private JLabel getLblNewLabel_2() {
-		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("______님");
-			lblNewLabel_2.setBounds(327, 58, 61, 16);
+	private JLabel getLblName() {
+		if (lblName == null) {
+			lblName = new JLabel("");
+			lblName.setBounds(337, 89, 75, 37);
 		}
-		return lblNewLabel_2;
+		return lblName;
 	}
 
 	// 상품검색 할수있게 해주는 콤보박스
 	private JComboBox getComboBox() {
 		if (comboBox == null) {
 			comboBox = new JComboBox();
-			comboBox.setBounds(34, 102, 87, 27);
+			comboBox.setBounds(34, 291, 87, 27);
 			comboBox.setModel(new DefaultComboBoxModel(new String[] { "상품명", "금액" }));
 		}
 		return comboBox;
@@ -150,7 +157,7 @@ public class Buy1 extends JFrame {
 	private JTextField getTextField() {
 		if (textField == null) {
 			textField = new JTextField();
-			textField.setBounds(120, 99, 195, 30);
+			textField.setBounds(120, 288, 195, 30);
 			textField.setColumns(10);
 		}
 		return textField;
@@ -161,7 +168,7 @@ public class Buy1 extends JFrame {
 		if (btnsearch == null) {
 
 			btnsearch = new JButton("검색");
-			btnsearch.setBounds(321, 105, 69, 20);
+			btnsearch.setBounds(321, 294, 69, 20);
 
 			btnsearch.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -171,37 +178,6 @@ public class Buy1 extends JFrame {
 			btnsearch.setSelected(true);
 		}
 		return btnsearch;
-	}
-
-	private void screenPartition() {
-		int i = comboBox.getSelectedIndex();
-		String conditionQueryColumn = "";
-		switch (i) {
-		case 0:
-			conditionQueryColumn = "c.coname";
-			break;
-		case 1:
-			conditionQueryColumn = "co.csprice";
-			break;
-		default:
-			break;
-		}
-
-		tableInit();
-		conditionQueryAction(conditionQueryColumn);
-	}
-
-	private void conditionQueryAction(String conditionQueryColumn) {
-		DaoBuy dao = new DaoBuy(conditionQueryColumn, textField.getText());
-		ArrayList<DtoBuy> dtoList = dao.conditionList();
-		int listCount = dtoList.size();
-
-		for (int i = 0; i < listCount; i++) {
-			ImageIcon icon = new ImageIcon(dtoList.get(i).getCopic());
-			Object[] qTxt = { dtoList.get(i).getCoid(), icon, dtoList.get(i).getConame(),
-					Integer.toString(dtoList.get(i).getCsprice()) };
-			outerTable.addRow(qTxt);
-		}
 	}
 
 	// 화면 하단 사업자텍스트
@@ -215,17 +191,26 @@ public class Buy1 extends JFrame {
 		return lbltext;
 	}
 
-	
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(34, 154, 356, 647);
+			scrollPane.setBounds(32, 330, 356, 477);
 			scrollPane.setViewportView(getInnerTable());
 		}
 		return scrollPane;
 	}
+	
+	private JLabel getLbllong() {
+		if (lbllong == null) {
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/Rectangle.png");
+			lbllong = new JLabel("");
+			lbllong.setBounds(0, 0, 428, 20);
+			lbllong.setIcon(icon);
+		}
+		return lbllong;
+	}
 
-	// 상품목록 페이지
+	// 상품목록 페이지 ( 상품목록애서 선택한 데이터를 가지고 2번 구매페이지로 넘어가는 것 )
 	private JTable getInnerTable() {
 		if (innerTable == null) {
 			innerTable = new JTable() {
@@ -238,11 +223,13 @@ public class Buy1 extends JFrame {
 
 			innerTable.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent me) {
-					if (me.getClickCount() == 2) {
+					if (me.getClickCount() == 1) {
 						JTable target = (JTable) me.getSource();
 						int row = target.getSelectedRow();
-						int column =target.getSelectedColumn();
 						changepage(innerTable.getValueAt(row, 2).toString());
+						int column = target.getSelectedColumn();
+						JPanel contentPane = new JPanel();
+						contentPane.setBackground(Color.WHITE); 
 
 					}
 				}
@@ -251,17 +238,60 @@ public class Buy1 extends JFrame {
 		}
 		return innerTable;
 	}
-	// --Function
-	// -------------------------------------------------------------------
+	// --Function-------------------------------------------------------------------
+
+	// 콤보박스 검색할 수 있게 해주는 기능
+	private void screenPartition() {
+		int i = comboBox.getSelectedIndex();
+		String conditionQueryColumn = "";
+		switch (i) {
+		case 0:
+			conditionQueryColumn = "c.coname";
+			break;
+		case 1:
+			conditionQueryColumn = "co.csprice";
+			break;
+		default:
+			break;
+		}
+		tableInit();
+		conditionQueryAction(conditionQueryColumn);
+	}
+
+	// 콤보박스 검색 후 데이터베이스에서 찾은다음 노출해주는 기능
+	private void conditionQueryAction(String conditionQueryColumn) {
+		DaoBuy dao = new DaoBuy(conditionQueryColumn, textField.getText());
+		ArrayList<DtoBuy> dtoList = dao.conditionList();
+		int listCount = dtoList.size();
+
+		for (int i = 0; i < listCount; i++) {
+			ImageIcon icon = new ImageIcon(dtoList.get(i).getCopic());
+			Object[] qTxt = { dtoList.get(i).getCoid(), icon, dtoList.get(i).getConame(),
+					Integer.toString(dtoList.get(i).getCsprice()) };
+			outerTable.addRow(qTxt);
+		}
+	}
 
 	// 다음페이지로 이동
 	private void changepage(String selectedName) {
-
 		setVisible(false);
 		Buy2 buy2 = new Buy2(selectedName);
+		lblName.setText(ShareVar.u_name+"님!");
+		buy2.setColor(Color.WHITE);
+	    buy2.setName(ShareVar.u_name+"님!");
+		//	JPanel contentPane = new JPanel();
+	//	contentPane.setBackground(Color.WHITE); 
 		buy2.setVisible(true);
 	}
 
+	// 메인로고 클릭시 홈으로 돌아갈수 있는 기능 ( 아직 메인 페이지 구축전이라서 매소드만 만들어
+	private void changepage3() {
+		setVisible(false);
+		MainView mainview = new MainView();
+		mainview.setVisible(true);
+	}
+
+	// 최초 테이블 outTable 구성
 	private void tableInit() {
 		outerTable.addColumn("튜터ID");
 		outerTable.addColumn("카드사진");
@@ -278,12 +308,12 @@ public class Buy1 extends JFrame {
 
 		int vColIndex = 0;
 		TableColumn col = innerTable.getColumnModel().getColumn(vColIndex);
-		int width = 30;
+		int width = 110;
 		col.setPreferredWidth(width);
 
 		vColIndex = 1;
 		col = innerTable.getColumnModel().getColumn(vColIndex);
-		width = 80;
+		width = 100;
 		col.setPreferredWidth(width);
 
 		vColIndex = 2;

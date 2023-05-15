@@ -6,18 +6,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.javalec.util.ShareVar;
+
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import java.awt.Color;
+import javax.swing.UIManager;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Buy4 extends JFrame {
 
 	private JPanel contentPane;
-	private JScrollPane scrollPane;
-	private JLabel lblNewLabel;
+	private JLabel lblName;
 	private JLabel lblhello;
 	private JLabel lblMainLogo;
 	private JLabel lblokLogo;
 	private JLabel lbltext;
+	private JLabel lbla;
 
 	/**
 	 * Launch the application.
@@ -39,42 +48,44 @@ public class Buy4 extends JFrame {
 	 * Create the frame.
 	 */
 	public Buy4() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowOpened(WindowEvent e) {
+				lblName.setText(ShareVar.u_name+"님!");
+			}
+		});
+		setBackground(UIManager.getColor("Button.background"));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(254, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		contentPane.add(getScrollPane());
-		contentPane.add(getLblNewLabel());
+		contentPane.add(getLblName());
 		contentPane.add(getLblhello());
 		contentPane.add(getLblMainLogo());
 		contentPane.add(getLblokLogo());
 		contentPane.add(getLbltext());
+		contentPane.add(getLbla());
 	}
 
-	private JScrollPane getScrollPane() {
-		if (scrollPane == null) {
-			scrollPane = new JScrollPane();
-			scrollPane.setBounds(36, 139, 356, 188);
+	private JLabel getLblName() {
+		if (lblName == null) {
+			lblName = new JLabel("");
+			lblName.setBounds(338, 89, 75, 37);
 		}
-		return scrollPane;
-	}
-
-	private JLabel getLblNewLabel() {
-		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("______님");
-			lblNewLabel.setBounds(331, 33, 61, 16);
-		}
-		return lblNewLabel;
+		return lblName;
 	}
 
 	// hello 로고
 	private JLabel getLblhello() {
 		if (lblhello == null) {
+			ImageIcon icon = new ImageIcon("src/com/javalec/images/hello.png");
 			lblhello = new JLabel("");
-			lblhello.setBounds(265, 33, 61, 16);
+			lblhello.setBounds(268, 81, 64, 33);
+			lblhello.setIcon(icon);
 		}
 		return lblhello;
 	}
@@ -84,7 +95,7 @@ public class Buy4 extends JFrame {
 		if (lblMainLogo == null) {
 			ImageIcon icon = new ImageIcon("src/com/javalec/images/MyCardMainLogo.png");
 			lblMainLogo = new JLabel("");
-			lblMainLogo.setBounds(132, 6, 139, 75);
+			lblMainLogo.setBounds(162, 6, 139, 75);
 			lblMainLogo.setIcon(icon);
 		}
 		return lblMainLogo;
@@ -93,9 +104,9 @@ public class Buy4 extends JFrame {
 	// 구매 완료 이미지
 	private JLabel getLblokLogo() {
 		if (lblokLogo == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/images/ok.png");
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/Oktextpng.png");
 			lblokLogo = new JLabel("");
-			lblokLogo.setBounds(62, 387, 290, 113);
+			lblokLogo.setBounds(36, 544, 321, 113);
 			lblokLogo.setIcon(icon);
 		}
 		return lblokLogo;
@@ -110,7 +121,28 @@ public class Buy4 extends JFrame {
 		}
 		return lbltext;
 	}
+	private JLabel getLbla() {
+		if (lbla == null) {
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/aCard.png");
+			lbla = new JLabel("");
+			lbla.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					changepage();
+				}
+			});
+			lbla.setBounds(72, 155, 301, 338);
+			lbla.setIcon(icon);
+		}
+		return lbla;
+	}
+	
+	private void changepage() {
+		setVisible(false);
+		MainView mainview = new MainView();
+		mainview.setVisible(true);
+	}
+	
 
-	// Function-----------------------------------------------------------------------------------------------------
-
+	
 }
