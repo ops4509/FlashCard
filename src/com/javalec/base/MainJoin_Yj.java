@@ -1,5 +1,6 @@
 package com.javalec.base;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -17,6 +18,10 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.event.ActionEvent;
+import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
+import javax.swing.ImageIcon;
 
 public class MainJoin_Yj extends JFrame {
 
@@ -40,6 +45,10 @@ public class MainJoin_Yj extends JFrame {
 	private JTextField tfEmail1;
 	private JTextField tfEmail2;
 	private JLabel lblNewLabel_1;
+	int dupToken = 0;
+	int chkToken = 0;
+	String idTemp = "";
+	
 
 	/**
 	 * Launch the application.
@@ -61,10 +70,12 @@ public class MainJoin_Yj extends JFrame {
 	 * Create the frame.
 	 */
 	public MainJoin_Yj() {
-		setTitle("My Cald 회원가입");
+		setBackground(SystemColor.activeCaption);
+		setTitle("My Card 회원가입");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
@@ -91,7 +102,8 @@ public class MainJoin_Yj extends JFrame {
 	}
 	private JLabel getLblNewLabel() {
 		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("image in");
+			lblNewLabel = new JLabel("");
+			lblNewLabel.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/myCard.png")));
 			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel.setBounds(60, 59, 135, 70);
 		}
@@ -99,44 +111,51 @@ public class MainJoin_Yj extends JFrame {
 	}
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
-			lblNewLabel_2 = new JLabel("image in");
+			lblNewLabel_2 = new JLabel("");
+			lblNewLabel_2.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/id-3 2.png")));
 			lblNewLabel_2.setBounds(56, 140, 64, 64);
 		}
 		return lblNewLabel_2;
 	}
 	private JLabel getLblNewLabel_2_1() {
 		if (lblNewLabel_2_1 == null) {
-			lblNewLabel_2_1 = new JLabel("image in");
+			lblNewLabel_2_1 = new JLabel("");
+			lblNewLabel_2_1.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/padlock 2.png")));
 			lblNewLabel_2_1.setBounds(56, 203, 64, 64);
 		}
 		return lblNewLabel_2_1;
 	}
 	private JLabel getLblNewLabel_2_1_1() {
 		if (lblNewLabel_2_1_1 == null) {
-			lblNewLabel_2_1_1 = new JLabel("image in");
+			lblNewLabel_2_1_1 = new JLabel("");
+			lblNewLabel_2_1_1.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/phone-call 1.png")));
 			lblNewLabel_2_1_1.setBounds(56, 418, 64, 64);
 		}
 		return lblNewLabel_2_1_1;
 	}
 	private JLabel getLblNewLabel_2_1_1_1() {
 		if (lblNewLabel_2_1_1_1 == null) {
-			lblNewLabel_2_1_1_1 = new JLabel("image in");
+			lblNewLabel_2_1_1_1 = new JLabel("");
+			lblNewLabel_2_1_1_1.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/user 1.png")));
 			lblNewLabel_2_1_1_1.setBounds(56, 336, 64, 64);
 		}
 		return lblNewLabel_2_1_1_1;
 	}
 	private JLabel getLblNewLabel_2_1_1_2() {
 		if (lblNewLabel_2_1_1_2 == null) {
-			lblNewLabel_2_1_1_2 = new JLabel("image in");
+			lblNewLabel_2_1_1_2 = new JLabel("");
+			lblNewLabel_2_1_1_2.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/envelope 1.png")));
 			lblNewLabel_2_1_1_2.setBounds(56, 483, 64, 64);
 		}
 		return lblNewLabel_2_1_1_2;
 	}
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
-			btnNewButton = new JButton("가입취소");
+			btnNewButton = new JButton("");
+			btnNewButton.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/canButton.png")));
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					dispose();
 				}
 			});
 			btnNewButton.setBounds(40, 805, 160, 56);
@@ -145,10 +164,27 @@ public class MainJoin_Yj extends JFrame {
 	}
 	private JButton getBttJoin() {
 		if (bttJoin == null) {
-			bttJoin = new JButton("가입완료");
+			bttJoin = new JButton("");
+			bttJoin.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/regButton.png")));
 			bttJoin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-				joinAction();
+					
+					if(!idTemp.equals(tfId.getText())) {
+						dupToken = 0;
+					}
+					
+					if(dupToken == 1) {
+						joinAction();
+					}
+					else if(dupToken == 0) {
+						idChkAction();
+					}
+					else if(!tfPw.equals(tfPwCheck)) {
+						pwChkAction();
+					}
+					else {
+						notjoinAction();
+					}
 				}
 			});
 			bttJoin.setBounds(217, 805, 160, 56);
@@ -160,6 +196,8 @@ public class MainJoin_Yj extends JFrame {
 			tfId = new JTextField();
 			tfId.setColumns(10);
 			tfId.setBounds(138, 145, 160, 50);
+			
+			tfId.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfId;
 	}
@@ -168,13 +206,22 @@ public class MainJoin_Yj extends JFrame {
 			tfPw = new JTextField();
 			tfPw.setColumns(10);
 			tfPw.setBounds(138, 222, 240, 50);
+			
+			tfPw.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfPw;
 	}
 	private JButton getBttCheck() {
 		if (bttCheck == null) {
-			bttCheck = new JButton("중복확인");
-			bttCheck.setBounds(308, 143, 70, 50);
+			bttCheck = new JButton("");
+			bttCheck.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/chkButton.png")));
+			bttCheck.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					 idTemp = tfId.getText();
+					 doubleCheckAction(); 		
+				}
+			});
+			bttCheck.setBounds(308, 140, 70, 60);
 		}
 		return bttCheck;
 	}
@@ -183,6 +230,8 @@ public class MainJoin_Yj extends JFrame {
 			tfPwCheck = new JTextField();
 			tfPwCheck.setColumns(10);
 			tfPwCheck.setBounds(138, 278, 240, 50);
+			
+			tfPwCheck.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfPwCheck;
 	}
@@ -191,6 +240,8 @@ public class MainJoin_Yj extends JFrame {
 			tfName = new JTextField();
 			tfName.setColumns(10);
 			tfName.setBounds(138, 343, 240, 50);
+			
+			tfName.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfName;
 	}
@@ -202,6 +253,8 @@ public class MainJoin_Yj extends JFrame {
 			tfPhone1.setText("010");
 			tfPhone1.setColumns(10);
 			tfPhone1.setBounds(138, 425, 70, 50);
+			
+			tfPhone1.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfPhone1;
 	}
@@ -210,6 +263,8 @@ public class MainJoin_Yj extends JFrame {
 			tfPhone2 = new JTextField();
 			tfPhone2.setColumns(10);
 			tfPhone2.setBounds(223, 425, 70, 50);
+			
+			tfPhone2.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfPhone2;
 	}
@@ -218,6 +273,8 @@ public class MainJoin_Yj extends JFrame {
 			tfPhone3 = new JTextField();
 			tfPhone3.setColumns(10);
 			tfPhone3.setBounds(308, 425, 70, 50);
+			
+			tfPhone3.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfPhone3;
 	}
@@ -226,6 +283,8 @@ public class MainJoin_Yj extends JFrame {
 			tfEmail1 = new JTextField();
 			tfEmail1.setColumns(10);
 			tfEmail1.setBounds(138, 490, 80, 50);
+			
+			tfEmail1.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfEmail1;
 	}
@@ -234,23 +293,27 @@ public class MainJoin_Yj extends JFrame {
 			tfEmail2 = new JTextField();
 			tfEmail2.setColumns(10);
 			tfEmail2.setBounds(268, 490, 110, 50);
+			
+			tfEmail2.setBorder(new LineBorder(Color.BLACK));
 		}
 		return tfEmail2;
 	}
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("@");
+			lblNewLabel_1 = new JLabel("");
+			lblNewLabel_1.setIcon(new ImageIcon(MainJoin_Yj.class.getResource("/imageJoin/@.png")));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-			lblNewLabel_1.setBounds(222, 490, 40, 50);
+			lblNewLabel_1.setBounds(226, 499, 32, 32);
 		}
 		return lblNewLabel_1;
 	}
+	
+	// 회원가입
 	
 public void joinAction() {
 		
 		String id;
 		String ps;
-		String address;
 		String name;
 		String phone1;
 		String phone2;
@@ -282,14 +345,14 @@ public void joinAction() {
 			dao_yj.insertAction();
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "실패", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "비밀번호가 일치하지 않습니다.", "실패", JOptionPane.ERROR_MESSAGE);
 		}
 	
 	}
 
-/*
+// 아이디 중복 확인
+
 public void doubleCheckAction() {
-	
     String id;
     id = tfId.getText().trim();
     
@@ -301,11 +364,21 @@ public void doubleCheckAction() {
     	 JOptionPane.showMessageDialog(null,tfId.getText() + "는 사용 가능한 아이디입니다.", "성공", JOptionPane.INFORMATION_MESSAGE);
     	 dupToken = 1;
     } else {
-    	JOptionPane.showMessageDialog(null,tfId.getText() + "는 이미 사용 중인 아이디입니다. \n다시 입력해주세", "아이디 중복", JOptionPane.ERROR_MESSAGE);
+    	JOptionPane.showMessageDialog(null,tfId.getText() + "는 이미 사용 중인 아이디입니다. \n다시 입력해주세요.", "아이디 중복", JOptionPane.ERROR_MESSAGE);
     	dupToken = 0;
     }
-    */
+	
 	
 	}
 
+public void notjoinAction() {
+	 JOptionPane.showMessageDialog(null,"정보를 올바르게 입력해 주세요.", "정보 오류", JOptionPane.INFORMATION_MESSAGE);
+}
+public void idChkAction() {
+	 JOptionPane.showMessageDialog(null,"중복 확인을 해주세요.", "정보 오류", JOptionPane.INFORMATION_MESSAGE);
+}
+public void pwChkAction() {
+	 JOptionPane.showMessageDialog(null,"패스워드가 일치하지 않습니다.", "정보 오류", JOptionPane.INFORMATION_MESSAGE);
+}
 
+} // end

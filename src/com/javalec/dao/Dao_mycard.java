@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import com.javalec.dto.Dto_handle;
 import com.javalec.dto.Dto_make;
 import com.javalec.base.Mycard_01main;
@@ -33,8 +35,8 @@ public class Dao_mycard {
 	private final String id_mysql = ShareVar.DBUser;
 	private final String pw_mysql = ShareVar.DBPass;
 	
-	Mycard_01main main01 = new Mycard_01main();
-	String viewCid = main01.select_ci;
+	//Mycard_01main main01 = new Mycard_01main();
+	String viewCid = Mycard_01main.getInstance().select_ci;
 	String user_SampleID = ShareVar.UserSampleId;
 	
 	
@@ -460,8 +462,93 @@ public void usercardInsert(String title,String genre,String contents,String answ
 	
 	
 	
-}//usercardInser 종 
+}//usercardInser 종료
 
+
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ Mycard_04update	에서 수정할때 쓰는 함수. 유저가 유저 카드를 수정할때만 사용되게 되어있음.   ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+// ------------------------ ------------------------ ------------------------ ------------------------ ------------------------
+
+public boolean usercardUpdate(String cardID, String title, String genre, String contents, String answer){
+	PreparedStatement ps = null;
+
+	int tempcid = Integer.parseInt(cardID.substring(2)) ;
+
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+		Statement stmt_mcol_sql = conn_mysql.createStatement();
+		String sql_01 ="update card set ctitle = ? , cgenre = ? , ccontents = ? , canswer = ? where cid = "+tempcid;
+		//String sql_01_02 = "LAST_INSERT_ID();";
+		
+		
+		ps = conn_mysql.prepareStatement(sql_01);
+		ps.setString(1, title.trim());
+		ps.setString(2, genre.trim());
+		ps.setString(3, contents.trim());
+		ps.setString(4, answer.trim());
+		
+		ps.executeUpdate();	
+		
+		System.out.println("카드 아이디 : " +tempcid);
+		
+		conn_mysql.close();
+
+		return true;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}//try 문 .
+	
+
+			
+}
+
+
+//deletecard  삭제 기능
+
+public boolean deleteCard(int card, String user) {
+	PreparedStatement ps = null;
+	PreparedStatement ps2 = null;
+	
+
+	//String sql_02
+	
+	try {	
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+		Statement stmt_mcol_sql = conn_mysql.createStatement();
+		
+
+		// 핸들에서 데이터 지우기.
+		System.out.println("지우려는 카드아이디 : "+ card);
+		System.out.println("지우려는 유아이디 : "+ user);
+
+		String sql_02 ="delete from handle where h_uid ='"+ user +"' and h_cid ="+card;
+		ps2 = conn_mysql.prepareStatement(sql_02);
+
+		ps2.executeUpdate();
+
+		
+		System.out.println("handle 데이터 삭제 완료 ");
+		
+		//
+		String sql_01 ="delete from card where cid = "+card;
+		//String sql_01_02 = "LAST_INSERT_ID();";
+		ps = conn_mysql.prepareStatement(sql_01);
+		ps.executeUpdate();
+		System.out.println("Card 데이터 삭제 완료 ");
+		conn_mysql.close();
+		return true;
+	}catch (Exception e) {
+		e.printStackTrace();
+		return false;
+	}
+}
 
 
 

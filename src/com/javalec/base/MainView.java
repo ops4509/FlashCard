@@ -20,6 +20,7 @@ public class MainView extends JFrame {
 	private JLabel lbQuiz;
 	private JLabel lbMyPage;
 	private JLabel lblNewLabel_2;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -49,6 +50,7 @@ public class MainView extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.add(getLblNewLabel());
 		contentPane.add(getLbSearch());
 		contentPane.add(getLbMyCol());
 		contentPane.add(getLbPurchase());
@@ -68,7 +70,7 @@ public class MainView extends JFrame {
 				}
 			});
 			lbSearch.setIcon(new ImageIcon(MainView.class.getResource("/com/javalec/assets/Group 45.png")));
-			lbSearch.setBounds(42, 157, 345, 104);
+			lbSearch.setBounds(40, 160, 348, 104);
 		}
 		return lbSearch;
 	}
@@ -84,7 +86,7 @@ public class MainView extends JFrame {
 				}
 			});
 			lbMyCol.setIcon(new ImageIcon(MainView.class.getResource("/com/javalec/assets/Group 46.png")));
-			lbMyCol.setBounds(42, 301, 345, 104);
+			lbMyCol.setBounds(40, 290, 348, 104);
 		}
 		return lbMyCol;
 	}
@@ -100,7 +102,7 @@ public class MainView extends JFrame {
 				}
 			});
 			lbPurchase.setIcon(new ImageIcon(MainView.class.getResource("/com/javalec/assets/Group 47.png")));
-			lbPurchase.setBounds(41, 445, 345, 104);
+			lbPurchase.setBounds(40, 420, 348, 104);
 		}
 		return lbPurchase;
 	}
@@ -116,7 +118,7 @@ public class MainView extends JFrame {
 				}
 			});
 			lbQuiz.setIcon(new ImageIcon(MainView.class.getResource("/com/javalec/assets/Group 48.png")));
-			lbQuiz.setBounds(41, 589, 345, 104);
+			lbQuiz.setBounds(40, 550, 345, 104);
 		}
 		return lbQuiz;
 	}
@@ -132,7 +134,7 @@ public class MainView extends JFrame {
 				}
 			});
 			lbMyPage.setIcon(new ImageIcon(MainView.class.getResource("/com/javalec/assets/Group 49.png")));
-			lbMyPage.setBounds(41, 733, 345, 104);
+			lbMyPage.setBounds(40, 680, 345, 104);
 		}
 		return lbMyPage;
 	}
@@ -143,5 +145,13 @@ public class MainView extends JFrame {
 			lblNewLabel_2.setBounds(111, 35, 204, 97);
 		}
 		return lblNewLabel_2;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("");
+			lblNewLabel.setIcon(new ImageIcon(MainView.class.getResource("/com/javalec/assets/Ubiquity.png")));
+			lblNewLabel.setBounds(5, 855, 428, 30);
+		}
+		return lblNewLabel;
 	}
 }

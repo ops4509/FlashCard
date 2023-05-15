@@ -44,6 +44,7 @@ import com.javalec.dao.ViewCollectionCardsDao_KMJ;
 import com.javalec.dao.ViewCollectionMainDao_KMJ;
 import com.javalec.dto.ViewCollectionCardsDto_KMJ;
 import com.javalec.dto.ViewCollectionMainDto_KMJ;
+import com.javalec.util.ShareVar;
 
 import javax.swing.BoxLayout;
 import java.awt.GridBagLayout;
@@ -64,7 +65,7 @@ public class ViewCollectionCards extends JFrame {
 	private JPanel contentPane;
 	private JLabel lbMc;
 	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
+	private JLabel lbName;
 	private JLabel lbCard;
 	private JLabel lbTxt;
 	private JLabel lbLeft;
@@ -110,6 +111,7 @@ public class ViewCollectionCards extends JFrame {
 					paySearch();
 					setTitle("구매한 컬렉션 보기");
 				}
+				lbName.setText(ShareVar.u_name+"님!");
 			}
 		});
 		
@@ -130,7 +132,7 @@ public class ViewCollectionCards extends JFrame {
 		contentPane.add(panel);
 		contentPane.add(getLbMc());
 		contentPane.add(getLblNewLabel());
-		contentPane.add(getLblNewLabel_1());
+		contentPane.add(getLbName());
 		contentPane.add(getLbCard());
 		contentPane.add(getLbLeft());
 		contentPane.add(getLblNewLabel_4_1());
@@ -165,14 +167,14 @@ public class ViewCollectionCards extends JFrame {
 		return lblNewLabel;
 	}
 
-	private JLabel getLblNewLabel_1() {
-		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel("님!");
-			lblNewLabel_1.setFont(new Font("LG Smart UI Bold", Font.PLAIN, 16));
-			lblNewLabel_1.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/hello.png")));
-			lblNewLabel_1.setBounds(268, 79, 145, 48);
+	private JLabel getLbName() {
+		if (lbName == null) {
+			lbName = new JLabel("");
+			lbName.setFont(new Font("LG Smart UI Bold", Font.PLAIN, 16));
+			lbName.setIcon(new ImageIcon(ViewCollectionMain.class.getResource("/com/javalec/assets/hello.png")));
+			lbName.setBounds(268, 79, 145, 48);
 		}
-		return lblNewLabel_1;
+		return lbName;
 	}
 
 	private JLabel getLbCard() {
