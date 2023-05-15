@@ -10,7 +10,7 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-
+import com.javalec.dto.DtoTutor_OKH;
 import com.javalec.dto.Dto_yj;
 import com.javalec.util.ShareVar;
 import com.javalec.base.MainLogin_Yj;
@@ -27,7 +27,7 @@ public class Dao_yj {
 	String u_phone;			// 유저 휴대폰
 	String u_edate;			// 가입 시간?
 	String ullogindate;		// 로그인 시간
-	
+	static String currentTimestampToString;
 	
 	
 	public Dao_yj() {
@@ -39,11 +39,11 @@ public class Dao_yj {
 
 
 
-	public Dao_yj(String u_id, String u_name, String u_pw, String u_email, String u_phone, String u_edate) {
+	public Dao_yj(String u_id, String u_pw, String u_name, String u_email, String u_phone, String u_edate) {
 		super();
 		this.u_id = u_id;
-		this.u_name = u_name;
 		this.u_pw = u_pw;
+		this.u_name = u_name;
 		this.u_email = u_email;
 		this.u_phone = u_phone;
 		this.u_edate = u_edate;
@@ -83,11 +83,11 @@ public class Dao_yj {
 
 	
 
-	public Dao_yj(String u_id, String u_name, String u_pw, String u_email, String u_phone) {
+	public Dao_yj(String u_id, String u_pw, String u_name, String u_email, String u_phone) {
 		super();
 		this.u_id = u_id;
-		this.u_name = u_name;
 		this.u_pw = u_pw;
+		this.u_name = u_name;
 		this.u_email = u_email;
 		this.u_phone = u_phone;
 	}
@@ -101,7 +101,7 @@ public class Dao_yj {
 
 	public boolean loginAction() {
 		
-		String whereDefault = "select u_id, u_pw, u_name from user";
+		String whereDefault = "select uid, upw, uname from user";
 		PreparedStatement ps = null;
 		int token=0;
 		
@@ -112,12 +112,13 @@ public class Dao_yj {
 			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
 	       
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	        String currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
 	        
-	        String query = "UPDATE ulogin SET ullogindate = ? WHERE ul_uid = ?";
+	        currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
+	        String query = "Insert into ulogin (ul_uid, ullogindate, ullogoutdate) values(? ,?, ?)";
 	        ps = conn_mysql.prepareStatement(query);
-	        ps.setString(1, currentTimestampToString);
-	        ps.setString(2, u_id); 
+	        ps.setString(1, u_id); 
+	        ps.setString(2, currentTimestampToString);
+	        ps.setString(3, null); 
 	       
 	        
 			
@@ -162,22 +163,21 @@ public class Dao_yj {
 			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
 	       
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	        String currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
+	        currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
 	        System.out.println(currentTimestampToString);
-	        String query = "UPDATE tlogin SET tllogindate = ? WHERE tl_tid = ?";
+	        String query = "Insert into tlogin (tl_tid, tllogindate, tllogoutdate) values(? ,?, ?)";
 	        
 	        ps = conn_mysql.prepareStatement(query);
 	        
-
-	        ps.setString(1, currentTimestampToString);
-	        ps.setString(2, u_id); 
-	       
-		
+	        ps.setString(1, u_id); 
+	        ps.setString(2, currentTimestampToString);
+	        ps.setString(3, null); 
 	        
 			while (rs.next()) {
 				
 					if (rs.getString(1).equals(u_id) && rs.getString(2).equals(u_pw)) {
 					token = 1;
+					
 					break;
 					
 				}	
@@ -204,7 +204,7 @@ public class Dao_yj {
 	// 로그 아웃 
 	
 	public boolean logoutAction(String u_id) {
-	    String query = "UPDATE ulogin SET ullogoutdate = ? WHERE ul_uid = ?";
+	    String query = "UPDATE ulogin SET ullogoutdate = ? WHERE ul_uid = ? and ullogindate = '"+currentTimestampToString+"'";
 	    PreparedStatement ps = null;
 
 	    try {
@@ -212,10 +212,10 @@ public class Dao_yj {
 	        Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	        String currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
+	        String logoutcurrentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
 
 	        ps = conn_mysql.prepareStatement(query);
-	        ps.setString(1, currentTimestampToString);
+	        ps.setString(1, logoutcurrentTimestampToString);
 	        ps.setString(2, u_id);
 
 	        int updatedRows = ps.executeUpdate();
@@ -242,7 +242,7 @@ public class Dao_yj {
 	
 
 	public boolean tutorLogoutAction(String u_id) {
-	    String query = "UPDATE tlogin SET tllogoutdate = ? WHERE tl_tid = ?";
+	    String query = "UPDATE tlogin SET tllogoutdate = ? WHERE tl_tid = ? and tllogindate = '"+currentTimestampToString+"'";
 	    PreparedStatement ps = null;
 
 	    try {
@@ -250,10 +250,9 @@ public class Dao_yj {
 	        Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-	        String currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
-
+	        String logoutcurrentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
 	        ps = conn_mysql.prepareStatement(query);
-	        ps.setString(1, currentTimestampToString);
+	        ps.setString(1, logoutcurrentTimestampToString);
 	        ps.setString(2, u_id);
 
 	        int updatedRows = ps.executeUpdate();
@@ -279,7 +278,7 @@ public class Dao_yj {
 	
 	public boolean insertAction() {
 
-		String whereDefault = "select u_id, u_pw from user";
+		String whereDefault = "select uid, upw from user";
 
 		PreparedStatement ps = null;
 		PreparedStatement ps1 = null;
@@ -291,7 +290,7 @@ public class Dao_yj {
 			// pw_mysql);
 			Statement stmt_mysql = conn_mysql.createStatement();
 
-			String query = "insert into user (u_id, u_pw, u_name, u_phone, u_email, u_edate)";
+			String query = "insert into user (uid, upw, uname, uphone, uemail, uedate)";
 			String query1 = " values (?, ?, ?, ?, ?, ?)";
 			
 			String query2 = "insert into ulogin (ul_uid, ulseq)";
@@ -332,7 +331,7 @@ public class Dao_yj {
 	public boolean doubleCheckAction() {
 		// TODO Auto-generated method stub
 			
-		String whereDefault = "select u_id from user";
+		String whereDefault = "select uid from user";
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -369,7 +368,7 @@ public class Dao_yj {
 	public ArrayList<Dto_yj> userMypage(){
 		ArrayList<Dto_yj> dtoList = new ArrayList<Dto_yj>();
 		
-		String query = "select u_id, u_name, mid(u_phone, 5, 4),right(u_phone, 4), SUBSTRING_INDEX(u_email, '@', 1), SUBSTRING_INDEX(u_email, '@', -1) from user";
+		String query = "select uid, uname, mid(uphone, 5, 4),right(uphone, 4), SUBSTRING_INDEX(uemail, '@', 1), SUBSTRING_INDEX(uemail, '@', -1) from user";
 		
 		
 		try {
@@ -381,7 +380,7 @@ public class Dao_yj {
 			MainLogin_Yj mlyj = new MainLogin_Yj();
 			
 			while(rs.next()) {
-				if(rs.getString(1).equals(mlyj.u_id)) {
+				if(rs.getString(1).equals(ShareVar.u_id)) {
 				String u_id = rs.getString(1);
 				String u_name = rs.getString(2);
 				String u_phone = rs.getString(3);
@@ -412,7 +411,7 @@ public class Dao_yj {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			
-			String updateUserQuery = "UPDATE user SET u_id = ?, u_pw = ?, u_name = ?, u_phone = ?, u_email = ? WHERE u_id = ?";
+			String updateUserQuery = "UPDATE user SET uid = ?, upw = ?, uname = ?, uphone = ?, uemail = ? WHERE uid = ?";
 	        ps = conn_mysql.prepareStatement(updateUserQuery);
 	        ps.setString(1, u_id.trim());
 	        ps.setString(2, u_pw.trim());
@@ -438,17 +437,17 @@ public class Dao_yj {
 	public ArrayList<Dto_yj> paymentAction() {
 	    ArrayList<Dto_yj> dtoList = new ArrayList<Dto_yj>();
 
-	    String query = "SELECT u.u_id, SUM(co.csprice) AS payment " +
+	    String query = "SELECT u.uid, SUM(co.csprice) AS payment " +
 	                   "FROM user u, buy b, collection c, colsales co " +
-	                   "WHERE u.u_id = b.b_uid AND b.b_coid = c.coid AND c.coid = co.cs_coid " +
-	                   "AND u.u_id = ?";
+	                   "WHERE u.uid = b.b_uid AND b.b_coid = c.coid AND c.coid = co.cs_coid " +
+	                   "AND u.uid = ?";
 	    
 	    try {
 	        Class.forName("com.mysql.cj.jdbc.Driver");
 	        Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 	        
 	        PreparedStatement pstmt = conn_mysql.prepareStatement(query);
-	        pstmt.setString(1, MainLogin_Yj.u_id);
+	        pstmt.setString(1, ShareVar.u_id);
 	        
 	        ResultSet rs = pstmt.executeQuery();
 	        
@@ -469,10 +468,10 @@ public class Dao_yj {
 	
 	// 관리자 정보 가져오기
 	
-	public ArrayList<Dto_yj> getTetorInfo() {
-	    ArrayList<Dto_yj> dtoList = new ArrayList<Dto_yj>();
+	public ArrayList<DtoTutor_OKH> getTetorInfo() {
+	    ArrayList<DtoTutor_OKH> dtoList = new ArrayList<DtoTutor_OKH>();
 
-	    String query = "select tid, tpw, tname from tutor";
+	    String query = "select tid, tpw, tname, tspeciality from tutor";
 
 	    try {
 	        Class.forName("com.mysql.cj.jdbc.Driver");
@@ -480,16 +479,16 @@ public class Dao_yj {
 	        Statement stmt_mysql = conn_mysql.createStatement();
 
 	        ResultSet rs = stmt_mysql.executeQuery(query);
-	        MainLogin_Yj mlyj = new MainLogin_Yj();
 
 	        while (rs.next()) {
-	            if (rs.getString(1).equals(mlyj.u_id)) {
+	            if (rs.getString(1).equals(ShareVar.u_id)) {
 	                String tid = rs.getString(1);
 	                String tpw = rs.getString(2);
 	                String tname = rs.getString(3);
+	                String tspeciality = rs.getString(4);
 
-	                Dto_yj dto_yj = new Dto_yj(tid, tpw, tname);
-	                dtoList.add(dto_yj);
+	                DtoTutor_OKH dto = new DtoTutor_OKH(tid, tpw, tname, tspeciality);
+	                dtoList.add(dto);
 	            }
 	        }
 

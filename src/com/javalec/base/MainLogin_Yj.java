@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.javalec.dao.Dao_yj;
+import com.javalec.util.ShareVar;
 
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -41,7 +42,6 @@ public class MainLogin_Yj extends JFrame {
 	private JButton btnJoin;
 	private JTextField tfId2;
 	private JPasswordField tfPassword1;
-	public static String u_id;
 
 	/**
 	 * Launch the application.
@@ -279,7 +279,7 @@ public class MainLogin_Yj extends JFrame {
 				MainTutorMypage_Yj mainTutorMypage_Yj = new MainTutorMypage_Yj();
 				mainTutorMypage_Yj.setVisible(true);
 
-				u_id = tfId2.getText();
+				ShareVar.u_id = tfId2.getText();
 
 				dispose(); // 로그인 성공시 로그인창을 닫는다.
 				return;
@@ -322,7 +322,8 @@ public class MainLogin_Yj extends JFrame {
 				MainView view = new MainView();
 				view.setVisible(true);
 
-				u_id = tfId2.getText();
+				ShareVar.u_id = tfId2.getText();
+				System.out.println(ShareVar.u_id);
 
 				// 로그인 성공시 마이페이지로 넘어간다.
 

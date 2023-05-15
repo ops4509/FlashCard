@@ -42,7 +42,7 @@ public class ViewCollectionMainDao_KMJ {
 			while(rs.next()) {
 				String wkCoid = rs.getString(1);
 				String wkConame = rs.getString(2);
-				String wkCopath = rs.getString(3);
+				int wkCopath = rs.getInt(3);
 				
 				File file = new File("./" + wkCopath);
 				InputStream input = rs.getBinaryStream(4);

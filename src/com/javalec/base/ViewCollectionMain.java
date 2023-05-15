@@ -41,6 +41,7 @@ public class ViewCollectionMain extends JFrame {
 	private JLabel lbMyCol;
 	public static String colName;
 	public static int payStatus = 0;
+	int num = 0;
 
 	/**
 	 * Launch the application.
@@ -187,9 +188,9 @@ public class ViewCollectionMain extends JFrame {
 		}*/
 		
 		//DB값 넣기
+		num = dto.size();
 		
-		int num = dto.size();
-		if(dto.size()<20) {
+		if(dto.size()<9) {
 			num = 9;				
 		}
 		

@@ -12,6 +12,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.javalec.dao.Dao_yj;
 import com.javalec.dto.Dto_yj;
+import com.javalec.util.ShareVar;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -307,7 +308,7 @@ public class MainMypage_Yj extends JFrame {
 	
 	
 	private void getUserInfo() {
-		Dao_yj dao = new Dao_yj(MainLogin_Yj.u_id);
+		Dao_yj dao = new Dao_yj(ShareVar.u_id);
 		ArrayList<Dto_yj> dtoList = dao.userMypage();
 		
 	//	 if (!dtoList.isEmpty()) { 
@@ -370,7 +371,7 @@ public class MainMypage_Yj extends JFrame {
 // 결제 금액
 	
 	private void paymentAction() {
-	    Dao_yj dao = new Dao_yj(MainLogin_Yj.u_id);
+	    Dao_yj dao = new Dao_yj(ShareVar.u_id);
 	    ArrayList<Dto_yj> dtoList = dao.paymentAction();
 
 	    if (!dtoList.isEmpty()) {

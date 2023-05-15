@@ -6,7 +6,7 @@ public class ViewCollectionMainDto_KMJ {
 	
 	String coName;
 	String coId;
-	String coPicpath;
+	int coPicpath;
 	FileOutputStream file;
 	
 
@@ -14,7 +14,7 @@ public class ViewCollectionMainDto_KMJ {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public ViewCollectionMainDto_KMJ(String coId, String coName, String coPicpath) {
+	public ViewCollectionMainDto_KMJ(String coId, String coName, int coPicpath) {
 		super();
 		this.coId = coId;
 		this.coName = coName;
@@ -27,11 +27,11 @@ public class ViewCollectionMainDto_KMJ {
 		this.coId = coId;
 	}
 
-	public String getCoPicpath() {
+	public int getCoPicpath() {
 		return coPicpath;
 	}
 	
-	public void setCoPath(String coPicpath) {
+	public void setCoPath(int coPicpath) {
 		this.coPicpath = coPicpath;
 	}
 	
