@@ -43,8 +43,8 @@ public class Mycard_02view extends JFrame {
 
 	
 	public static String viewCid ;  //Mycard_01Main에서 가져온 카드 아이디 기억할 변
-	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
-	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기 
+	String user_SampleID = ShareVar.u_id; //로그인한 유저의 ID를 SV에서 불러오기 
+	String user_SampleName = ShareVar.u_name;  //로그인한 유저의 이름을 SV에서 불러오기 
 	
 	
 	public static String view_title ;

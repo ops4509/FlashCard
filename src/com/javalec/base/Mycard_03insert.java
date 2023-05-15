@@ -42,8 +42,8 @@ public class Mycard_03insert extends JFrame {
 
 
 	public static String selectedcardid_insert ;
-	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
-	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기 
+	String user_SampleID = ShareVar.u_id; //로그인한 유저의 ID를 SV에서 불러오기 
+	String user_SampleName = ShareVar.u_name;  //로그인한 유저의 이름을 SV에서 불러오기 
 	
 	
 	

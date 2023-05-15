@@ -37,7 +37,7 @@ public class Dao_mycard {
 	
 	//Mycard_01main main01 = new Mycard_01main();
 	String viewCid = Mycard_01main.getInstance().select_ci;
-	String user_SampleID = ShareVar.UserSampleId;
+	String user_SampleID = ShareVar.u_id;
 	
 	
 	

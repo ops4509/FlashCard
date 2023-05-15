@@ -67,8 +67,8 @@ public class Mycard_01main extends JFrame {
 	
 	private final DefaultTableModel outerTable = new DefaultTableModel();
 
-	String user_SampleID = ShareVar.UserSampleId; //로그인한 유저의 ID를 SV에서 불러오기 
-	String user_SampleName = ShareVar.UserSampleName;  //로그인한 유저의 이름을 SV에서 불러오기  
+	String user_SampleID = ShareVar.u_id; //로그인한 유저의 ID를 SV에서 불러오기 
+	String user_SampleName = ShareVar.u_name;  //로그인한 유저의 이름을 SV에서 불러오기  
 
 	
 	ArrayList<String> user_Collection_list = new ArrayList<>();  //로그인한 유저의 구매한 collection coid 리스트를 임시저장해두
@@ -117,7 +117,7 @@ public class Mycard_01main extends JFrame {
 	 * Create the frame.
 	 */
 	
-	private Mycard_01main() {
+	public Mycard_01main() {
 	//public Mycard_01main() {
 		addWindowListener(new WindowAdapter() {
 			@Override
