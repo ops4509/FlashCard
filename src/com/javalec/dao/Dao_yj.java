@@ -164,7 +164,6 @@ public class Dao_yj {
 	       
 	        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 	        currentTimestampToString = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(timestamp);
-	        System.out.println(currentTimestampToString);
 	        String query = "Insert into tlogin (tl_tid, tllogindate, tllogoutdate) values(? ,?, ?)";
 	        
 	        ps = conn_mysql.prepareStatement(query);

@@ -183,7 +183,14 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JButton getBttHome() {
 		if (bttHome == null) {
 			bttHome = new JButton("");
-			bttHome.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/imageMypage/home.png")));
+			bttHome.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					//튜터 화면 추가 해야함
+					dispose();
+				}
+			});
+			bttHome.setIcon(new ImageIcon(MainTutorMypage_Yj.class.getResource("/com/javalec/assets/colAdmin.png")));
 			bttHome.setBounds(217, 805, 160, 56);
 		}
 		return bttHome;
@@ -192,7 +199,7 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JLabel getLblTutor() {
 		if (lblTutor == null) {
 			lblTutor = new JLabel("");
-			lblTutor.setBounds(251, 111, 135, 29);
+			lblTutor.setBounds(186, 111, 200, 29);
 		}
 		return lblTutor;
 	}
@@ -208,7 +215,7 @@ public class MainTutorMypage_Yj extends JFrame {
 		        tfName.setText(dtoList.get(0).getTname());
 		        tfSpeciality.setText(dtoList.get(0).getTspeciality());
 		        
-		        lblTutor.setText(dtoList.get(0).getTpw() + "선생님의 My page");
+		        lblTutor.setText(dtoList.get(0).getTname() + "선생님의 My page");
 		}
 	
 	// tutor 로그아웃
@@ -232,6 +239,7 @@ public class MainTutorMypage_Yj extends JFrame {
 	private JPasswordField getTfPw() {
 		if (tfPw == null) {
 			tfPw = new JPasswordField();
+			tfPw.setEditable(false);
 			tfPw.setBackground(new Color(225, 225, 225));
 			tfPw.setBounds(135, 210, 240, 50);
 		}
@@ -315,7 +323,6 @@ public class MainTutorMypage_Yj extends JFrame {
 			
 			for (int i = 0; i < listCount; i++) {
 				String subStr = dtoList.get(i).getCoid().substring(0,8);
-				System.out.println(subStr);
 				if(subStr.equals(ShareVar.u_id)) {
 					ImageIcon icon = new ImageIcon(dtoList.get(i).getCopic());
 					Object[] qTxt = { dtoList.get(i).getCoid(), icon, dtoList.get(i).getConame()};
