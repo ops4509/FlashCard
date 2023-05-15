@@ -194,6 +194,10 @@ public class Mycard_01main extends JFrame {
 			btn_back.setHorizontalAlignment(SwingConstants.LEFT);
 			btn_back.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					MainView view = new MainView();
+					view.setVisible(true);
+					
+					dispose();
 				}
 			});
 		}
