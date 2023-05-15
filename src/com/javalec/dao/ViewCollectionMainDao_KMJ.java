@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -18,32 +19,30 @@ public class ViewCollectionMainDao_KMJ {
 	private final String id_mysql = ShareVar.DBUser;
 	private final String pw_mysql = ShareVar.DBPass;
 	
-	String uid, coid;
 	public ViewCollectionMainDao_KMJ() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public ViewCollectionMainDao_KMJ(String uid) {
-		super();
-		this.uid = uid;
 	}
 	
 	
 	public ArrayList<ViewCollectionMainDto_KMJ> searchAction(){
 		ArrayList<ViewCollectionMainDto_KMJ> dtoList = new ArrayList<ViewCollectionMainDto_KMJ>();
-		String whereDefault = "select c.coid, c.coname, c.copicpath, c.copic from collection c, buy b where c.coid = b.b_coid and b.b_uid = '"+ uid +"'";//이 uid는 static값의 uid
-		
+		String whereDefault = "select c.coid, c.coname, c.copicpath, c.copic from collection c, buy b where c.coid = b.b_coid and b.b_uid = ?";//이 uid는 static값의 uid
+		PreparedStatement ps = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
 			Statement stmt_mysql = conn_mysql.createStatement();
 			
-			ResultSet rs = stmt_mysql.executeQuery(whereDefault);
+			ps = conn_mysql.prepareStatement(whereDefault);
+			ps.setString(1, ShareVar.u_id);
+			
+			ps.executeQuery();
+			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
 				String wkCoid = rs.getString(1);
 				String wkConame = rs.getString(2);
-				String wkCopath = rs.getString(3);
+				int wkCopath = rs.getInt(3);
 				
 				File file = new File("./" + wkCopath);
 				InputStream input = rs.getBinaryStream(4);
