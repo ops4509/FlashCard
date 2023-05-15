@@ -26,6 +26,7 @@ import java.awt.SystemColor;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class MainLogin_Yj extends JFrame {
 
@@ -176,29 +177,32 @@ public class MainLogin_Yj extends JFrame {
 
 	private JTextField getTfId2() {
 		if (tfId2 == null) {
-			tfId2 = new JTextField("id를 입력하세요. ");
+			tfId2 = new JTextField("  ID를 입력하세요. ");
+			tfId2.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 			tfId2.setBackground(UIManager.getColor("CheckBoxMenuItem.background"));
-			tfId2.setForeground(UIManager.getColor("Button.darkShadow"));
+			tfId2.setForeground(Color.LIGHT_GRAY);
 			tfId2.setBounds(133, 647, 240, 50);
 			tfId2.setColumns(10);
 			FocusListener listener = new FocusListener() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					if (tfId2.getText().equals("id를 입력하세요. ")) {
+					if (tfId2.getText().equals("  ID를 입력하세요. ")) {
 						tfId2.setText("");
+						tfId2.setForeground(Color.BLACK);
 					}
 				}
 				
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (tfId2.getText().equals("")) {
-						tfId2.setText("id를 입력하세요. ");
+						tfId2.setText("  ID를 입력하세요. ");
 					}
 				}
 			};
 			tfId2.addFocusListener(listener);
 			
-			tfId2.setBorder(new LineBorder(Color.BLACK));
+			tfId2.setBorder(new LineBorder(Color.BLACK)
+					);
 		}
 
 		return tfId2;
@@ -211,30 +215,30 @@ public class MainLogin_Yj extends JFrame {
 
 			tfPassword1.setBorder(new LineBorder(Color.BLACK));
 			
-			/*
-			tfPassword1.setEchoChar('*');
-			tfPassword1.setText("********");
 			
-			System.out.println(tfPassword1.getPassword());
-			FocusListener listener = new FocusListener() {
-				@Override
-				public void focusGained(FocusEvent e) {
-					if (tfPassword1.getPassword().equals("********")) {
-						tfPassword1.setText("");
-						tfPassword1.setEchoChar('\u0000');
-					}
-				}
-				
-				@Override
-				public void focusLost(FocusEvent e) {
-					if (tfPassword1.getPassword().equals("")) {
-						tfPassword1.setText("********");
-						tfPassword1.setEchoChar('*');
-					}
-				}
-			};
-			
-			tfPassword1.addFocusListener(listener);*/
+//			tfPassword1.setEchoChar('*');
+//			tfPassword1.setText("********");
+//			
+//			System.out.println(tfPassword1.getPassword());
+//			FocusListener listener = new FocusListener() {
+//				@Override
+//				public void focusGained(FocusEvent e) {
+//					if (tfPassword1.getPassword().equals("********")) {
+//						tfPassword1.setText("");
+//						tfPassword1.setEchoChar('\u0000');
+//					}
+//				}
+//				
+//				@Override
+//				public void focusLost(FocusEvent e) {
+//					if (tfPassword1.getPassword().equals("")) {
+//						tfPassword1.setText("********");
+//						tfPassword1.setEchoChar('*');
+//					}
+//				}
+//			};
+//			
+//			tfPassword1.addFocusListener(listener);
 			
 			
 		}
@@ -341,7 +345,7 @@ public class MainLogin_Yj extends JFrame {
 		mainJoin_Yj.setVisible(true);
 
 	}
-
+	
 	
 	
 } // End
