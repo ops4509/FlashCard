@@ -18,16 +18,6 @@ public class DtoTutor_OKH {
 		super();
 		this.tname = tname;
 	}
-	
-
-
-	public DtoTutor_OKH(String tid, String tpw, String tname, String tspeciality) {
-		super();
-		this.tid = tid;
-		this.tpw = tpw;
-		this.tname = tname;
-		this.tspeciality = tspeciality;
-	}
 
 
 

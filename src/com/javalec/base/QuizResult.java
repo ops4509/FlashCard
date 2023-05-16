@@ -10,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.javalec.dao.DaoMake_OKH;
+import com.javalec.dto.DtoMake_OKH;
 import com.javalec.util.ShareVar;
 
 import javax.swing.JLabel;
@@ -18,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 
 public class QuizResult extends JFrame {
 
@@ -60,12 +63,14 @@ public class QuizResult extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				scoreReview();
+				System.out.println("qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount+"score"+Shortquiz.score);
 			}
 		});
 		setTitle("퀴즈 결과");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 428, 926);
+		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
@@ -109,9 +114,10 @@ public class QuizResult extends JFrame {
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//	합치면 넣어야할것.
-//					MainView main = new MainView();
-//					main.setVisible(true);
-//					dispose();
+					MainView main = new MainView();
+					main.setVisible(true);
+					init();
+					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));
@@ -131,6 +137,7 @@ public class QuizResult extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					QuizSelect quizSelect = new QuizSelect();
 					quizSelect.setVisible(true);
+					init();
 					dispose();
 
 				}
@@ -177,7 +184,9 @@ public class QuizResult extends JFrame {
 
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
-			lblNewLabel_1 = new JLabel(Integer.toString(Shortquiz.score)  +" / "+Integer.toString(QuizSelect.cocount) );
+			DaoMake_OKH daoMake_OKH = new DaoMake_OKH(QuizSelect.selectedcoid);
+			ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.getgenrecount();
+			lblNewLabel_1 = new JLabel(Integer.toString(Shortquiz.score)  +" / "+Integer.toString(dtogenre.get(0).getCocount()));
 			lblNewLabel_1.setFont(new Font("Lucida Grande", Font.PLAIN, 25));
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 			lblNewLabel_1.setBounds(40, 230, 350, 70);
@@ -202,6 +211,7 @@ public class QuizResult extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					QuizSelect quizSelect = new QuizSelect();
 					quizSelect.setVisible(true);
+					init();
 					dispose();
 
 				}
@@ -220,7 +230,10 @@ public class QuizResult extends JFrame {
 			btnHome2 = new JButton("");
 			btnHome2.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					MainView main = new MainView();
+					main.setVisible(true);
+					init();
+					dispose();
 				}
 			});
 			btnHome2.setIcon(new ImageIcon(QuizResult.class.getResource("/com/javalec/assets/bigbutton.png")));
@@ -277,6 +290,13 @@ public class QuizResult extends JFrame {
 		        break;
 		}
 		
+	}
+	
+	//	초기화
+	private void init() {
+		QuizSelect.cocount =0;
+		Shortquiz.score=0;
+		Shortquiz.qseq=0;
 	}
 
 }

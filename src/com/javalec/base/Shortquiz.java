@@ -88,14 +88,14 @@ public class Shortquiz extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				makequiz();
-
+				System.out.println("문제시작 : qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount+"score"+Shortquiz.score);
 			}
 		});
 		setTitle("단답형 퀴즈");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 428, 926);
+		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
-		contentPane.setBackground(UIManager.getColor("Button.background"));
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
 		setContentPane(contentPane);
@@ -147,9 +147,10 @@ public class Shortquiz extends JFrame {
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					//	합치면 넣어야할것.
-//					MainView main = new MainView();
-//					main.setVisible(true);
-//					dispose();
+					MainView main = new MainView();
+					main.setVisible(true);
+//					init();
+					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));
@@ -169,6 +170,7 @@ public class Shortquiz extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					QuizSelect quizSelect = new QuizSelect();
 					quizSelect.setVisible(true);
+//					init();
 					dispose();
 
 				}
@@ -381,7 +383,9 @@ public class Shortquiz extends JFrame {
 	}
 	private JLabel getLblCount() {
 		if (lblCount == null) {
-			lblCount = new JLabel(Integer.toString(QuizSelect.cocount));
+			DaoMake_OKH daoMake_OKH = new DaoMake_OKH(QuizSelect.selectedcoid);
+			ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.getgenrecount();
+			lblCount = new JLabel(Integer.toString(dtogenre.get(0).getCocount()));
 			lblCount.setHorizontalAlignment(SwingConstants.CENTER);
 			lblCount.setBounds(315, 150, 70, 30);
 		}
@@ -479,14 +483,7 @@ public class Shortquiz extends JFrame {
 			lblOption3.setText(thirdoption);
 			lblOption4.setText(fourthoption);
 
-			// options 배열은 맞는 hidden이 마지막 인덱스에 있습니다.
-			// 랜덤으로 섞어줍니다.
 		}
-
-		// 랜덤하게 content 선택
-
-//		int randomContentIndex = (int) (Math.random() * dtoMake_OKH.size());
-		// randomContentIndex 을 qseq으로 바꿔야한다.
 
 	}
 
@@ -504,5 +501,8 @@ public class Shortquiz extends JFrame {
 	public void setqseq() {
 		lblScore.setText(Integer.toString(qseq+1)); 
 	}
+	
+
+
 
 }

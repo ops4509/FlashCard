@@ -54,7 +54,7 @@ public class DaoCollection_OKH {
 		PreparedStatement ps = null;
 		ArrayList<DtoCollection_OKH> dto = new ArrayList<DtoCollection_OKH>();
 
-		String query = "SELECT co.coid, co.coname, co.copic, co.copicpath "
+		String query = "SELECT distinct co.coid, co.coname, co.copic, co.copicpath "
 				+ " FROM collection co, user u , buy b "
 				+ " WHERE u.uid = b.b_uid AND b.b_coid = co.coid"
 				+ " AND u.uid = ? ";

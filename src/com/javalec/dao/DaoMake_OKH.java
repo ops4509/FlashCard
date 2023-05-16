@@ -66,7 +66,7 @@ public class DaoMake_OKH {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // mysql.cj가 mysql 8버젼부터 사용된거다.
 			Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-			String query = "SELECT m.mgenre, COUNT(*)" + " FROM make m, collection co" + " WHERE m.m_coid = co.coid "
+			String query = "SELECT distinct m.mgenre, COUNT(*)" + " FROM make m, collection co" + " WHERE m.m_coid = co.coid "
 					+ " AND co.coid = ?" + " GROUP BY m.mgenre";
 
 			ps = conn_mysql.prepareStatement(query);

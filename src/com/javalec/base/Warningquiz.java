@@ -44,8 +44,9 @@ public class Warningquiz extends JDialog {
 	 * Create the dialog.
 	 */
 	public Warningquiz() {
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("계속 풀어보시겠습니까?");
-		setBounds(59, 348, 310, 230);
+		setBounds(159, 448, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());

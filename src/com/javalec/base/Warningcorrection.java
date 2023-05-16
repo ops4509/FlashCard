@@ -43,8 +43,9 @@ public class Warningcorrection extends JDialog {
 	 * Create the dialog.
 	 */
 	public Warningcorrection() {
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("오답노트에 문제가 없습니다.");
-		setBounds(59, 348, 310, 230);
+		setBounds(159, 448, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());

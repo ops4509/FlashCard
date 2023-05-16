@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.javalec.dao.DaoUser_OKH;
 import com.javalec.dao.Dao_yj;
+import com.javalec.dto.DtoUser_OKH;
 import com.javalec.util.ShareVar;
 
 import javax.swing.JCheckBox;
@@ -20,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -27,6 +30,7 @@ import java.awt.SystemColor;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.ImageIcon;
+import java.awt.Font;
 
 public class MainLogin_Yj extends JFrame {
 
@@ -41,6 +45,7 @@ public class MainLogin_Yj extends JFrame {
 	private JButton btnJoin;
 	private JTextField tfId2;
 	private JPasswordField tfPassword1;
+	public static String u_id;
 
 	/**
 	 * Launch the application.
@@ -55,6 +60,7 @@ public class MainLogin_Yj extends JFrame {
 					e.printStackTrace();
 				}
 			}
+			
 		});
 	}
 
@@ -104,7 +110,7 @@ public class MainLogin_Yj extends JFrame {
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
 			lblNewLabel_1 = new JLabel("");
-			lblNewLabel_1.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/image/flashIcon.png")));
+			lblNewLabel_1.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/com/javalec/assets/flashIcon.png")));
 			lblNewLabel_1.setBounds(60, 173, 310, 280);
 			lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		}
@@ -114,7 +120,7 @@ public class MainLogin_Yj extends JFrame {
 	private JLabel getLblNewLabel_1_1() {
 		if (lblNewLabel_1_1 == null) {
 			lblNewLabel_1_1 = new JLabel("");
-			lblNewLabel_1_1.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/image/LOGO.png")));
+			lblNewLabel_1_1.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/com/javalec/assets/LOGO.png")));
 			lblNewLabel_1_1.setBounds(40, 473, 347, 158);
 			lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		}
@@ -124,7 +130,7 @@ public class MainLogin_Yj extends JFrame {
 	private JLabel getLblNewLabel_2() {
 		if (lblNewLabel_2 == null) {
 			lblNewLabel_2 = new JLabel("");
-			lblNewLabel_2.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/image/id-3 1.png")));
+			lblNewLabel_2.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/com/javalec/assets/id-3 1.png")));
 			lblNewLabel_2.setBounds(55, 640, 64, 64);
 		}
 		return lblNewLabel_2;
@@ -133,7 +139,7 @@ public class MainLogin_Yj extends JFrame {
 	private JLabel getLblNewLabel_2_1() {
 		if (lblNewLabel_2_1 == null) {
 			lblNewLabel_2_1 = new JLabel("");
-			lblNewLabel_2_1.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/image/padlock 1.png")));
+			lblNewLabel_2_1.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/com/javalec/assets/padlock 1.png")));
 			lblNewLabel_2_1.setBounds(55, 715, 64, 64);
 		}
 		return lblNewLabel_2_1;
@@ -142,7 +148,7 @@ public class MainLogin_Yj extends JFrame {
 	private JButton getBtnLogin() {
 		if (btnLogin == null) {
 			btnLogin = new JButton("");
-			btnLogin.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/image/button segment-dark1.png")));
+			btnLogin.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/com/javalec/assets/button segment-dark1.png")));
 			btnLogin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					LoginAction();
@@ -160,7 +166,7 @@ public class MainLogin_Yj extends JFrame {
 	private JButton getBtnJoin() {
 		if (btnJoin == null) {
 			btnJoin = new JButton("");
-			btnJoin.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/image/regButton.png")));
+			btnJoin.setIcon(new ImageIcon(MainLogin_Yj.class.getResource("/com/javalec/assets/regButton.png")));
 			btnJoin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					joinAction();
@@ -176,29 +182,33 @@ public class MainLogin_Yj extends JFrame {
 
 	private JTextField getTfId2() {
 		if (tfId2 == null) {
-			tfId2 = new JTextField("id를 입력하세요. ");
+			tfId2 = new JTextField("  ID를 입력하세요. ");
+			tfId2.setFont(new Font("Lucida Grande", Font.PLAIN, 20));
 			tfId2.setBackground(UIManager.getColor("CheckBoxMenuItem.background"));
-			tfId2.setForeground(UIManager.getColor("Button.darkShadow"));
+			tfId2.setForeground(Color.LIGHT_GRAY);
 			tfId2.setBounds(133, 647, 240, 50);
 			tfId2.setColumns(10);
 			FocusListener listener = new FocusListener() {
 				@Override
 				public void focusGained(FocusEvent e) {
-					if (tfId2.getText().equals("id를 입력하세요. ")) {
+					if (tfId2.getText().equals("  ID를 입력하세요. ")) {
 						tfId2.setText("");
+						tfId2.setForeground(Color.BLACK);
 					}
 				}
 				
 				@Override
 				public void focusLost(FocusEvent e) {
 					if (tfId2.getText().equals("")) {
-						tfId2.setText("id를 입력하세요. ");
+						tfId2.setText("  ID를 입력하세요. ");
+						tfId2.setForeground(Color.LIGHT_GRAY);
 					}
 				}
 			};
 			tfId2.addFocusListener(listener);
 			
-			tfId2.setBorder(new LineBorder(Color.BLACK));
+			tfId2.setBorder(new LineBorder(Color.BLACK)
+					);
 		}
 
 		return tfId2;
@@ -210,32 +220,6 @@ public class MainLogin_Yj extends JFrame {
 			tfPassword1.setBounds(133, 729, 240, 50);
 
 			tfPassword1.setBorder(new LineBorder(Color.BLACK));
-			
-			/*
-			tfPassword1.setEchoChar('*');
-			tfPassword1.setText("********");
-			
-			System.out.println(tfPassword1.getPassword());
-			FocusListener listener = new FocusListener() {
-				@Override
-				public void focusGained(FocusEvent e) {
-					if (tfPassword1.getPassword().equals("********")) {
-						tfPassword1.setText("");
-						tfPassword1.setEchoChar('\u0000');
-					}
-				}
-				
-				@Override
-				public void focusLost(FocusEvent e) {
-					if (tfPassword1.getPassword().equals("")) {
-						tfPassword1.setText("********");
-						tfPassword1.setEchoChar('*');
-					}
-				}
-			};
-			
-			tfPassword1.addFocusListener(listener);*/
-			
 			
 		}
 		return tfPassword1;
@@ -272,10 +256,16 @@ public class MainLogin_Yj extends JFrame {
 				JOptionPane.showMessageDialog(this, tfId2.getText() + "선생님 환영합니다.", "로그인 성공",
 						JOptionPane.INFORMATION_MESSAGE);
 
-				MainTutorMypage_Yj mainTutorMypage_Yj = new MainTutorMypage_Yj();
-				mainTutorMypage_Yj.setVisible(true);
+//				바꿔야 한다.
+				//************ Tutor 오면 바꾸기
+				
+				
+				
+				
+//				MainTutorMypage_Yj mainTutorMypage_Yj = new MainTutorMypage_Yj();
+//				mainTutorMypage_Yj.setVisible(true);
 
-				ShareVar.u_id = tfId2.getText();
+				u_id = tfId2.getText();
 
 				dispose(); // 로그인 성공시 로그인창을 닫는다.
 				return;
@@ -311,15 +301,17 @@ public class MainLogin_Yj extends JFrame {
 			boolean result = dao_yj.loginAction();
 			
 			if (result) {
-
-				JOptionPane.showMessageDialog(this, tfId2.getText() + "님 환영합니다.", "로그인 성공",
+				DaoUser_OKH dao = new DaoUser_OKH(ShareVar.u_id);
+				ArrayList<DtoUser_OKH> dtoList = dao.selectUserinfo();
+				String name = dtoList.get(0).getUname();
+				
+				JOptionPane.showMessageDialog(this, name + "님 환영합니다.", "로그인 성공",
 						JOptionPane.INFORMATION_MESSAGE);
 
 				MainView view = new MainView();
 				view.setVisible(true);
 
-				ShareVar.u_id = tfId2.getText();
-				System.out.println(ShareVar.u_id);
+				u_id = tfId2.getText();
 
 				// 로그인 성공시 마이페이지로 넘어간다.
 
@@ -337,12 +329,8 @@ public class MainLogin_Yj extends JFrame {
 	}
 
 	public void joinAction() {
-
 		MainJoin_Yj mainJoin_Yj = new MainJoin_Yj();
 		mainJoin_Yj.setVisible(true);
-
 	}
-
-	
 	
 } // End

@@ -129,8 +129,8 @@ public class MainView extends JFrame {
 			lbMyPage.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					MainMypage_Yj mypage = new MainMypage_Yj();
-					mypage.setVisible(true);
+					MypageUser mypageUser = new MypageUser();
+					mypageUser.setVisible(true);
 					setVisible(false);
 				}
 			});

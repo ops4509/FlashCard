@@ -28,8 +28,16 @@ public class DaoScore_OKH {
 		this.s_coid = s_coid;
 		this.s_mid = s_mid;
 	}
+	
+	
 
 	// Method
+
+	public DaoScore_OKH(String s_coid, String s_uid) {
+		super();
+		this.s_uid = s_uid;
+		this.s_coid = s_coid;
+	}
 
 	// insertScore
 	public void insertScoreCorrect() {
@@ -75,6 +83,27 @@ public class DaoScore_OKH {
 			e.printStackTrace();
 		}
 	}
+	//	오답노트 문제가 있는지 확인하기
+	public boolean getCorrectTrue() {
+	    PreparedStatement ps = null;
+	    try {
+	        Class.forName("com.mysql.cj.jdbc.Driver");
+	        Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
+	        String query = "SELECT COUNT(*) FROM score WHERE s_coid = ? AND s_uid = ? AND scorrect = 1";
+	        ps = conn_mysql.prepareStatement(query);
+	        ps.setString(1,s_coid);
+	        ps.setString(2,s_uid);
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            int count = rs.getInt(1);
+	        }
+	        conn_mysql.close();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	    return true;
+	}
 
 	//	오답노트 문제 수량 가져오기
 	
@@ -84,8 +113,10 @@ public class DaoScore_OKH {
 	    try {
 	        Class.forName("com.mysql.cj.jdbc.Driver");
 	        Connection conn_mysql = DriverManager.getConnection(url_mysql, id_mysql, pw_mysql);
-	        String query = "SELECT COUNT(*) FROM score WHERE scorrect = 1";
+	        String query = "SELECT COUNT(*) FROM score WHERE s_coid = ? AND s_uid = ? WHERE scorrect = 1";
 	        ps = conn_mysql.prepareStatement(query);
+	        ps.setString(1,s_coid);
+	        ps.setString(2,s_uid);
 	        ResultSet rs = ps.executeQuery();
 	        if (rs.next()) {
 	            count = rs.getInt(1);

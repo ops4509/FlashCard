@@ -7,12 +7,15 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import com.javalec.dao.DaoMake_OKH;
 import com.javalec.dao.DaoScore_OKH;
+import com.javalec.dto.DtoMake_OKH;
 import com.javalec.util.ShareVar;
 
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class CheckCorrect extends JDialog {
@@ -43,8 +46,9 @@ public class CheckCorrect extends JDialog {
 	 */
 
 	public CheckCorrect() {
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("정답!");
-		setBounds(59, 348, 310, 230);
+		setBounds(159, 448, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());
@@ -88,10 +92,14 @@ public class CheckCorrect extends JDialog {
 			btnNewButton.setBounds(140, 150, 142, 40);
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					
 					Shortquiz shortquiz = new Shortquiz();
 					shortquiz.setVisible(false);
+					DaoMake_OKH daoMake_OKH = new DaoMake_OKH(QuizSelect.selectedcoid);
+					ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.getgenrecount();
 					insertScore();
-					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
+					if (Shortquiz.qseq < QuizSelect.cocount-1) {
+						System.out.println("문제하나 끝 : qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount+"score"+Shortquiz.score);
 						Shortquiz.qseq++;
 						Shortquiz.score++;
 						shortquiz.setqseq();
@@ -100,6 +108,7 @@ public class CheckCorrect extends JDialog {
 					} else {
 						Shortquiz.score++;
 						Shortquiz.qseq = 0;
+						System.out.println("문제전체 : qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount+"score"+Shortquiz.score);
 //						shortquiz.setVisible(false);
 						QuizResult quizResult = new QuizResult();
 						quizResult.setVisible(true);
@@ -119,8 +128,9 @@ public class CheckCorrect extends JDialog {
 		String inputuid = ShareVar.u_id;
 		String inputcoid = QuizSelect.selectedcoid;
 		int inputmid = Shortquiz.selectedid;
+		System.out.println(inputcoid+"make id:"+inputmid);
 		DaoScore_OKH daoScore_OKH = new DaoScore_OKH(inputuid, inputcoid, inputmid);
-
+		
 		daoScore_OKH.insertScoreCorrect();
 	}
 

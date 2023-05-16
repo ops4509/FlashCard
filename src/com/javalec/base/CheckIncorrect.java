@@ -7,12 +7,15 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import com.javalec.dao.DaoMake_OKH;
 import com.javalec.dao.DaoScore_OKH;
+import com.javalec.dto.DtoMake_OKH;
 import com.javalec.util.ShareVar;
 
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class CheckIncorrect extends JDialog {
@@ -43,8 +46,9 @@ public class CheckIncorrect extends JDialog {
 	 * Create the dialog.
 	 */
 	public CheckIncorrect() {
+		getContentPane().setBackground(Color.WHITE);
 		setTitle("오답!");
-		setBounds(59, 348, 310, 230);
+		setBounds(159, 448, 310, 230);
 		getContentPane().setLayout(null);
 		getContentPane().add(getLblNewLabel());
 		getContentPane().add(getLblNewLabel_1());
@@ -89,13 +93,17 @@ public class CheckIncorrect extends JDialog {
 					Shortquiz shortquiz = new Shortquiz();
 					shortquiz.setVisible(false);
 					insertScore();
-					if (Shortquiz.qseq < QuizSelect.cocount - 1) {
+					DaoMake_OKH daoMake_OKH = new DaoMake_OKH(QuizSelect.selectedcoid);
+					ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.getgenrecount();
+					if (Shortquiz.qseq <   QuizSelect.cocount-1) {
 						Shortquiz.qseq++;
+						System.out.println("qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount);
 						shortquiz.setqseq();
 						shortquiz.makequiz();
 						shortquiz.setVisible(true);
 					} else {
 						Shortquiz.qseq = 0;
+						System.out.println("qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount);
 						QuizResult quizResult = new QuizResult();
 						quizResult.setVisible(true);
 					}

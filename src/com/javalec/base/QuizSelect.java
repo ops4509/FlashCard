@@ -55,7 +55,7 @@ public class QuizSelect extends JFrame {
 
 	public static String selectedcoid;
 	public static int cocount;
-	public static int selectmode = 0;
+	public static int selectmode;
 
 	// table
 	private final DefaultTableModel outerTable = new DefaultTableModel();
@@ -91,11 +91,14 @@ public class QuizSelect extends JFrame {
 			public void windowOpened(WindowEvent e) {
 				tableListInit();
 				searchAction();
+//				문제생기면 이거 살리면  *******
+//				init();
+				System.out.println("qseq "+Shortquiz.qseq+"cocount"+QuizSelect.cocount+"score"+Shortquiz.score);
 			}
 		});
 		setTitle("퀴즈 선택");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 428, 926);
+		setBounds(100, 100, 428, 926);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
@@ -138,11 +141,10 @@ public class QuizSelect extends JFrame {
 			btnHome = new JButton("");
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					
-					//	합치면 넣어야할것.
-//					MainView main = new MainView();
-//					main.setVisible(true);
-//					dispose();
+					MainView main = new MainView();
+					main.setVisible(true);
+//					init();
+					dispose();
 				}
 			});
 			btnHome.setBackground(new Color(0, 0, 0, 0));
@@ -160,10 +162,11 @@ public class QuizSelect extends JFrame {
 			btnBack = new JButton("");
 			btnBack.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//	합치면 넣어야할것.
-//					MainView main = new MainView();
-//					main.setVisible(true);
-//					dispose();
+					// 합치면 넣어야할것.
+					MainView main = new MainView();
+					main.setVisible(true);
+//					init();
+					dispose();
 				}
 			});
 			btnBack.setBackground(new Color(0, 0, 0, 0));
@@ -179,6 +182,7 @@ public class QuizSelect extends JFrame {
 	private JButton getBtnCorrectionNote() {
 		if (btnCorrectionNote == null) {
 			btnCorrectionNote = new JButton("");
+			btnCorrectionNote.setEnabled(false);
 			btnCorrectionNote.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					// selectmode 들어가기전에 확인을 해줘야한다.
@@ -308,6 +312,9 @@ public class QuizSelect extends JFrame {
 					findAction();
 				}
 			});
+			btnSearch.setBorderPainted(false);
+			btnSearch.setFocusPainted(false);
+			btnSearch.setContentAreaFilled(false);
 			btnSearch.setIcon(new ImageIcon(QuizSelect.class.getResource("/com/javalec/assets/search.png")));
 			btnSearch.setBounds(370, 175, 18, 18);
 		}
@@ -345,6 +352,7 @@ public class QuizSelect extends JFrame {
 	private void screenPartition() {
 		if (tableCollection.getSelectedRow() >= 0) {
 			btnSelectionquiz.setEnabled(true);
+			btnCorrectionNote.setEnabled(true);
 		}
 	}
 
@@ -403,13 +411,20 @@ public class QuizSelect extends JFrame {
 	private void tableClick() {
 		int i = tableCollection.getSelectedRow();
 		selectedcoid = (String) tableCollection.getValueAt(i, 5);
+		DaoCollection_OKH daoCollection_OKH = new DaoCollection_OKH();
+		ArrayList<DtoCollection_OKH> dtoCollect = daoCollection_OKH.selectCo();
+		DaoMake_OKH daoMake_OKH = new DaoMake_OKH(dtoCollect.get(i).getCoid());
+		ArrayList<DtoMake_OKH> dtogenre = daoMake_OKH.getgenrecount();
+		cocount = dtogenre.get(0).getCocount();
+		
 	}
 
 	// 오답노트 count가져오기
 	private void corrcttioncount() {
-		DaoScore_OKH daoScore_OKH = new DaoScore_OKH();
+		DaoScore_OKH daoScore_OKH = new DaoScore_OKH(QuizSelect.selectedcoid,ShareVar.u_id);
 		int count = daoScore_OKH.getCorrectCount();
-		if (count != 0) {
+		System.out.println(count);
+		if (count > 0) {
 			cocount = count;
 			Shortquiz.score = 0;
 			selectmode = 1;
@@ -441,6 +456,7 @@ public class QuizSelect extends JFrame {
 			conditionQueryColumn = "m.mgenre";
 			break;
 		default:
+
 			break;
 		}
 
@@ -467,6 +483,13 @@ public class QuizSelect extends JFrame {
 			outerTable.addRow(tempData);
 		}
 
+	}
+	
+//	초기화
+	private void init() {
+		QuizSelect.cocount =0;
+		Shortquiz.score=0;
+		Shortquiz.qseq=0;
 	}
 
 }
