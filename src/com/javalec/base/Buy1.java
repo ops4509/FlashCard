@@ -43,10 +43,10 @@ public class Buy1 extends JFrame {
 	private JTextField textField;
 	private JButton btnNewButton;
 	private JButton btnsearch;
-	private JLabel lbltext;
 	private JScrollPane scrollPane;
 	private JTable innerTable;
-	private JLabel lbllong;
+	private JLabel lblback2;
+	private JLabel lblsearchbt;
 
 	/**
 	 * Launch the application.
@@ -74,7 +74,7 @@ public class Buy1 extends JFrame {
 			public void windowOpened(WindowEvent e) {
 				tableInit();
 				searchAction();
-				lblName.setText(ShareVar.u_name+"님!");
+				lblName.setText(ShareVar.u_name + "님!");
 
 			}
 		});
@@ -90,12 +90,11 @@ public class Buy1 extends JFrame {
 		contentPane.add(getLblmainLogo());
 		contentPane.add(getLblName());
 		contentPane.add(getLblhello());
-		contentPane.add(getLbltext());
 		contentPane.add(getComboBox());
 		contentPane.add(getTextField());
-		contentPane.add(getBtnsearch());
 		contentPane.add(getScrollPane());
-		contentPane.add(getLbllong());
+		contentPane.add(getLblback2());
+		contentPane.add(getLblsearchbt());
 	}
 
 	// 화살표 이미지 넣어야 하는 곳 ( 뒤로가기 버튼 )
@@ -121,8 +120,9 @@ public class Buy1 extends JFrame {
 	// 메인로고누르면 홈으로 돌아가는 이미지 넣는
 	private JLabel getLblmainLogo() {
 		if (lblmainLogo == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/assets/LOGO.png");
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/101 Logo.png");
 			lblmainLogo = new JLabel("");
+			lblmainLogo.setBounds(167, 27, 101, 48);
 			lblmainLogo.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -130,7 +130,6 @@ public class Buy1 extends JFrame {
 
 				}
 			});
-			lblmainLogo.setBounds(46, 121, 342, 158);
 			lblmainLogo.setIcon(icon);
 		}
 		return lblmainLogo;
@@ -148,7 +147,7 @@ public class Buy1 extends JFrame {
 	private JComboBox getComboBox() {
 		if (comboBox == null) {
 			comboBox = new JComboBox();
-			comboBox.setBounds(34, 291, 87, 27);
+			comboBox.setBounds(32, 139, 95, 40);
 			comboBox.setModel(new DefaultComboBoxModel(new String[] { "상품명", "금액" }));
 		}
 		return comboBox;
@@ -157,57 +156,38 @@ public class Buy1 extends JFrame {
 	private JTextField getTextField() {
 		if (textField == null) {
 			textField = new JTextField();
-			textField.setBounds(120, 288, 195, 30);
+			textField.setBounds(130, 144, 187, 30);
 			textField.setColumns(10);
 		}
 		return textField;
 	}
 
-	// 검색버튼
-	private JButton getBtnsearch() {
-		if (btnsearch == null) {
-
-			btnsearch = new JButton("검색");
-			btnsearch.setBounds(321, 294, 69, 20);
-
-			btnsearch.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
+	
+	// 검색버튼 
+	private JLabel getLblsearchbt() {
+		if (lblsearchbt == null) {
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/searchbtn.png");
+			lblsearchbt = new JLabel("");
+			lblsearchbt.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
 					screenPartition();
 				}
 			});
-			btnsearch.setSelected(true);
+			lblsearchbt.setBounds(315, 144, 84, 36);
+			lblsearchbt.setIcon(icon);
 		}
-		return btnsearch;
+		return lblsearchbt;
 	}
 
-	// 화면 하단 사업자텍스트
-	private JLabel getLbltext() {
-		if (lbltext == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/images/text.png");
-			lbltext = new JLabel("");
-			lbltext.setBounds(34, 830, 346, 48);
-			lbltext.setIcon(icon);
-		}
-		return lbltext;
-	}
 
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(32, 330, 356, 477);
+			scrollPane.setBounds(32, 185, 356, 622);
 			scrollPane.setViewportView(getInnerTable());
 		}
 		return scrollPane;
-	}
-	
-	private JLabel getLbllong() {
-		if (lbllong == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/assets/Rectangle.png");
-			lbllong = new JLabel("");
-			lbllong.setBounds(0, 0, 428, 20);
-			lbllong.setIcon(icon);
-		}
-		return lbllong;
 	}
 
 	// 상품목록 페이지 ( 상품목록애서 선택한 데이터를 가지고 2번 구매페이지로 넘어가는 것 )
@@ -229,7 +209,7 @@ public class Buy1 extends JFrame {
 						changepage(innerTable.getValueAt(row, 2).toString());
 						int column = target.getSelectedColumn();
 						JPanel contentPane = new JPanel();
-						contentPane.setBackground(Color.WHITE); 
+						contentPane.setBackground(Color.WHITE);
 
 					}
 				}
@@ -276,11 +256,11 @@ public class Buy1 extends JFrame {
 	private void changepage(String selectedName) {
 		setVisible(false);
 		Buy2 buy2 = new Buy2(selectedName);
-		lblName.setText(ShareVar.u_name+"님!");
+		lblName.setText(ShareVar.u_name + "님!");
 		buy2.setColor(Color.WHITE);
-	    buy2.setName(ShareVar.u_name+"님!");
-		//	JPanel contentPane = new JPanel();
-	//	contentPane.setBackground(Color.WHITE); 
+		buy2.setName(ShareVar.u_name + "님!");
+		// JPanel contentPane = new JPanel();
+		// contentPane.setBackground(Color.WHITE);
 		buy2.setVisible(true);
 	}
 
@@ -342,6 +322,34 @@ public class Buy1 extends JFrame {
 		}
 
 	}
+	
+	// 뒤로가기 버튼 
+	private JLabel getLblback2() {
+		if (lblback2 == null) {
+			ImageIcon icon = new ImageIcon("src/com/javalec/images/back.png");
+			lblback2 = new JLabel("");
+			lblback2.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					changepage();
+				}
+			});
+			lblback2.setBounds(48, 79, 48, 48);
+			lblback2.setIcon(icon);
+		}
+		return lblback2;
+	}
+
+	
+	//  뒤로가기 기능 
+	private void changepage() {
+		setVisible(false);
+		MainView main = new MainView();
+		main.setVisible(true);
+
+	
+	}
 }
+
 
 // --End----------------------------------------------------------------------------------------

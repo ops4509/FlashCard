@@ -17,6 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.JTextField;
 
 public class Buy4 extends JFrame {
 
@@ -25,7 +26,6 @@ public class Buy4 extends JFrame {
 	private JLabel lblhello;
 	private JLabel lblMainLogo;
 	private JLabel lblokLogo;
-	private JLabel lbltext;
 	private JLabel lbla;
 
 	/**
@@ -67,7 +67,6 @@ public class Buy4 extends JFrame {
 		contentPane.add(getLblhello());
 		contentPane.add(getLblMainLogo());
 		contentPane.add(getLblokLogo());
-		contentPane.add(getLbltext());
 		contentPane.add(getLbla());
 	}
 
@@ -104,34 +103,24 @@ public class Buy4 extends JFrame {
 	// 구매 완료 이미지
 	private JLabel getLblokLogo() {
 		if (lblokLogo == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/assets/Oktextpng.png");
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/Buy4text.png");
 			lblokLogo = new JLabel("");
 			lblokLogo.setBounds(36, 544, 321, 113);
 			lblokLogo.setIcon(icon);
 		}
 		return lblokLogo;
 	}
-
-	private JLabel getLbltext() {
-		if (lbltext == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/images/text.png");
-			lbltext = new JLabel("");
-			lbltext.setBounds(36, 839, 356, 53);
-			lbltext.setIcon(icon);
-		}
-		return lbltext;
-	}
 	private JLabel getLbla() {
 		if (lbla == null) {
 			ImageIcon icon = new ImageIcon("src/com/javalec/assets/aCard.png");
 			lbla = new JLabel("");
+			lbla.setBounds(72, 155, 301, 338);
 			lbla.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
 					changepage();
 				}
 			});
-			lbla.setBounds(72, 155, 301, 338);
 			lbla.setIcon(icon);
 		}
 		return lbla;
@@ -142,7 +131,4 @@ public class Buy4 extends JFrame {
 		MainView mainview = new MainView();
 		mainview.setVisible(true);
 	}
-	
-
-	
 }

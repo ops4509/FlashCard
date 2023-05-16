@@ -51,7 +51,6 @@ public class Buy2 extends JFrame {
 	private JLabel lblMyCard;
 	private JTextField tfAllPrice;
 	private JButton btnBuy;
-	private JLabel lbltext;
 	public static JTable innertable;
 
 	public String selectedName;
@@ -69,7 +68,6 @@ public class Buy2 extends JFrame {
 	private final String pw_mysql = ShareVar.DBPass;
 
 	private final DefaultTableModel outerTable = new DefaultTableModel();
-	private JLabel lbllong;
 
 	public Buy2(String selectedName) {
 		super();
@@ -99,7 +97,6 @@ public class Buy2 extends JFrame {
 		contentPane.add(getLblName());
 		contentPane.add(getLblHello());
 		contentPane.add(getLblMyCard());
-		contentPane.add(getLbltext());
 		// contentPane.add(getTfpcs());
 		// contentPane.add(getTfPrice());
 		// contentPane.add(getTextField_2());
@@ -153,17 +150,15 @@ public class Buy2 extends JFrame {
 		contentPane.add(getLblName());
 		contentPane.add(getLblHello());
 		contentPane.add(getLblMyCard());
-		contentPane.add(getLbltext());
 		contentPane.add(getTfAllPrice());
 		contentPane.add(getBtnBuy());
-		contentPane.add(getLbllong());
 
 	}
 
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
-			scrollPane.setBounds(43, 312, 346, 333);
+			scrollPane.setBounds(43, 126, 346, 519);
 			scrollPane.setViewportView(getInnertable());
 		}
 		return scrollPane;
@@ -192,7 +187,7 @@ public class Buy2 extends JFrame {
 		if (lblBack == null) {
 			ImageIcon icon = new ImageIcon("src/com/javalec/images/back.png");
 			lblBack = new JLabel("");
-			lblBack.setBounds(41, 41, 61, 16);
+			lblBack.setBounds(48, 79, 48, 48);
 			lblBack.setIcon(icon);
 		}
 		lblBack.addMouseListener(new MouseAdapter() {
@@ -225,8 +220,9 @@ public class Buy2 extends JFrame {
 	// 홈으로 돌아가는 메인로고
 	private JLabel getLblMyCard() {
 		if (lblMyCard == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/assets/LOGO.png");
+			ImageIcon icon = new ImageIcon("src/com/javalec/assets/101 Logo.png");
 			lblMyCard = new JLabel("");
+			lblMyCard.setBounds(167, 27, 101, 48);
 			lblMyCard.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -234,7 +230,6 @@ public class Buy2 extends JFrame {
 
 				}
 			});
-			lblMyCard.setBounds(43, 126, 344, 174);
 			lblMyCard.setIcon(icon);
 		}
 		return lblMyCard;
@@ -269,17 +264,6 @@ public class Buy2 extends JFrame {
 		return btnBuy;
 	}
 
-	// 화면하단 사업자텍스트 노출
-	private JLabel getLbltext() {
-		if (lbltext == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/images/text.png");
-			lbltext = new JLabel("");
-			lbltext.setBounds(34, 830, 346, 48);
-			lbltext.setIcon(icon);
-		}
-		return lbltext;
-	}
-
 	// 구메로 들어간 상품 보여주는 테이블
 	public JTable getInnertable() {
 		if (innertable == null) {
@@ -293,16 +277,6 @@ public class Buy2 extends JFrame {
 			innertable.setRowHeight(150);// 출력할때 글자와 그림의 높이를 맞추기 위해 설정
 		}
 		return innertable;
-	}
-
-	private JLabel getLbllong() {
-		if (lbllong == null) {
-			ImageIcon icon = new ImageIcon("src/com/javalec/assets/Rectangle.png");
-			lbllong = new JLabel("");
-			lbllong.setBounds(0, 0, 428, 20);
-			lbllong.setIcon(icon);
-		}
-		return lbllong;
 	}
 
 	// -------Function------------------------------------------------------------------------------------------------------------------------
@@ -389,7 +363,7 @@ public class Buy2 extends JFrame {
 		lblName.setText(name);
 	}
 
-	// ...
+	// 
 }
 
 // End----------------------------------------------------------------------------------------------------------------------------
